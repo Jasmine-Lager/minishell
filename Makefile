@@ -13,7 +13,7 @@ SOURCES = main.c \
 			
 OBJECTS = $(SOURCES:%.c=$(OBJ_DIR)/%.o)
 
-all: $(LIBFT) $(NAME)
+all: $(LIBFT) $(NAME) clean
 
 $(NAME): $(OBJECTS)
 	$(CC) $(OBJECTS) $(LIBFT) -lreadline -o $(NAME)
