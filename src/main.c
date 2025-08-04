@@ -6,18 +6,18 @@
 /*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 16:00:52 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/08/04 20:49:26 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/08/04 21:33:48 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// void	handle_command(t_mini *var)
-// {
-// 	//parse_line_to_tokens(var) (handle quotes, $, >, <, >>, <<, |)
-// 	//create_pipes()
-// 	//execute_cmds()
-// }
+void	handle_command(t_mini *var)
+{
+	parse(var); //(handle quotes, $, >, <, >>, <<, |)
+	create_pipes(var);
+	execute_cmds(var);
+}
 
 int	main(int argc, char **argv, char **envp)
 {

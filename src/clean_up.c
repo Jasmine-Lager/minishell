@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 20:38:35 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/08/04 20:45:41 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/08/04 21:23:29 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@ void	free_var_exit(t_mini *var, int exit_code)
 
 	if (var && var->paths)
 		free_arr(var->paths);
-    free(var->line);
-    //free tokens!!
-    free(var->infile);
-    free(var->outfile);
+	free(var->line);
+	//free tokens!!
+	free(var->infile);
+	free(var->outfile);
 	free(var->pipes);
 	free(var->cmd);
 	i = 0;

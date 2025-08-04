@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 15:30:51 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/08/04 21:01:43 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/08/04 21:32:28 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@
 
 extern volatile sig_atomic_t	g_signal; // only global allowed
 
-typedef enum e_token_type {
+typedef enum e_token_type
+{
 	WORD,
 	PIPE,
 	REDIR_IN,
@@ -47,7 +48,8 @@ typedef enum e_token_type {
 	HEREDOC
 }	t_token_type;
 
-typedef enum e_quotes {
+typedef enum e_quotes
+{
 	NONE,
 	SINGLE,
 	DOUBLE
@@ -94,12 +96,21 @@ int		main(int argv, char **argc, char **envp);
 char	*find_env_var(char **envp, char *key);
 void	initialize_var(t_mini *var, int argc, char **argv, char **envp);
 
+//parsing.c
+void	parse(t_mini *var);
+
 //pipes.c
 void	create_pipes(t_mini *var);
 void	close_pipes(t_mini *var);
 void	in_out_for_1st_cmd(t_mini *var);
-void    in_out_for_last_cmd(t_mini *var);
+void	in_out_for_last_cmd(t_mini *var);
 void	redirect_in_out_fds(t_mini *var, int cmd_n);
+
+//execution.c
+void	find_path(t_mini *var, char **path, char *cmd);
+void	cmds_to_struct(t_mini *var);
+void	wait_for_children(t_mini *var, pid_t last_child_pid);
+void	execute_cmds(t_mini *var);
 
 //clean_up.c
 void	free_var_exit(t_mini *var, int exit_code);

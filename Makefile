@@ -9,7 +9,8 @@ LIBFT = $(LIBFT_DIR)/libft.a
 SRC_DIR = src
 OBJ_DIR = obj
 
-SOURCES = main.c initialize_var.c clean_up.c pipes.c
+SOURCES =	main.c initialize_var.c parsing.c \
+			pipes.c execution.c clean_up.c
 			
 OBJECTS = $(SOURCES:%.c=$(OBJ_DIR)/%.o)
 
