@@ -1,7 +1,7 @@
 NAME = minishell
-CC = gcc
+CC = cc
 CFLAGS = -Wall -Wextra -Werror
-DFLAGS = -g
+# DFLAGS = -g
 
 LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a
@@ -9,7 +9,7 @@ LIBFT = $(LIBFT_DIR)/libft.a
 SRC_DIR = src
 OBJ_DIR = obj
 
-SOURCES = main.c \
+SOURCES = main.c 
 			
 OBJECTS = $(SOURCES:%.c=$(OBJ_DIR)/%.o)
 
@@ -20,7 +20,8 @@ $(NAME): $(OBJECTS)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(@D)
-	$(CC) $(CFLAGS) $(DFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
+# 	$(CC) $(CFLAGS) $(DFLAGS) -c $< -o $@
 
 $(LIBFT):
 	make -C $(LIBFT_DIR)
