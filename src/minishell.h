@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 15:30:51 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/08/04 20:54:54 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/08/04 21:01:43 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ typedef struct s_mini //stores all variables usefull for the whole program
 	int		(*pipes)[2];
 	char	*cmd;
 	char	**argv_for_cmd;
-	int		exit_status; //should only be used for pipes, not for signals (is here for expanding $?)
+	int		exit_code; //should only be used for pipes, not for signals (is here for expanding $?)
 }	t_mini;
 
 //main.c

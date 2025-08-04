@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 16:48:15 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/08/04 20:56:12 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/08/04 21:04:24 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void    in_out_for_last_cmd(t_mini *var) //only call for >
     close(fd);
 }
 
-void	redirect_in_out_fds(t_mini *var, int cmd_n)
+void	redirect_in_out_fds(t_mini *var, int cmd_n) //needs to be modified for >> and <<
 {
 	if (cmd_n == 0)
 		in_out_for_1st_cmd(var);
