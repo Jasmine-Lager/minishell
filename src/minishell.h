@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 15:30:51 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/08/04 19:04:58 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/08/04 19:51:55 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ typedef struct s_token
 // 	int				builtin_type;
 // }					t_command;
 
-typedef struct	s_mini //stores all variables usefull for the whole program
+typedef struct s_mini //stores all variables usefull for the whole program
 {
 	char	**envp;
 	char	**paths;
@@ -70,10 +70,10 @@ typedef struct	s_mini //stores all variables usefull for the whole program
 }	t_mini;
 
 //main.c
-int	main(int argv, char **argc, char **envp);
+int		main(int argv, char **argc, char **envp);
 
 //
 char	*find_env_var(char **envp, char *key);
-void	initialize_var(t_mini *var, int argc, char **argv,  char **envp);
+void	initialize_var(t_mini *var, int argc, char **argv, char **envp);
 
 #endif

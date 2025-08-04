@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   environment.c                                      :+:      :+:    :+:   */
+/*   initialize_var.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 19:04:09 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/08/04 19:05:40 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/08/04 19:52:38 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ char	*find_env_var(char **envp, char *key)
 	return (NULL);
 }
 
-void	initialize_var(t_mini *var, int argc, char **argv,  char **envp)
+void	initialize_var(t_mini *var, int argc, char **argv, char **envp)
 {
 	if (argc != 1 || !*argv) //only here to silence error unused parameter
 	{

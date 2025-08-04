@@ -6,13 +6,13 @@
 /*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 16:00:52 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/08/04 19:04:00 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/08/04 19:50:01 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(int argc, char **argv,  char **envp)
+int	main(int argc, char **argv, char **envp)
 {
 	t_mini	*var;
 
