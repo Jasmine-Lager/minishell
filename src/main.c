@@ -6,11 +6,18 @@
 /*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 16:00:52 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/08/04 19:50:01 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/08/04 20:49:26 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+// void	handle_command(t_mini *var)
+// {
+// 	//parse_line_to_tokens(var) (handle quotes, $, >, <, >>, <<, |)
+// 	//create_pipes()
+// 	//execute_cmds()
+// }
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -26,13 +33,14 @@ int	main(int argc, char **argv, char **envp)
 	var->line = readline("$");
 	while (var->line)
 	{
-		//handle signals
+		//handle signals()
 		if (*var->line)
 			add_history(var->line);
-		//handle_command
+		// handle_command(var);
 		free(var->line);
 		var->line = readline("$");
 	}
+	free_var_exit(var, 0);
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 19:04:09 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/08/04 19:52:38 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/08/04 20:12:30 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,9 @@ void	initialize_var(t_mini *var, int argc, char **argv, char **envp)
 	var->tokens = NULL;
 	var->infile = NULL;
 	var->outfile = NULL;
+	var->nbr_pipes = 0;
 	var->pipes = NULL;
 	var->cmd = NULL;
 	var->argv_for_cmd = NULL;
+	var->exit_status = 0;
 }

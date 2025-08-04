@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 15:30:51 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/08/04 19:51:55 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/08/04 20:54:54 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,16 +31,33 @@
 // tputs
 // or use <curses.h> if <term.h> isn't available
 # include <termios.h> // tcsetattr, tcgetattr
-# include <unistd.h>  // write, access, open, read, close, fork,
+# include <unistd.h>  // write, access, read, close, fork,
 // execve, getcwd, chdir, unlink, dup, dup2, isatty, ttyname, ttyslot, kill
+# include <fcntl.h> //open
 # include "libft.h"
 
 extern volatile sig_atomic_t	g_signal; // only global allowed
 
+typedef enum e_token_type {
+	WORD,
+	PIPE,
+	REDIR_IN,
+	REDIR_OUT,
+	REDIR_APPEND,
+	HEREDOC
+}	t_token_type;
+
+typedef enum e_quotes {
+	NONE,
+	SINGLE,
+	DOUBLE
+}	t_quotes;
+
 typedef struct s_token
 {
 	char			*content;
-	int				type;
+	t_token_type	type;
+	t_quotes		quotes;
 	struct s_token	*next;
 }					t_token;
 
@@ -67,13 +84,27 @@ typedef struct s_mini //stores all variables usefull for the whole program
 	int		(*pipes)[2];
 	char	*cmd;
 	char	**argv_for_cmd;
+	int		exit_status; //should only be used for pipes, not for signals (is here for expanding $?)
 }	t_mini;
 
 //main.c
 int		main(int argv, char **argc, char **envp);
 
-//
+//initialize_var.c
 char	*find_env_var(char **envp, char *key);
 void	initialize_var(t_mini *var, int argc, char **argv, char **envp);
+
+//pipes.c
+void	create_pipes(t_mini *var);
+void	close_pipes(t_mini *var);
+void	in_out_for_1st_cmd(t_mini *var);
+void    in_out_for_last_cmd(t_mini *var);
+void	redirect_in_out_fds(t_mini *var, int cmd_n);
+
+//clean_up.c
+void	free_var_exit(t_mini *var, int exit_code);
+void	other_error(t_mini *var, char *str);
+void	command_not_found(t_mini *var, char **path);
+void	dup2_error(t_mini *var);
 
 #endif
