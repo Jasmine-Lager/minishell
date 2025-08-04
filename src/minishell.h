@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 15:30:51 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/08/04 17:44:07 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/08/04 19:04:58 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,15 +33,16 @@
 # include <termios.h> // tcsetattr, tcgetattr
 # include <unistd.h>  // write, access, open, read, close, fork,
 // execve, getcwd, chdir, unlink, dup, dup2, isatty, ttyname, ttyslot, kill
+# include "libft.h"
 
 extern volatile sig_atomic_t	g_signal; // only global allowed
 
-// typedef struct s_token
-// {
-// 	char			*content;
-// 	int				type;
-// 	struct s_token	*next;
-// }					t_token;
+typedef struct s_token
+{
+	char			*content;
+	int				type;
+	struct s_token	*next;
+}					t_token;
 
 // typedef struct s_command
 // {
@@ -57,7 +58,7 @@ typedef struct	s_mini //stores all variables usefull for the whole program
 	char	**envp;
 	char	**paths;
 	char	*line;
-	char	**split_line;
+	t_token	*tokens;
 	char	*infile;
 	char	*outfile;
 	bool	append_mode;
@@ -70,5 +71,9 @@ typedef struct	s_mini //stores all variables usefull for the whole program
 
 //main.c
 int	main(int argv, char **argc, char **envp);
+
+//
+char	*find_env_var(char **envp, char *key);
+void	initialize_var(t_mini *var, int argc, char **argv,  char **envp);
 
 #endif

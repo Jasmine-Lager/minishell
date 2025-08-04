@@ -9,18 +9,18 @@ LIBFT = $(LIBFT_DIR)/libft.a
 SRC_DIR = src
 OBJ_DIR = obj
 
-SOURCES = main.c 
+SOURCES = main.c initialize_var.c
 			
 OBJECTS = $(SOURCES:%.c=$(OBJ_DIR)/%.o)
 
 all: $(LIBFT) $(NAME) clean
 
 $(NAME): $(OBJECTS)
-	$(CC) $(OBJECTS) $(LIBFT) -lreadline -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJECTS) $(LIBFT) -lreadline -o $(NAME)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(@D)
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -I $(LIBFT_DIR) -c $< -o $@
 # 	$(CC) $(CFLAGS) $(DFLAGS) -c $< -o $@
 
 $(LIBFT):
