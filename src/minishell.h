@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 15:30:51 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/08/05 10:30:15 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/08/05 13:36:23 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,14 @@ extern volatile sig_atomic_t	g_signal; // only global allowed
 typedef enum e_token_type
 {
 	WORD,
+	CMD,
+	FLAG,
 	PIPE,
 	REDIR_IN,
 	REDIR_OUT,
 	REDIR_APPEND,
-	HEREDOC
+	HEREDOC,
+	DELIMITER
 }	t_token_type;
 
 typedef enum e_quotes
