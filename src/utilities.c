@@ -1,26 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signals.c                                          :+:      :+:    :+:   */
+/*   utilities.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jlager <jlager@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/05 12:50:33 by jlager            #+#    #+#             */
-/*   Updated: 2025/08/05 16:33:49 by jlager           ###   ########.fr       */
+/*   Created: 2025/08/05 12:50:24 by jlager            #+#    #+#             */
+/*   Updated: 2025/08/05 16:33:52 by jlager           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// Ctrl+C: interrupts the current input and redisplays the prompts (SIGINT)
-// but not the shell itself.
-// Ctrl+\: Normally quits, here it should not do anything (SIGQUIT)
-// Ctrl+D and EOF: Exit shell, Check for NULL/0 from input
+#include "minishell.h"
 
-void	handle_ctrl_c(int ctrl_c)
+void	return_error(const char *error_msg)
 {
-}
-
-void	setup_signals(void)
-{
-	signal(SIGINT, handle_sigint); // Ctrl-C
-	signal(SIGQUIT, SIG_IGN);      // Ctrl-\ (ignoreing by )
+	ft_printf(BOLD RED "❗️%s❗️\n" RESET, error_msg);
+	// or we can do the same with perror();
+	exit(EXIT_FAILURE);
 }

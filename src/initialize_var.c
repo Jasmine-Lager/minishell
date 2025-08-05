@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initialize_var.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlager <jlager@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 19:04:09 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/08/04 21:25:11 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/08/05 15:14:57 by jlager           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	initialize_var(t_mini *var, int argc, char **argv, char **envp)
 	{
 		write(2, "minishell: wrong number of arguments\n", 37);
 		exit(2);
-	}
+	} 
 	var->envp = envp;
 	var->paths = ft_split(find_env_var(envp, "PATH"), ':');
 	var->tokens = NULL;
