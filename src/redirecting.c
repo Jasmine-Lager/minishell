@@ -62,7 +62,7 @@ void	here_doc(t_mini *var)
 	while (ft_strncmp(line_in, var->delimiter, ft_strlen(var->delimiter)))
 	{
 		if (!line_in)
-			other_error(var, "here-document delimited by EOF\n");
+			other_error(var, "minishell error: here-document delimited by EOF\n");
 		ft_printf("%s\n", line_in);
 		free(line_in);
 		line_in = readline(">");
@@ -72,16 +72,16 @@ void	here_doc(t_mini *var)
 
 void	redirect_for_pipes(t_mini *var, int cmd_n)
 {
-	if (cmd_n == 0 && !var->here_doc)
+	if (cmd_n == 0)// && !var->here_doc)
 		in_out_for_1st_cmd(var);
-	else if (cmd_n == 0 && var->here_doc)
-	{
-		if (dup2(var->pipes[0][1], 1) == -1)
-		{
-			dup2_error(var);
-		}
-		here_doc(var);
-	}
+	// else if (cmd_n == 0 && var->here_doc)
+	// {
+	// 	if (dup2(var->pipes[0][1], 1) == -1)
+	// 	{
+	// 		dup2_error(var);
+	// 	}
+	// 	here_doc(var);
+	// }
 	else if (cmd_n == var->nbr_pipes)
 	{
 		in_out_for_last_cmd(var);
