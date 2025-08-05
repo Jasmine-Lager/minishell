@@ -32,11 +32,11 @@ typedef struct s_token
 	struct s_token	*next;
 }					t_token;
 
-typedef struct s_prompt
-{
-	char			**args;
-	char			*input_file;
-	char			*output_file;
-	int				append_mode;
-	int				builtin_type;
-}					t_prompt;
+// typedef struct s_prompt
+// {
+// 	char			**args;
+// 	char			*input_file;
+// 	char			*output_file;
+// 	int				append_mode;
+// 	int				builtin_type;
+// }					t_prompt;

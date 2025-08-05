@@ -6,19 +6,22 @@
 // environment variable in the form "KEY=value", ending with a null pointer.
 int	main(int argv, char **argc, char **envv)
 {
-	t_prompt	prompt;
-
-	// 1. Initialize shell and env structures
-	while ()
-	{
-		// 2. Display prompt and read line
-		// 3. Parse input (quotes, syntax, split, redir)
-		// 4. Expand environment variables  (for variables, etc.)
-		// 5. Execute command(s) (handle pipes, redirs, built-ins, external)
-		// 6. Cleanup (to avoid leaks)
-	}
-	// Free resources and exit
+	
 }
+
+
+// t_prompt	prompt;
+
+// 	// 1. Initialize shell and env structures
+// 	while ()
+// 	{
+// 		// 2. Display prompt and read line
+// 		// 3. Parse input (quotes, syntax, split, redir)
+// 		// 4. Expand environment variables  (for variables, etc.)
+// 		// 5. Execute command(s) (handle pipes, redirs, built-ins, external)
+// 		// 6. Cleanup (to avoid leaks)
+// 	}
+// 	// Free resources and exit
 
 // ------------------ Week-by-Week Breakdown ------------------
 // Week 1: Foundation
