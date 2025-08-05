@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 15:30:51 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/08/04 21:32:28 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/08/05 09:40:00 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,9 +102,11 @@ void	parse(t_mini *var);
 //pipes.c
 void	create_pipes(t_mini *var);
 void	close_pipes(t_mini *var);
+
+//redirecting.c
 void	in_out_for_1st_cmd(t_mini *var);
 void	in_out_for_last_cmd(t_mini *var);
-void	redirect_in_out_fds(t_mini *var, int cmd_n);
+void	redirect_for_pipes(t_mini *var, int cmd_n);
 
 //execution.c
 void	find_path(t_mini *var, char **path, char *cmd);

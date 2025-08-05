@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clean_up.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 20:38:35 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/08/04 21:23:29 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/08/05 08:54:20 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 
 void	free_var_exit(t_mini *var, int exit_code)
 {
-	int	i;
-
 	if (var && var->paths)
 		free_arr(var->paths);
 	free(var->line);
@@ -24,7 +22,6 @@ void	free_var_exit(t_mini *var, int exit_code)
 	free(var->outfile);
 	free(var->pipes);
 	free(var->cmd);
-	i = 0;
 	if (var && var->argv_for_cmd)
 		free_arr(var->argv_for_cmd);
 	free(var);

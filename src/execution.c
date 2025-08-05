@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 20:59:49 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/08/04 21:11:22 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/08/05 09:38:25 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ void	execute_cmds(t_mini *var)
 		}
 		else if (pid == 0)
 		{
-			redirect_in_out_fds(var, i);
+			redirect_for_pipes(var, i);
 			cmds_to_struct(var);
 			close_pipes(var);
 			execve(var->cmd, var->argv_for_cmd, var->envp);
