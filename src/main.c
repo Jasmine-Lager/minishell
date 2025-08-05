@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 16:00:52 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/08/05 10:29:04 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/08/05 11:14:43 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,24 @@ int	main(int argc, char **argv, char **envp)
 	free_var_exit(var, 0);
 	return (0);
 }
+
+// envv (also called envp) = environment variables
+// array of strings (character pointers), each representing one
+// environment variable in the form "KEY=value", ending with a null pointer.
+
+
+// t_prompt	prompt;
+
+// 	// 1. Initialize shell and env structures
+// 	while ()
+// 	{
+// 		// 2. Display prompt and read line
+// 		// 3. Parse input (quotes, syntax, split, redir)
+// 		// 4. Expand environment variables  (for variables, etc.)
+// 		// 5. Execute command(s) (handle pipes, redirs, built-ins, external)
+// 		// 6. Cleanup (to avoid leaks)
+// 	}
+// 	// Free resources and exit
 
 	// ------------------ Week-by-Week Breakdown ------------------
 	// Week 1: Foundation
