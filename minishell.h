@@ -1,6 +1,7 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include "libft.h"
 # include <limits.h>            // INT_MAX, INT_MAX
 # include <readline/readline.h> // readline, rl_on_new_line, rl_replace_line,
 // rl_redisplay
@@ -31,11 +32,11 @@ typedef struct s_token
 	struct s_token	*next;
 }					t_token;
 
-typedef struct s_command
+typedef struct s_prompt
 {
 	char			**args;
 	char			*input_file;
 	char			*output_file;
 	int				append_mode;
 	int				builtin_type;
-}					t_command;
+}					t_prompt;
