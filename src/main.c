@@ -6,18 +6,11 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 16:00:52 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/08/05 09:49:19 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/08/05 10:29:04 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	handle_command(t_mini *var)
-{
-	parse(var); //(handle quotes, $, >, <, >>, <<, |)
-	create_pipes(var); //make sure this is only called if there is a pipe
-	execute_cmds(var); //this too
-}
 
 int	main(int argc, char **argv, char **envp)
 {

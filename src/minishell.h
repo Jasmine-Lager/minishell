@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 15:30:51 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/08/05 09:40:00 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/08/05 10:30:15 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ typedef struct s_mini //stores all variables usefull for the whole program
 	char	*outfile;
 	bool	append_mode;
 	bool	here_doc;
+	char	*delimiter;
 	int		nbr_pipes;
 	int		(*pipes)[2];
 	char	*cmd;
@@ -98,6 +99,9 @@ void	initialize_var(t_mini *var, int argc, char **argv, char **envp);
 
 //parsing.c
 void	parse(t_mini *var);
+
+//commands.c
+void	handle_command(t_mini *var);
 
 //pipes.c
 void	create_pipes(t_mini *var);

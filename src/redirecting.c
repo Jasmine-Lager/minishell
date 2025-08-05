@@ -54,12 +54,23 @@ void	in_out_for_last_cmd(t_mini *var)
 	close(fd);
 }
 
+// void	here_doc(t_mini *var)
+// {
+
+// }
+
 void	redirect_for_pipes(t_mini *var, int cmd_n)
 {
 	if (cmd_n == 0 && !var->here_doc)
 		in_out_for_1st_cmd(var);
-	// else if (cmd_n == 0 && var->here_doc)
-	// 	here_doc();
+	else if (cmd_n == 0 && var->here_doc)
+	{
+		// here_doc(var);
+		if (dup2(var->pipes[0][1], 1) == -1)
+		{
+			dup2_error(var);
+		}
+	}
 	else if (cmd_n == var->nbr_pipes)
 	{
 		in_out_for_last_cmd(var);
