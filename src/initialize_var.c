@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initialize_var.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlager <jlager@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 19:04:09 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/08/05 15:14:57 by jlager           ###   ########.fr       */
+/*   Updated: 2025/08/06 12:58:07 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,9 @@ void	initialize_var(t_mini *var, int argc, char **argv, char **envp)
 	var->tokens = NULL;
 	var->infile = NULL;
 	var->outfile = NULL;
+	var->append_mode = 0;
+	var->here_doc = 0;
+	var->delimiter = NULL;
 	var->nbr_pipes = 0;
 	var->pipes = NULL;
 	var->cmd = NULL;

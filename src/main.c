@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlager <jlager@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 16:00:52 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/08/05 16:24:46 by jlager           ###   ########.fr       */
+/*   Updated: 2025/08/06 13:03:03 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,9 @@ int	main(int argc, char **argv, char **envp)
 // envv (also called envp) = environment variables
 // array of strings (character pointers), each representing one
 // environment variable in the form "KEY=value", ending with a null pointer.
+
+//readline leaks: to suppress readline leaks run: 
+// valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all ./minishell
 
 // t_prompt	prompt;
 
