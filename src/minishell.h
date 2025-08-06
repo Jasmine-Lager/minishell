@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlager <jlager@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 15:30:51 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/08/05 14:44:47 by jlager           ###   ########.fr       */
+/*   Updated: 2025/08/06 12:45:28 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ typedef struct s_mini // stores all variables usefull for the whole program
 }					t_mini;
 
 // main.c
-int					main(int argv, char **argc, char **envp);
+int					main(int argv, char **argc, char **envp); //why so big indentation? i think it is more readable if it is as small as possible, so more functions fit on single line 
 
 // initialize_var.c
 char				*find_env_var(char **envp, char *key);
