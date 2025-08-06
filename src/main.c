@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 16:00:52 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/08/06 13:30:20 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/08/06 22:02:54 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,15 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_mini	*var; // this I would maybe call input or something -but it is not just input, but all variables needed by the whole program (like pipes)
 		// like t_minishell *input - this is very long, and would make it harder to meet norminette rules, if this name would be everywhere in the project
-		//could be t_shell *info, or t_mini *struct maybe?
+		//could be t_shell *info, or t_mini *struct maybe? i like t_mini *var though, and think it would be waste of time to rename it. do it if you think it would improve the project though, but change it to something short and change it everywhere
 
 	var = malloc(sizeof(t_mini));
 	initialize_minishell(var, argc, argv, envp); //no need to check return value, it does not return, on error it exits
-	setup_signals();
-	;
+	// setup_signals();
+	// ;
 	// REPL
 	// = Read > Evaluate > Print > Loop
-	while (var->line)
+	while (1)
 	{
 		var->line = readline("$ ");
 		if (var->line == NULL) // Ctrl+D has been pressed to terminate the program
@@ -38,6 +38,7 @@ int	main(int argc, char **argv, char **envp)
 			// handle_command(var);
 		}
 		free(var->line);
+		var->line = NULL; //needs to be here so free_var_exit does not do double free if the line is empty
 	}
 	free_var_exit(var, 0);
 	return (0);

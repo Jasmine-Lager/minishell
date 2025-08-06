@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 15:30:51 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/08/06 13:43:04 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/08/06 23:17:54 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,12 +77,14 @@ extern volatile sig_atomic_t	g_signal; // only global allowed
 typedef enum e_token_type
 {
 	WORD,
-	CMD,
-	FLAG,
+	CMD,//not sure this will ever be used
+	FLAG,//or this
 	PIPE,
 	REDIR_IN,
+	INFILE,
 	REDIR_OUT,
 	REDIR_APPEND,
+	OUTFILE,
 	HEREDOC,
 	DELIMITER
 }					t_token_type;
@@ -101,15 +103,6 @@ typedef struct s_token
 	t_quotes		quotes;
 	struct s_token	*next;
 }					t_token;
-
-// typedef struct s_command
-// {
-// 	char			**args;
-// 	char			*input_file;
-// 	char			*output_file;
-// 	int				append_mode;
-// 	int				builtin_type;
-// }					t_command;
 
 typedef struct s_mini // stores all variables usefull for the whole program
 {

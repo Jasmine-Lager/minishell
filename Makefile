@@ -15,7 +15,7 @@ SOURCES =	main.c initialize_var.c signals.c parsing.c \
 			
 OBJECTS = $(SOURCES:%.c=$(OBJ_DIR)/%.o)
 
-all: $(LIBFT) $(NAME) clean
+all: $(LIBFT) $(NAME) #clean cannot be here, or makefile would relink, so it would be a norm error
 
 $(NAME): $(OBJECTS)
 	$(CC) $(CFLAGS) $(OBJECTS) $(LIBFT) -lreadline -o $(NAME)

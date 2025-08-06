@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 19:04:09 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/08/06 13:37:39 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/08/06 21:36:46 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	initialize_minishell(t_mini *var, int argc, char **argv, char **envp)
 {
 	if (!var)
 	{
-		write(2, "malloc in main.c failed\n", 25);
+		write(2, "malloc in main.c failed\n", 25); //could be shortened with function return_error, but that function would have to be only used here specifically, because it could not call free_var_exit, and everywhere else it needs to be called. i think it would reduce readability.
 		exit(1);
 	}
 	var->envp = envp;

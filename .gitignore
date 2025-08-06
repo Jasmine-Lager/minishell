@@ -3,3 +3,4 @@ libft/libft.a
 .vscode/
 infile
 outfile
+obj/
