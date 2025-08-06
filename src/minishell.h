@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 15:30:51 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/08/06 12:58:52 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/08/06 13:43:04 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@
 //	ft_printf(UNDERLINE GREEN BG_BLACK "Success: " RESET "Operation complete.");
 //	write(1, BOLD CYAN "Load..." RESET, ft_strlen(BOLD CYAN "Load..." RESET));
 
-extern volatile sig_atomic_t g_signal; // only global allowed
+extern volatile sig_atomic_t	g_signal; // only global allowed
 
 typedef enum e_token_type
 {
@@ -113,20 +113,20 @@ typedef struct s_token
 
 typedef struct s_mini // stores all variables usefull for the whole program
 {
-	char **envp;
-	char **paths;
-	char *line;
-	t_token *tokens;
-	char *infile;
-	char *outfile;
-	bool append_mode;
-	bool here_doc;
-	char *delimiter;
-	int nbr_pipes;
-	int (*pipes)[2];
-	char *cmd;
-	char **argv_for_cmd;
-	int exit_code; // should only be used for pipes,
+	char	**envp;
+	char	**paths;
+	char	*line;
+	t_token	*tokens;
+	char	*infile;
+	char	*outfile;
+	bool	append_mode;
+	bool	here_doc;
+	char	*delimiter;
+	int		nbr_pipes;
+	int		(*pipes)[2];
+	char	*cmd;
+	char	**argv_for_cmd;
+	int		exit_code; // should only be used for pipes,
 		// not for signals (is here for expanding $?)
 }					t_mini;
 
@@ -135,8 +135,11 @@ int					main(int argv, char **argc, char **envp); //why so big indentation? i th
 
 // initialize_var.c
 char				*find_env_var(char **envp, char *key);
-void				initialize_var(t_mini *var, int argc, char **argv,
+void				initialize_minishell(t_mini *var, int argc, char **argv,
 						char **envp);
+
+//signals.c
+void	setup_signals(void);
 
 // parsing.c
 void				parse(t_mini *var);

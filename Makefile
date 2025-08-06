@@ -9,7 +9,7 @@ LIBFT = $(LIBFT_DIR)/libft.a
 SRC_DIR = src
 OBJ_DIR = obj
 
-SOURCES =	main.c initialize_var.c parsing.c \
+SOURCES =	main.c initialize_var.c signals.c parsing.c \
 			pipes.c commands.c redirecting.c \
 			exec_with_pipes.c clean_up.c
 			

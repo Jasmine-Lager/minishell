@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 16:00:52 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/08/06 13:03:03 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/08/06 13:30:20 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,12 @@
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_mini	*var; // this I would maybe call input or something
-		// like t_minishell *input
+	t_mini	*var; // this I would maybe call input or something -but it is not just input, but all variables needed by the whole program (like pipes)
+		// like t_minishell *input - this is very long, and would make it harder to meet norminette rules, if this name would be everywhere in the project
+		//could be t_shell *info, or t_mini *struct maybe?
 
 	var = malloc(sizeof(t_mini));
-	if (!var)
-	// return_error("malloc in main.c failed"); one line only and more readable?
-	{
-		write(2, "minishell: malloc failed\n", 25);
-		exit(70);
-	}
-	if (!initialize_var(var, argc, argv, envp)); // rename to initalize_minishell or bootup_minishell for readability?
-		return_error("Initialization failed");
+	initialize_minishell(var, argc, argv, envp); //no need to check return value, it does not return, on error it exits
 	setup_signals();
 	;
 	// REPL

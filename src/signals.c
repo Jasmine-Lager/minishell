@@ -3,12 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlager <jlager@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 12:50:33 by jlager            #+#    #+#             */
-/*   Updated: 2025/08/05 16:33:49 by jlager           ###   ########.fr       */
+/*   Updated: 2025/08/06 13:44:13 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "minishell.h"
 
 // Ctrl+C: interrupts the current input and redisplays the prompts (SIGINT)
 // but not the shell itself.
