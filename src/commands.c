@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 10:29:08 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/08/06 22:02:38 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/08/07 15:11:51 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 void	handle_command(t_mini *var)
 {
-	// parse(var); //(handle quotes, $, >, <, >>, <<, |) //if here_doc, nbr_pipes++
-	if (var->nbr_pipes > 0)
-	{
-		create_pipes(var);
-		execute_cmds(var);
-	}
+	parse(var); //(handle quotes, $, >, <, >>, <<, |) //if here_doc, nbr_pipes++
+	// if (var->nbr_pipes > 0)
+	// {
+	// 	create_pipes(var);
+	// 	execute_cmds(var);
+	// }
 	// else
 	// {
 	// 	exec_cmd(var);

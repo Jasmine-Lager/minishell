@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 16:00:52 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/08/06 22:02:54 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/08/07 15:25:43 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,12 @@ int	main(int argc, char **argv, char **envp)
 		if (var->line == NULL) // Ctrl+D has been pressed to terminate the program
 		{
 			ft_printf("exiting..\n");
-			break ; // terminating program
+			free_var_exit(var, 0);
 		}	
 		if (*var->line)
 		{
 			add_history(var->line);
-			// handle_command(var);
+			handle_command(var);
 		}
 		free(var->line);
 		var->line = NULL; //needs to be here so free_var_exit does not do double free if the line is empty
