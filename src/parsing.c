@@ -110,21 +110,30 @@ void	find_token_type(t_mini *var, t_token *new, t_token *last)
 		new->type = WORD;
 }
 
+void	create_first_token(t_mini *var, int *start_token, int *end_token)
+{
+	var->tokens = malloc(sizeof(t_token));
+	if (!var->tokens)
+		other_error(var, "malloc failled\n");
+	var->tokens->next = NULL;
+	find_start_end_of_token(var, start_token, end_token, var->tokens);
+	var->tokens->content = (char *)malloc((end_token - start_token + 1)
+		* sizeof(char));
+	if (!var->tokens->content)
+		other_error(var, "malloc failled\n");
+	ft_strlcpy(var->tokens->content, &var->line[*start_token],
+		end_token - start_token + 1);
+	find_token_type(var, var->tokens, NULL); //?
+	*start_token = *end_token;
+}
+
 void	create_one_token(t_mini *var, int *start_token, int *end_token,
 			t_token **last)
 {
 	t_token	*new;
 
-	if (!var->tokens || !*last)
-	{
-		var->tokens = malloc(sizeof(t_token));
-		new = var->tokens;
-	}
-	else
-	{
-		(*last)->next = malloc(sizeof(t_token));
-		new = (*last)->next;
-	}
+	(*last)->next = malloc(sizeof(t_token));
+	new = (*last)->next;
 	if (!new)
 		other_error(var, "malloc failled\n");
 	new->next = NULL;
@@ -144,20 +153,16 @@ void	parse(t_mini *var)
 {
 	int			start_token; //index of a start of a token in the line
 	int			end_token; //index one after the end of the token in the line
-	t_token		**last;
+	t_token		*last;
 
 	start_token = 0;
 	end_token = 0;
-	last = malloc(sizeof(t_token *));
-	if (!last)
-		other_error(var, "malloc failed\n");
-	*last = NULL;
+	if (!ft_strncmp("exit", var->line, 5)) //only here now for testing, remove later
+		free_var_exit(var, 0);
+	create_first_token(var, &start_token, &end_token);
+	last = var->tokens;
 	while (var->line[start_token])
-		create_one_token(var, &start_token, &end_token, last);
-
-	
-	// if (!ft_strncmp("exit", var->line, 5))
-	// 	free_var_exit(var, 0);
+		create_one_token(var, &start_token, &end_token, &last);
 }
 
 // The parser validates syntax and constructs an Abstract Syntax Tree (AST) 

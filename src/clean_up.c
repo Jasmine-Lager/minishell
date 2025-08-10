@@ -46,6 +46,19 @@ void	free_var_exit(t_mini *var, int exit_code)
 	exit (exit_code);
 }
 
+void	free_one_line(t_mini *var)
+{
+	free(var->line);
+	var->line = NULL;
+	free_tokens(var);
+	free(var->pipes);
+	var->pipes = NULL;
+	free(var->cmd);
+	var->cmd = NULL;
+	if (var && var->argv_for_cmd)
+		free_arr(var->argv_for_cmd);
+}
+
 //the string says what message the error should display
 void	other_error(t_mini *var, char *str)
 {
