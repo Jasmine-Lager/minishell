@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 15:30:51 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/08/10 17:02:35 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/08/11 10:12:34 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,17 @@ void				initialize_minishell(t_mini *var, int argc, char **argv,
 void	setup_signals(void);
 
 // parsing.c
-void				parse(t_mini *var);
+void	find_start_end_of_token(t_mini *var, int *start_token, int *end_token,
+		t_token *new);
+void	create_first_token(t_mini *var, int *start_token, int *end_token);
+void	create_one_token(t_mini *var, int *start_token, int *end_token,
+			t_token **last);
+void	parse(t_mini *var);
+
+//token_type.c
+void	find_token_type(t_mini *var, t_token *new, t_token *last);
+bool	check_in_out_delim(t_mini *var, t_token *new, t_token *last);
+bool	check_metacharacters(t_mini *var, t_token *new);
 
 // commands.c
 void				handle_command(t_mini *var);

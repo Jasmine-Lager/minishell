@@ -10,7 +10,7 @@ SRC_DIR = src
 OBJ_DIR = obj
 
 SOURCES =	main.c initialize_var.c signals.c parsing.c \
-			pipes.c commands.c redirecting.c \
+			token_type.c pipes.c commands.c redirecting.c \
 			exec_with_pipes.c clean_up.c
 			
 OBJECTS = $(SOURCES:%.c=$(OBJ_DIR)/%.o)
