@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initialize_var.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
+/*   By: jlager <jlager@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 19:04:09 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/08/06 21:36:46 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/08/12 14:08:05 by jlager           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ char	*find_env_var(char **envp, char *key)
 	}
 	return (NULL);
 }
+
 
 void	initialize_minishell(t_mini *var, int argc, char **argv, char **envp)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
+/*   By: jlager <jlager@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 15:30:51 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/08/11 10:12:34 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/08/12 12:48:58 by jlager           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,13 +72,13 @@
 //	ft_printf(UNDERLINE GREEN BG_BLACK "Success: " RESET "Operation complete.");
 //	write(1, BOLD CYAN "Load..." RESET, ft_strlen(BOLD CYAN "Load..." RESET));
 
-extern volatile sig_atomic_t	g_signal; // only global allowed
+extern volatile sig_atomic_t g_signal; // only global allowed
 
 typedef enum e_token_type
 {
 	WORD,
-	CMD,//not sure this will ever be used
-	FLAG,//or this
+	CMD,  // not sure this will ever be used
+	FLAG, // or this
 	PIPE,
 	REDIR_IN,
 	INFILE,
@@ -106,46 +106,51 @@ typedef struct s_token
 
 typedef struct s_mini // stores all variables usefull for the whole program
 {
-	char	**envp;
-	char	**paths;
-	char	*line;
-	t_token	*tokens;
-	char	*infile;
-	char	*outfile;
-	bool	append_mode;
-	bool	here_doc;
-	char	*delimiter;
-	int		nbr_pipes;
-	int		(*pipes)[2];
-	char	*cmd;
-	char	**argv_for_cmd;
-	int		exit_code; // should only be used for pipes,
-		// not for signals (is here for expanding $?)
+	char **envp;
+	char **paths;
+	char *line;
+	t_token *tokens;
+	char *infile;
+	char *outfile;
+	bool append_mode;
+	bool here_doc;
+	char *delimiter;
+	int nbr_pipes;
+	int (*pipes)[2];
+	char *cmd;
+	char **argv_for_cmd;
+	int exit_code; // should only be used for pipes,
+					// not for signals (is here for expanding $?)
 }					t_mini;
 
 // main.c
-int					main(int argv, char **argc, char **envp); //why so big indentation? i think it is more readable if it is as small as possible, so more functions fit on single line 
+int	main(int argv, char **argc, char **envp);
+		// why so big indentation? i think it is more readable if it is as small as possible,
+	//	so more functions fit on single line
 
 // initialize_var.c
 char				*find_env_var(char **envp, char *key);
 void				initialize_minishell(t_mini *var, int argc, char **argv,
 						char **envp);
 
-//signals.c
+// signals.c
+void	handle_ctrl_c(int signal_number);
 void	setup_signals(void);
 
 // parsing.c
-void	find_start_end_of_token(t_mini *var, int *start_token, int *end_token,
-		t_token *new);
-void	create_first_token(t_mini *var, int *start_token, int *end_token);
-void	create_one_token(t_mini *var, int *start_token, int *end_token,
-			t_token **last);
-void	parse(t_mini *var);
+void				find_start_end_of_token(t_mini *var, int *start_token,
+						int *end_token, t_token *new);
+void				create_first_token(t_mini *var, int *start_token,
+						int *end_token);
+void				create_one_token(t_mini *var, int *start_token,
+						int *end_token, t_token **last);
+void				parse(t_mini *var);
 
-//token_type.c
-void	find_token_type(t_mini *var, t_token *new, t_token *last);
-bool	check_in_out_delim(t_mini *var, t_token *new, t_token *last);
-bool	check_metacharacters(t_mini *var, t_token *new);
+// token_type.c
+void				find_token_type(t_mini *var, t_token *new, t_token *last);
+bool				check_in_out_delim(t_mini *var, t_token *new,
+						t_token *last);
+bool				check_metacharacters(t_mini *var, t_token *new);
 
 // commands.c
 void				handle_command(t_mini *var);
