@@ -2,10 +2,10 @@
 
 | Feature            | Jasmine             | Káťa               |
 |:-------------------|:--------------------|:-------------------|
-| Signals            | ✔                   | (interface aid)    |
-| Main Loop          | ✔                   |                    |
+| Signals            |  DONE               |                    |
+| Main Loop          | Might need adsjusts |                    |
 | Parsing            | ✔                   |(struct definitions)|
-| Built-ins          | ✔                   |                    |
+| Commands           | ✔                   |                    |
 | Env Mgmt           | ✔                   | uses env           |
 | Error Msg          | ✔                   | uses error         |
 | Pipes              |                     | ✔                  |
