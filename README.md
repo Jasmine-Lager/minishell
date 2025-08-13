@@ -5,11 +5,12 @@
 | Signals            |  DONE               |                    |
 | Main Loop          | Might need adsjusts |                    |
 | Parsing            | ✔                   |(struct definitions)|
-| Commands           | ✔                   |                    |
-| Env Mgmt           | ✔                   | uses env           |
+| Commands (Built-in)| ✔                   |                    |
+| Environment        | ✔                   | uses env           |
+| History            | ✔                   |                    |
 | Error Msg          | ✔                   | uses error         |
 | Pipes              |                     | ✔                  |
 | Redirs             |                     | ✔                  |
 | Execution          |                     | ✔                  |
-| Heredoc            | (collab)            | ✔                  |
+| Heredoc            | (collab)                                 |
 | Cleanup            | (input, vars)       | (fds, children)    |
