@@ -3,37 +3,42 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlager <jlager@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 16:00:52 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/08/12 13:26:06 by jlager           ###   ########.fr       */
+/*   Updated: 2025/08/13 13:53:39 by jasminelage      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-volatile sig_atomic_t	g_signal = 0;
+volatile sig_atomic_t g_signal = 0;
 
+/**
+ * 
+ */
 
-
-int	main(int argc, char **argv, char **envp)
+int main(int argc, char **argv, char **envp)
 {
-	t_mini	*var;
+	t_mini *var;
 
+	// extra edge case? would just about fit
+	// if (envp == NULL || *envp == NULL)
+	// 	return (printsdr(BOLD RED "No environment found. \nExiting..", RESET));
 	var = malloc(sizeof(t_mini));
 	initialize_minishell(var, argc, argv, envp);
-		// no need to check return value, it does not return, on error it exits
-	setup_signals();
+	signals_setup();
 	// REPL
 	// = Read > Evaluate > Print > Loop
 	while (1)
 	{
 		g_signal = 0;
-		var->line = readline("$ ");
+		var->line = readline(BOLD GRAY "$ " RESET);
+		// making the BOLD GRAY the defult color??
 		if (var->line == NULL)
-			// Ctrl+D has been pressed to terminate the program
+		// Ctrl+D has been pressed to terminate the program
 		{
-			ft_printf("Exiting..\n");
+			ft_printf(BOLD GRAY "Exiting..\n" RESET);
 			free_var_exit(var, 0);
 		}
 		if (*var->line)
@@ -54,24 +59,12 @@ int	main(int argc, char **argv, char **envp)
 // readline leaks: to suppress readline leaks run:
 // valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all ./minishell
 
-// t_prompt	prompt;
-
-// 	// 1. Initialize shell and env structures to "boot up"
-// 	while ()
-// 	{
-// 		// 2. Display prompt and read line
-// 		// 3. Parse input (quotes, syntax, split, redir)
-// 		// 4. Expand environment variables  (for variables, etc.)
-// 		// 5. Execute command(s) (handle pipes, redirs, built-ins, external)
-// 		// 6. Cleanup (to avoid leaks)
-// 	}
-// 	// Free resources and exit
-
 // ------------------ Week-by-Week Breakdown ------------------
 // Week 1: Foundation
 // 	Project setup, basic main loop, signal handling framework
 // 	Libft integration and Makefile creation
 // 	Basic readline integration and prompt display
+// --------DONE--------
 
 // Week 2: Parsing Engine
 // 	Complete lexer implementation with comprehensive tokenization

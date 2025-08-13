@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clean_up.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
+/*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 20:38:35 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/08/07 14:35:08 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/08/13 16:20:48 by jasminelage      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,23 +59,4 @@ void	free_one_line(t_mini *var)
 		free_arr(var->argv_for_cmd);
 }
 
-//the string says what message the error should display
-void	other_error(t_mini *var, char *str)
-{
-	write(2, str, ft_strlen(str));
-	free_var_exit(var, 1);
-}
-
-void	command_not_found(t_mini *var, char **path)
-{
-	free(*path);
-	*path = NULL;
-	perror("command not found");
-	free_var_exit(var, 127);
-}
-
-void	dup2_error(t_mini *var)
-{
-	perror("dup2");
-	free_var_exit(var, 1);
-}
+// moved some funtions to utilities.c

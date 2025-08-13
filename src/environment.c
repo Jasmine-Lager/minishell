@@ -1,35 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utilities.c                                        :+:      :+:    :+:   */
+/*   environment.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/05 12:50:24 by jlager            #+#    #+#             */
-/*   Updated: 2025/08/13 16:20:53 by jasminelage      ###   ########.fr       */
+/*   Created: 2025/08/13 13:00:41 by jasminelage       #+#    #+#             */
+/*   Updated: 2025/08/13 13:32:07 by jasminelage      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// the string says what message the error should display
-void error_exit(t_mini *var, char *str)
+char *find_env_var(char **envp, char *key)
 {
-	write(2, str, ft_strlen(str));
-	free_var_exit(var, 1);
-}
+	int i;
+	int len;
 
-void command_not_found(t_mini *var, char **path)
-{
-	free(*path);
-	*path = NULL;
-	perror("Command not found");
-	free_var_exit(var, 127);
+	len = ft_strlen(key);
+	i = 0;
+	while (envp[i])
+	{
+		if (!ft_strncmp(envp[i], key, len) && envp[i][len] == '=')
+			return (envp[i] + len + 1);
+		i++;
+	}
+	return (NULL);
 }
-
-void dup2_error(t_mini *var)
-{
-	perror("dup2");
-	free_var_exit(var, 1);
-}
-

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlager <jlager@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 10:29:08 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/08/12 12:56:44 by jlager           ###   ########.fr       */
+/*   Updated: 2025/08/13 13:42:13 by jasminelage      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@ void	handle_command(t_mini *var)
 	// }
 }
 
-// ◦ echo with option -n
-// ◦ cd with only a relative or absolute path
-// ◦ pwd with no options
-// ◦ export with no options
-// ◦ unset with no options
-// ◦ env with no options or arguments
-// ◦ exit with no options
+// echo with option -n
+// cd with only a relative or absolute path
+// pwd with no options
+// export with no options
+// unset with no options
+// env with no options or arguments
+// exit with no options

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execution.c                                        :+:      :+:    :+:   */
+/*   exec_with_pipes.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
+/*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 20:59:49 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/08/05 09:38:25 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/08/13 13:03:05 by jasminelage      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@ void	find_path(t_mini *var, char **path, char *cmd) //has to change a lot
 	int		j;
 
 	if (!cmd || !*cmd)
-		other_error(var, "pipex: invalid command\n");
+		error_exit(var, BOLD RED "Pipex: invalid command\n" RESET);
 	*path = ft_strdup(cmd);
 	if (!*path)
-		other_error(var, "pipex: malloc failed\n");
+		error_exit(var, BOLD RED "Pipex: malloc failed\n" RESET);
 	j = 0;
 	while (access(*path, X_OK) == -1 && var->paths && var->paths[j])
 	{
@@ -35,7 +35,7 @@ void	find_path(t_mini *var, char **path, char *cmd) //has to change a lot
 			free(tmp);
 			free(*path);
 			*path = NULL;
-			other_error(var, "pipex: malloc failed\n");
+			error_exit(var, BOLD RED "Pipex: malloc failed\n" RESET);
 		}
 		free(tmp);
 	}
@@ -47,7 +47,7 @@ void	cmds_to_struct(t_mini *var) //needs to be fully rewritten
 {
 	// var->argv_for_cmd = ft_split(cmd, ' ');
 	// if (!var->argv_for_cmd)
-	// 	other_error(var, "pipex: malloc failed\n");
+	// 	error_exit(var, "pipex: malloc failed\n");
 	var->cmd = NULL;
 	find_path(var, &var->cmd, var->argv_for_cmd[0]);
 }

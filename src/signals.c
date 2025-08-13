@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlager <jlager@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 12:50:33 by jlager            #+#    #+#             */
-/*   Updated: 2025/08/12 12:54:10 by jlager           ###   ########.fr       */
+/*   Updated: 2025/08/13 12:36:17 by jasminelage      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,10 @@ void	handle_ctrl_c(int signal_number)
 	}
 }
 
-void	setup_signals(void)
+void	signals_setup(void)
 {
 	signal(SIGINT, handle_ctrl_c); // Ctrl-C
-	signal(SIGQUIT, SIG_IGN);      // Ctrl-\ (ignoreing by )
+	signal(SIGQUIT, SIG_IGN);      // Ctrl-\ (ignoring)
 }
 
 // Common pitfalls to avoid

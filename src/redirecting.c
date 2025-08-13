@@ -62,7 +62,7 @@ void	here_doc(t_mini *var)
 	while (ft_strncmp(line_in, var->delimiter, ft_strlen(var->delimiter)))
 	{
 		if (!line_in)
-			other_error(var, "minishell error: here-document delimited by EOF\n");
+			error_exit(var, "minishell error: here-document delimited by EOF\n");
 		ft_printf("%s\n", line_in);
 		free(line_in);
 		line_in = readline(">");
