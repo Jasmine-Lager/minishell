@@ -4,7 +4,7 @@
 |:-------------------|:--------------------|:-------------------|
 | Signals            |  DONE               |                    |
 | Main Loop          | Might need adsjusts |                    |
-| Parsing            | ✔                   |(struct definitions)|
+| Parsing and Tokens | please help  :,)    |(struct definitions)|
 | Commands (Built-in)| ✔                   |                    |
 | Environment        | ✔                   | uses env           |
 | History            | ✔                   |                    |
@@ -12,5 +12,5 @@
 | Pipes              |                     | ✔                  |
 | Redirs             |                     | ✔                  |
 | Execution          |                     | ✔                  |
-| Heredoc            | (collab)                                 |
+| Heredoc            | (collab)            | (collab)           |
 | Cleanup            | (input, vars)       | (fds, children)    |
