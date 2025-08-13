@@ -7,7 +7,6 @@
 | Parsing and Tokens | please help  :,)    |(struct definitions)|
 | Commands (Built-in)| ✔                   |                    |
 | Environment        | ✔                   | uses env           |
-| History            | ✔                   |                    |
 | Error Msg          | ✔                   | uses error         |
 | Pipes              |                     | ✔                  |
 | Redirs             |                     | ✔                  |
