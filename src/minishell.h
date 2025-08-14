@@ -6,7 +6,7 @@
 /*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 15:30:51 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/08/14 15:26:52 by jasminelage      ###   ########.fr       */
+/*   Updated: 2025/08/14 15:38:50 by jasminelage      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,5 +171,10 @@ void				free_one_line(t_mini *var);
 void				other_error(t_mini *var, char *str);
 void				command_not_found(t_mini *var, char **path);
 void				dup2_error(t_mini *var);
+
+
+// signals.c
+void	signals_setup(void);
+void	handle_ctrl_c(int signal_number);
 
 #endif

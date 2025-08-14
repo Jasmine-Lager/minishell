@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
+/*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 12:50:33 by jlager            #+#    #+#             */
-/*   Updated: 2025/08/06 20:43:19 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/08/14 15:36:35 by jasminelage      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,27 @@
 // Ctrl+\: Normally quits, here it should not do anything (SIGQUIT)
 // Ctrl+D and EOF: Exit shell, Check for NULL/0 from input
 
-// void	handle_ctrl_c(int ctrl_c)
-// {
-// }
+// write(1, "\n", 1) ensures the cursor moves to a new line.
+// 	rl_replace_line("", 0) clears the current buffer
+// 	rl_on_new_line() tells readline a new line started
+// 	rl_redisplay() reprints the prompt and the (now empty) buffer
 
-// void	setup_signals(void)
-// {
-// 	signal(SIGINT, handle_sigint); // Ctrl-C
-// 	signal(SIGQUIT, SIG_IGN);      // Ctrl-\ (ignoreing by )
-// }
+// signo is the integer ID of the signal that triggered the handler
+void handle_ctrl_c(int signal_number)
+{
+	if (signal_number == SIGINT)
+	{
+		g_signal = SIGINT;
+		write(1, "\n", 1);
+		rl_replace_line("", 0);
+		rl_on_new_line();
+		rl_redisplay();
+	}
+}
+
+void signals_setup(void)
+{
+	signal(SIGINT, handle_ctrl_c); // Ctrl-C
+	signal(SIGQUIT, SIG_IGN);	   // Ctrl-\ (ignoring)
+}
+
