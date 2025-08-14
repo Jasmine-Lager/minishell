@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
+/*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 15:30:51 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/08/11 10:12:34 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/08/14 15:26:52 by jasminelage      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 # define MINISHELL_H
 
 # include <limits.h>            // INT_MAX, INT_MAX
+# include <stdio.h>            // printf, perror
+# include <readline/history.h> // add_history, rl_clear_history
 # include <readline/readline.h> // readline, rl_on_new_line, rl_replace_line,
 // rl_redisplay
 # include <dirent.h>           // opendir, readdir, closedir
-# include <readline/history.h> // add_history, rl_clear_history
 # include <signal.h>           // signal, sigaction, sigemptyset, sigaddset
 # include <stdbool.h>          // bool flags
-# include <stdio.h>            // printf, perror
 # include <stdlib.h>           // malloc, free, exit, getenv, EXIT_SUCCESS
 # include <string.h>           // strerror
 # include <sys/ioctl.h>        // ioctl
