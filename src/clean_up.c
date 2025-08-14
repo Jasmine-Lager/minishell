@@ -6,26 +6,46 @@
 /*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 20:38:35 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/08/13 16:20:48 by jasminelage      ###   ########.fr       */
+/*   Updated: 2025/08/14 14:50:24 by jasminelage      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	free_tokens(t_mini *var)
-{
-	t_token	*ptr;
-	t_token	*temp;
+// old
+// void free_tokens(t_mini *var)
+// {
+// 	t_token *ptr;
+// 	t_token *temp;
 
-	if (!var || !var->tokens)
-		return ;
+// 	if (!var || !var->tokens)
+// 		return;
+// 	ptr = var->tokens;
+// 	while (ptr)
+// 	{
+// 		free(ptr->content);
+// 		temp = ptr;
+// 		ptr = ptr->next;
+// 		free(temp);
+// 	}
+// 	var->tokens = NULL;
+// }
+
+// new
+void free_tokens(t_mini *var)
+{
+	t_token *ptr;
+	t_token *temp;
+
+	if (var == NULL)
+		return;
 	ptr = var->tokens;
-	while (ptr)
+	while (ptr != NULL)
 	{
+		temp = ptr->next;
 		free(ptr->content);
-		temp = ptr;
-		ptr = ptr->next;
-		free(temp);
+		free(ptr);
+		ptr = temp;
 	}
 	var->tokens = NULL;
 }
@@ -46,17 +66,37 @@ void	free_var_exit(t_mini *var, int exit_code)
 	exit (exit_code);
 }
 
-void	free_one_line(t_mini *var)
+// old
+// void	free_one_line(t_mini *var)
+// {
+// 	free(var->line);
+// 	var->line = NULL;
+// 	free_tokens(var);
+// 	free(var->pipes);
+// 	var->pipes = NULL;
+// 	free(var->cmd);
+// 	var->cmd = NULL;
+// 	if (var && var->argv_for_cmd)
+// 		free_arr(var->argv_for_cmd);
+// }
+
+// new
+void free_one_line(t_mini *var)
 {
 	free(var->line);
 	var->line = NULL;
 	free_tokens(var);
+	var->tokens = NULL;
+	var->delimiter = NULL;
+	var->infile = NULL;
+	var->outfile = NULL;
 	free(var->pipes);
 	var->pipes = NULL;
 	free(var->cmd);
 	var->cmd = NULL;
-	if (var && var->argv_for_cmd)
+	if (var->argv_for_cmd)
+	{
 		free_arr(var->argv_for_cmd);
+		var->argv_for_cmd = NULL;
+	}
 }
-
-// moved some funtions to utilities.c

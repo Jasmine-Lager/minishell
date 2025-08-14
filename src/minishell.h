@@ -6,7 +6,7 @@
 /*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 15:30:51 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/08/13 17:38:21 by jasminelage      ###   ########.fr       */
+/*   Updated: 2025/08/14 14:15:16 by jasminelage      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,16 +124,14 @@ typedef struct s_mini // stores all variables usefull for the whole program
 } t_mini;
 
 // clean_up.c
-void	free_var_exit(t_mini *var, int exit_code);
-void	free_one_line(t_mini *var);
+void free_var_exit(t_mini *var, int exit_code);
+void free_one_line(t_mini *var);
 
 // commands.c
-void	handle_command(t_mini *var);
+void handle_command(t_mini *var);
 
 // main.c
 int main(int argv, char **argc, char **envp);
-// why so big indentation? i think it is more readable if it is as small as possible,
-//	so more functions fit on single line
 
 // initialize_var.c
 char *find_env_var(char **envp, char *key);
@@ -145,11 +143,10 @@ void handle_ctrl_c(int signal_number);
 void signals_setup(void);
 
 // parse_o_token.c
-void create_first_token(t_mini *var, int *start_token,
-						int *end_token);
-void append_token(t_mini *var, int *start_token,
-					  int *end_token, t_token **last);
-void parse(t_mini *var);
+void	create_first_token(t_mini *var, int *start_token, int *end_token);
+void	append_token(t_mini *var, int *start_token, int *end_token, 
+		t_token **last);
+void	parse(t_mini *var);
 
 // token_define.c
 int get_metachar_end(t_mini *var, int start);
@@ -159,8 +156,7 @@ void define_token(t_mini *var, int *start_token, int *end_token, t_token *new);
 
 // token_type.c
 void find_token_type(t_mini *var, t_token *new, t_token *last);
-bool check_in_out_delim(t_mini *var, t_token *new,
-						t_token *last);
+bool	check_in_out_delim(t_mini *var, t_token *new, t_token *last);
 bool check_metacharacters(t_mini *var, t_token *new);
 
 // pipes.c
