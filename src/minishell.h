@@ -6,7 +6,7 @@
 /*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 15:30:51 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/08/14 14:15:16 by jasminelage      ###   ########.fr       */
+/*   Updated: 2025/09/11 16:31:54 by jasminelage      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,10 +143,10 @@ void handle_ctrl_c(int signal_number);
 void signals_setup(void);
 
 // parse_o_token.c
-void	create_first_token(t_mini *var, int *start_token, int *end_token);
-void	append_token(t_mini *var, int *start_token, int *end_token, 
-		t_token **last);
-void	parse(t_mini *var);
+void create_first_token(t_mini *var, int *start_token, int *end_token);
+void append_token(t_mini *var, int *start_token, int *end_token,
+				  t_token **last);
+void parse(t_mini *var);
 
 // token_define.c
 int get_metachar_end(t_mini *var, int start);
@@ -156,7 +156,7 @@ void define_token(t_mini *var, int *start_token, int *end_token, t_token *new);
 
 // token_type.c
 void find_token_type(t_mini *var, t_token *new, t_token *last);
-bool	check_in_out_delim(t_mini *var, t_token *new, t_token *last);
+bool check_in_out_delim(t_mini *var, t_token *new, t_token *last);
 bool check_metacharacters(t_mini *var, t_token *new);
 
 // pipes.c

@@ -6,7 +6,7 @@
 /*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 16:00:52 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/08/13 13:53:39 by jasminelage      ###   ########.fr       */
+/*   Updated: 2025/09/11 16:48:04 by jasminelage      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,31 +58,3 @@ int main(int argc, char **argv, char **envp)
 
 // readline leaks: to suppress readline leaks run:
 // valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all ./minishell
-
-// ------------------ Week-by-Week Breakdown ------------------
-// Week 1: Foundation
-// 	Project setup, basic main loop, signal handling framework
-// 	Libft integration and Makefile creation
-// 	Basic readline integration and prompt display
-// --------DONE--------
-
-// Week 2: Parsing Engine
-// 	Complete lexer implementation with comprehensive tokenization
-// 	Parser development with AST construction and syntax validation
-// 	Initial testing framework establishment
-
-// Week 3: Variable Processing
-// 	Expander implementation for all variable types
-// 	Environment management system creation
-// 	Built-in command framework development
-
-// Week 4: Execution Engine
-// 	Complete executor implementation with process management
-// 	All built-in commands with proper bash behavior replication
-// 	Comprehensive redirection and pipe handling
-
-// Week 5: Testing and Refinement
-// 	Extensive testing with edge cases and error conditions
-// 	Memory leak elimination and performance optimization
-// 	Code review and norm compliance verification
-// 	Final debugging and polishing

@@ -6,7 +6,7 @@
 /*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 19:53:07 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/08/13 17:40:26 by jasminelage      ###   ########.fr       */
+/*   Updated: 2025/09/11 16:14:12 by jasminelage      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,13 @@ void	create_first_token(t_mini *var, int *start_token, int *end_token)
 		error_exit(var, "Malloc failled: create_first_token\n");
 	var->tokens->next = NULL;
 	define_token(var, start_token, end_token, var->tokens);
+	// Check if we have a valid token
+	if (*end_token <= *start_token)
+	{
+		free(var->tokens);
+		var->tokens = NULL;
+		return;
+	}
 	var->tokens->content = (char *)malloc((end_token - start_token + 1) * sizeof(char));
 	if (!var->tokens->content)
 		error_exit(var, "Malloc failled: create_first_token\n");
@@ -40,6 +47,13 @@ void	append_token(t_mini *var, int *start_token, int *end_token,
 		error_exit(var, "Malloc failled: append_token\n");
 	new->next = NULL;
 	define_token(var, start_token, end_token, new);
+	// Check if we have a valid token
+	if (*end_token <= *start_token)
+	{
+		(*last)->next = NULL;
+		free(new);
+		return;
+	}
 	new->content = (char *)malloc((*end_token - *start_token + 1) * sizeof(char));
 	if (!new->content)
 		error_exit(var, "Malloc failled: append_token\n");
@@ -58,11 +72,23 @@ void	parse(t_mini *var)
 
 	start_token = 0;
 	end_token = 0;
+	if (!var->line || !*var->line)
+		return;
 	if (!ft_strncmp("exit", var->line, 5)) // only here now for testing, remove later
 		free_var_exit(var, 0);
 	create_first_token(var, &start_token, &end_token);
+	if (!var->tokens)
+		return;
 	last = var->tokens;
 	while (var->line[start_token])
+	{
+		// Skip spaces before trying to create next token
+		while (var->line[start_token] == ' ')
+			start_token++;
+		// Check if we reached the end
+		if (!var->line[start_token])
+			break;
 		append_token(var, &start_token, &end_token, &last);
+	}
 	// expand_tokens(var); // TODO, check double quote first
 }
