@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 16:48:15 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/08/05 09:09:46 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/09/14 19:19:13 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	create_pipes(t_mini *var)
 
 	var->pipes = malloc(var->nbr_pipes * sizeof(int [2]));
 	if (!var->pipes)
-		other_error(var, "pipex: malloc failed\n");
+		error_exit(var, "Malloc failed: create_pipes\n");
 	i = 0;
 	while (i < var->nbr_pipes)
 	{

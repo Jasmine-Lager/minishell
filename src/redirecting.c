@@ -29,29 +29,31 @@ void	in_out_for_1st_cmd(t_mini *var)
 	{
 		dup2_error(var);
 	}
-	close(fd);
+	if (fd != 0)
+		close(fd);
 }
 
 void	in_out_for_last_cmd(t_mini *var)
 {
 	int	fd;
-	int	cmd_n;
 
-	cmd_n = var->nbr_pipes + 1;
-	if (!var->append_mode)
+	if (var->outfile && !var->append_mode)
 		fd = open(var->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	else
+	else if (var->outfile)
 		fd = open(var->outfile, O_WRONLY | O_CREAT | O_APPEND , 0644);
+	else
+		fd = 1;
 	if (fd == -1)
 	{
 		perror("failed to open output");
 		free_var_exit(var, 1);
 	}
-	if (dup2(var->pipes[cmd_n - 1][0], 0) == -1 || dup2(fd, 1) == -1)
+	if (dup2(var->pipes[var->nbr_pipes - 1][0], 0) == -1 || dup2(fd, 1) == -1)
 	{
 		dup2_error(var);
 	}
-	close(fd);
+	if (fd != 1)
+		close(fd);
 }
 
 void	here_doc(t_mini *var)
@@ -62,7 +64,7 @@ void	here_doc(t_mini *var)
 	while (ft_strncmp(line_in, var->delimiter, ft_strlen(var->delimiter)))
 	{
 		if (!line_in)
-			other_error(var, "minishell error: here-document delimited by EOF\n");
+			error_exit(var, "minishell: here-document delimited by EOF\n");
 		ft_printf("%s\n", line_in);
 		free(line_in);
 		line_in = readline(">");

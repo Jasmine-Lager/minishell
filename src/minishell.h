@@ -3,82 +3,82 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 15:30:51 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/08/14 15:38:50 by jasminelage      ###   ########.fr       */
+/*   Updated: 2025/09/14 22:01:59 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
-# define MINISHELL_H
+#define MINISHELL_H
 
-# include <limits.h>            // INT_MAX, INT_MAX
-# include <stdio.h>            // printf, perror
-# include <readline/history.h> // add_history, rl_clear_history
-# include <readline/readline.h> // readline, rl_on_new_line, rl_replace_line,
+#include <limits.h>			   // INT_MAX, INT_MAX
+#include <stdio.h>			   // printf, perror
+#include <readline/history.h>  // add_history, rl_clear_history
+#include <readline/readline.h> // readline, rl_on_new_line, rl_replace_line,
 // rl_redisplay
-# include <dirent.h>           // opendir, readdir, closedir
-# include <signal.h>           // signal, sigaction, sigemptyset, sigaddset
-# include <stdbool.h>          // bool flags
-# include <stdlib.h>           // malloc, free, exit, getenv, EXIT_SUCCESS
-# include <string.h>           // strerror
-# include <sys/ioctl.h>        // ioctl
-# include <sys/stat.h>         // stat, lstat, fstat
-# include <sys/types.h>        // general types, used with wait/fork/etc.
-# include <sys/wait.h>         // wait, waitpid, wait3, wait4
-# include <term.h>             // tgetent, tgetflag, tgetnum, tgetstr, tgoto,
+#include <dirent.h>	   // opendir, readdir, closedir
+#include <signal.h>	   // signal, sigaction, sigemptyset, sigaddset
+#include <stdbool.h>   // bool flags
+#include <stdlib.h>	   // malloc, free, exit, getenv, EXIT_SUCCESS
+#include <string.h>	   // strerror
+#include <sys/ioctl.h> // ioctl
+#include <sys/stat.h>  // stat, lstat, fstat
+#include <sys/types.h> // general types, used with wait/fork/etc.
+#include <sys/wait.h>  // wait, waitpid, wait3, wait4
+#include <term.h>	   // tgetent, tgetflag, tgetnum, tgetstr, tgoto,
 // tputs
 // or use <curses.h> if <term.h> isn't available
-# include <termios.h> // tcsetattr, tcgetattr
-# include <unistd.h>  // write, access, read, close, fork,
+#include <termios.h> // tcsetattr, tcgetattr
+#include <unistd.h>	 // write, access, read, close, fork,
 // execve, getcwd, chdir, unlink, dup, dup2, isatty, ttyname, ttyslot, kill
-# include "libft.h"
-# include <fcntl.h> //open
+#include "libft.h"
+#include <fcntl.h> //open
 
 // ----------ASCI escape codes for text formating----------
-# define RESET "\x1b[0m"
+#define RESET "\x1b[0m"
 
 // Text styles
-# define BOLD "\x1b[1m"
-# define ITALIC "\x1b[3m"
-# define UNDERLINE "\x1b[4m"
-# define DIM "\x1b[2m"
+#define BOLD "\x1b[1m"
+#define ITALIC "\x1b[3m"
+#define UNDERLINE "\x1b[4m"
+#define DIM "\x1b[2m"
 
 // Text (foreground) color
 // Text colors are \x1b[3Xm (normal) or \x1b[9Xm (bright).
-# define RED "\x1b[91m"
-# define PURPLE "\x1b[35m"
-# define BLUE "\x1b[34m"
-# define CYAN "\x1b[94m"
-# define GREEN "\x1b[92m"
-# define GOLD "\x1b[33m"
-# define WHITE "\x1b[37m"
-# define GRAY "\x1b[90m"
-# define BLACK "\x1b[30m"
+#define RED "\x1b[91m"
+#define PURPLE "\x1b[35m"
+#define BLUE "\x1b[34m"
+#define CYAN "\x1b[94m"
+#define GREEN "\x1b[92m"
+#define GOLD "\x1b[33m"
+#define WHITE "\x1b[37m"
+#define GRAY "\x1b[90m"
+#define BLACK "\x1b[30m"
 
 // Background colors
 // Background colors are \x1b[4Xm (normal) or \x1b[10Xm (bright).
-# define BG_RED "\x1b[101m"
-# define BG_PURPLE "\x1b[45m"
-# define BG_BLUE "\x1b[44m"
-# define BG_CYAN "\x1b[106m"
-# define BG_GREEN "\x1b[102m"
-# define BG_GOLD "\x1b[43m"
-# define BG_WHITE "\x1b[47m"
-# define BG_GRAY "\x1b[100m"
-# define BG_BLACK "\x1b[40m"
+#define BG_RED "\x1b[101m"
+#define BG_PURPLE "\x1b[45m"
+#define BG_BLUE "\x1b[44m"
+#define BG_CYAN "\x1b[106m"
+#define BG_GREEN "\x1b[102m"
+#define BG_GOLD "\x1b[43m"
+#define BG_WHITE "\x1b[47m"
+#define BG_GRAY "\x1b[100m"
+#define BG_BLACK "\x1b[40m"
 // Exaple use:
 //	ft_printf(UNDERLINE GREEN BG_BLACK "Success: " RESET "Operation complete.");
 //	write(1, BOLD CYAN "Load..." RESET, ft_strlen(BOLD CYAN "Load..." RESET));
 
-extern volatile sig_atomic_t	g_signal; // only global allowed
+extern volatile sig_atomic_t g_signal; // only global allowed
 
 typedef enum e_token_type
 {
 	WORD,
-	CMD,//not sure this will ever be used
-	FLAG,//or this
+	CMD,
+	FLAG,
 	PIPE,
 	REDIR_IN,
 	INFILE,
@@ -87,90 +87,101 @@ typedef enum e_token_type
 	OUTFILE,
 	HEREDOC,
 	DELIMITER
-}					t_token_type;
+} t_token_type;
 
 typedef enum e_quotes
 {
 	NONE,
 	SINGLE,
 	DOUBLE
-}					t_quotes;
+} t_quotes;
 
 typedef struct s_token
 {
-	char			*content;
-	t_token_type	type;
-	t_quotes		quotes;
-	struct s_token	*next;
-}					t_token;
+	char *content;
+	t_token_type type;
+	t_quotes quotes;
+	struct s_token *next;
+} t_token;
 
 typedef struct s_mini // stores all variables usefull for the whole program
 {
-	char	**envp;
-	char	**paths;
-	char	*line;
-	t_token	*tokens;
-	char	*infile;
-	char	*outfile;
-	bool	append_mode;
-	bool	here_doc;
-	char	*delimiter;
-	int		nbr_pipes;
-	int		(*pipes)[2];
-	char	*cmd;
-	char	**argv_for_cmd;
-	int		exit_code; // should only be used for pipes,
-		// not for signals (is here for expanding $?)
-}					t_mini;
-
-// main.c
-int					main(int argv, char **argc, char **envp); //why so big indentation? i think it is more readable if it is as small as possible, so more functions fit on single line 
-
-// initialize_var.c
-char				*find_env_var(char **envp, char *key);
-void				initialize_minishell(t_mini *var, int argc, char **argv,
-						char **envp);
-
-//signals.c
-void	setup_signals(void);
-
-// parsing.c
-void	find_start_end_of_token(t_mini *var, int *start_token, int *end_token,
-		t_token *new);
-void	create_first_token(t_mini *var, int *start_token, int *end_token);
-void	create_one_token(t_mini *var, int *start_token, int *end_token,
-			t_token **last);
-void	parse(t_mini *var);
-
-//token_type.c
-void	find_token_type(t_mini *var, t_token *new, t_token *last);
-bool	check_in_out_delim(t_mini *var, t_token *new, t_token *last);
-bool	check_metacharacters(t_mini *var, t_token *new);
-
-// commands.c
-void				handle_command(t_mini *var);
-
-// pipes.c
-void				create_pipes(t_mini *var);
-void				close_pipes(t_mini *var);
-
-// redirecting.c
-void				in_out_for_1st_cmd(t_mini *var);
-void				in_out_for_last_cmd(t_mini *var);
-void				redirect_for_pipes(t_mini *var, int cmd_n);
-
-// execution.c
-void				find_path(t_mini *var, char **path, char *cmd);
-void				cmds_to_struct(t_mini *var);
-void				wait_for_children(t_mini *var, pid_t last_child_pid);
-void				execute_cmds(t_mini *var);
+	char **envp;
+	char **paths;
+	char *line;
+	t_token *tokens;
+	char *infile;
+	char *outfile;
+	bool append_mode;
+	bool here_doc;
+	char *delimiter;
+	int nbr_pipes;
+	int (*pipes)[2];
+	char *cmd;
+	char **argv_for_cmd;
+	int exit_code; // should only be used for pipes,
+				   // not for signals (is here for expanding $?)
+} t_mini;
 
 // clean_up.c
-void				free_var_exit(t_mini *var, int exit_code);
-void				free_one_line(t_mini *var);
-void				other_error(t_mini *var, char *str);
-void				command_not_found(t_mini *var, char **path);
-void				dup2_error(t_mini *var);
+void free_var_exit(t_mini *var, int exit_code);
+void free_one_line(t_mini *var);
+
+// commands.c
+void handle_command(t_mini *var);
+
+// main.c
+int main(int argv, char **argc, char **envp);
+
+// initialize_var.c
+char *find_env_var(char **envp, char *key);
+void initialize_minishell(t_mini *var, int argc, char **argv,
+						  char **envp);
+
+// signals.c
+void handle_ctrl_c(int signal_number);
+void signals_setup(void);
+
+// parse_o_token.c
+void create_first_token(t_mini *var, int *start_token, int *end_token);
+void append_token(t_mini *var, int *start_token, int *end_token,
+				  t_token **last);
+void parse(t_mini *var);
+
+// token_define.c
+int get_metachar_end(t_mini *var, int start);
+char get_divider(t_mini *var, int start, t_token *new);
+int quoted_token(t_mini *var, int *start_token, int *end_token, char divider);
+void define_token(t_mini *var, int *start_token, int *end_token, t_token *new);
+
+// token_type.c
+void find_token_type(t_mini *var, t_token *new, t_token *last);
+bool check_in_out_delim(t_mini *var, t_token *new, t_token *last);
+bool check_metacharacters(t_mini *var, t_token *new);
+
+// pipes.c
+void create_pipes(t_mini *var);
+void close_pipes(t_mini *var);
+
+// redirecting.c
+void in_out_for_1st_cmd(t_mini *var);
+void in_out_for_last_cmd(t_mini *var);
+void	here_doc(t_mini *var);
+void redirect_for_pipes(t_mini *var, int cmd_n);
+
+// execution.c
+void find_path(t_mini *var, char **path, char *cmd);
+void	cpy_content_to_argv(char **dst_argv, t_token *start, size_t argv_len);
+void find_nth_cmd_and_argv(t_mini *var, int cmd_n);
+void wait_for_children(t_mini *var, pid_t last_child_pid);
+void execute_cmds(t_mini *var);
+void	execute_cmd(t_mini *var);
+
+// utilities.c
+void error_exit(t_mini *var, char *str);
+void command_not_found(t_mini *var, char **path);
+void dup2_error(t_mini *var);
+void	print_tokens(t_token *tokens);
 
 
 // signals.c

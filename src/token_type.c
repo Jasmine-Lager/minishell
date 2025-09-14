@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokens.c                                           :+:      :+:    :+:   */
+/*   token_type.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
+/*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 12:50:30 by jlager            #+#    #+#             */
-/*   Updated: 2025/08/11 10:08:58 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/08/13 13:04:55 by jasminelage      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ bool	check_metacharacters(t_mini *var, t_token *new)
 	else if (ft_strncmp(new->content, ">>", 3) == 0)
 	{
 		new->type = REDIR_APPEND; //what should happen if there are multiple redirs?
-		var->append_mode = 1;
+		var->append_mode = 1; // mmm what does bash do?
 	}
 	else if (ft_strncmp(new->content, "<<", 3) == 0)
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlager <jlager@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 12:50:57 by jlager            #+#    #+#             */
-/*   Updated: 2025/08/05 12:50:58 by jlager           ###   ########.fr       */
+/*   Updated: 2025/08/13 13:03:23 by jasminelage      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,3 +21,5 @@
 // Exit status expansion ($?)
 // Home directory expansion (~)
 // Quote removal after expansion
+
+

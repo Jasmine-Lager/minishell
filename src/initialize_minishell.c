@@ -1,38 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   initialize_var.c                                   :+:      :+:    :+:   */
+/*   initialize_minishell.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
+/*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 19:04:09 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/08/06 21:36:46 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/09/11 16:49:01 by jasminelage      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*find_env_var(char **envp, char *key)
-{
-	int	i;
-	int	len;
-
-	len = ft_strlen(key);
-	i = 0;
-	while (envp[i])
-	{
-		if (!ft_strncmp(envp[i], key, len) && envp[i][len] == '=')
-			return (envp[i] + len + 1);
-		i++;
-	}
-	return (NULL);
-}
-
 void	initialize_minishell(t_mini *var, int argc, char **argv, char **envp)
 {
 	if (!var)
 	{
-		write(2, "malloc in main.c failed\n", 25); //could be shortened with function return_error, but that function would have to be only used here specifically, because it could not call free_var_exit, and everywhere else it needs to be called. i think it would reduce readability.
+		write(2, "malloc in main.c failed\n", 25);
 		exit(1);
 	}
 	var->envp = envp;
@@ -49,7 +33,7 @@ void	initialize_minishell(t_mini *var, int argc, char **argv, char **envp)
 	var->exit_code = 0;
 	var->paths = ft_split(find_env_var(envp, "PATH"), ':');
 	if (!var->paths)
-		other_error(var, "malloc in initialize_minishell failed\n"); //can only be called after everything is initialized to null
+		error_exit(var, "malloc in initialize_minishell failed\n"); //can only be called after everything is initialized to null
 	if (argc != 1 || !*argv) //only here to silence error unused parameter
-		other_error(var, "minishell: wrong number of arguments\n");
+		error_exit(var, "minishell: wrong number of arguments\n");
 }

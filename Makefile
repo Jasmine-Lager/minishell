@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+         #
+#    By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/13 12:27:43 by jasminelage       #+#    #+#              #
-#    Updated: 2025/08/13 17:39:18 by jasminelage      ###   ########.fr        #
+#    Updated: 2025/09/14 21:57:14 by ksevciko         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,7 @@ OBJ_DIR = obj
 SOURCES =	clean_up.c \
 			commands.c \
 			environment.c \
+			exec_no_pipes.c \
 			exec_with_pipes.c \
 			expansion.c \
 			initialize_minishell.c \
@@ -56,12 +57,32 @@ endif
 # -----------------------------------------------------------------------------
 
 all: $(LIBFT) $(NAME)
+# ----------------------------- for MAC compiling -----------------------------
+# the GNU library is not installed on Mac by defult
+# this looks up what systhem I am on and finds the library path accordingly
+UNAME_S := $(shell uname -s)
+
+ifeq ($(UNAME_S),Darwin)
+    # macOS Homebrew readline prefix (adjust if your brew is in /usr/local)
+    READLINE_PREFIX := /opt/homebrew
+    CPPFLAGS += -I$(READLINE_PREFIX)/include
+    LDFLAGS += -L$(READLINE_PREFIX)/lib -lreadline -liconv
+else ifeq ($(UNAME_S),Linux)
+    # Linux usually has readline in default system paths
+    CPPFLAGS +=
+    LDFLAGS += -lreadline
+endif
+# -----------------------------------------------------------------------------
+
+all: $(LIBFT) $(NAME)
 
 $(NAME): $(OBJECTS)
+	$(CC) $(CFLAGS) $(OBJECTS) $(LIBFT) $(LDFLAGS) -o $(NAME)
 	$(CC) $(CFLAGS) $(OBJECTS) $(LIBFT) $(LDFLAGS) -o $(NAME)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(@D)
+	$(CC) $(CFLAGS) $(CPPFLAGS) -I $(LIBFT_DIR) -c $< -o $@
 	$(CC) $(CFLAGS) $(CPPFLAGS) -I $(LIBFT_DIR) -c $< -o $@
 # 	$(CC) $(CFLAGS) $(DFLAGS) -c $< -o $@
 
