@@ -45,27 +45,21 @@ void	redirect_no_pipes(t_mini *var)
 
 void	execute_cmd(t_mini *var)
 {
-	int		n;
 	pid_t	pid;
 
-	n = 0;
-	while (n <= var->nbr_pipes)
+	pid = fork();
+	if (pid == -1) 
 	{
-		pid = fork();
-		if (pid == -1) 
-		{
-			perror("fork");
-			free_var_exit(var, 1);
-		}
-		else if (pid == 0)
-		{
-			redirect_no_pipes(var);
-			find_nth_cmd_and_argv(var, n);
-			execve(var->cmd, var->argv_for_cmd, var->envp);
-			perror("execve");
-			free_var_exit(var, 1);
-		}
-		n++;
+		perror("fork");
+		free_var_exit(var, 1);
+	}
+	else if (pid == 0)
+	{
+		// redirect_no_pipes(var);
+		find_nth_cmd_and_argv(var, 0);
+		execve(var->cmd, var->argv_for_cmd, var->envp);
+		perror("execve");
+		free_var_exit(var, 1);
 	}
 	wait_for_children(var, pid);
 }

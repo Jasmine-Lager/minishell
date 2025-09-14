@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 20:59:49 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/09/14 20:22:55 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/09/14 20:45:18 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	find_nth_cmd_and_argv(t_mini *var, int cmd_n)
 	}
 	argv_len = 1;
 	tmp = ptr->next;
-	while (tmp->type == FLAG || tmp->type == WORD)
+	while (tmp && (tmp->type == FLAG || tmp->type == WORD))
 	{
 		argv_len++;
 		tmp = tmp->next;

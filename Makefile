@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+         #
+#    By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/13 12:27:43 by jasminelage       #+#    #+#              #
-#    Updated: 2025/08/13 17:39:18 by jasminelage      ###   ########.fr        #
+#    Updated: 2025/09/14 20:32:26 by ksevciko         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,7 @@ OBJ_DIR = obj
 SOURCES =	clean_up.c \
 			commands.c \
 			environment.c \
+			exec_no_pipes.c \
 			exec_with_pipes.c \
 			expansion.c \
 			initialize_minishell.c \

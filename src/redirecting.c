@@ -29,7 +29,8 @@ void	in_out_for_1st_cmd(t_mini *var)
 	{
 		dup2_error(var);
 	}
-	close(fd);
+	if (fd != 0)
+		close(fd);
 }
 
 void	in_out_for_last_cmd(t_mini *var)
@@ -38,10 +39,12 @@ void	in_out_for_last_cmd(t_mini *var)
 	int	cmd_n;
 
 	cmd_n = var->nbr_pipes + 1;
-	if (!var->append_mode)
+	if (var->outfile && !var->append_mode)
 		fd = open(var->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	else
+	else if (var->outfile)
 		fd = open(var->outfile, O_WRONLY | O_CREAT | O_APPEND , 0644);
+	else
+		fd = 1;
 	if (fd == -1)
 	{
 		perror("failed to open output");
@@ -51,7 +54,8 @@ void	in_out_for_last_cmd(t_mini *var)
 	{
 		dup2_error(var);
 	}
-	close(fd);
+	if (fd != 1)
+		close(fd);
 }
 
 void	here_doc(t_mini *var)
