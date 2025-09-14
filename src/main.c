@@ -6,13 +6,17 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 16:00:52 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/09/14 21:58:38 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/09/14 22:30:01 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 volatile sig_atomic_t g_signal = 0;
+
+/**
+ * 
+ */
 
 int main(int argc, char **argv, char **envp)
 {
@@ -24,8 +28,6 @@ int main(int argc, char **argv, char **envp)
 	var = malloc(sizeof(t_mini));
 	initialize_minishell(var, argc, argv, envp);
 	signals_setup();
-	initialize_minishell(var, argc, argv, envp);
-	signals_setup();
 	// REPL
 	// = Read > Evaluate > Print > Loop
 	while (1)
@@ -35,13 +37,7 @@ int main(int argc, char **argv, char **envp)
 		// making the BOLD GRAY the defult color??
 		if (var->line == NULL)
 		// Ctrl+D has been pressed to terminate the program
-		g_signal = 0;
-		var->line = readline(BOLD GRAY "$ " RESET);
-		// making the BOLD GRAY the defult color??
-		if (var->line == NULL)
-		// Ctrl+D has been pressed to terminate the program
 		{
-			ft_printf(BOLD GRAY "Exiting..\n" RESET);
 			ft_printf(BOLD GRAY "Exiting..\n" RESET);
 			free_var_exit(var, 0);
 		}

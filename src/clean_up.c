@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 20:38:35 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/09/14 21:39:29 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/09/14 22:23:35 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	free_var_exit(t_mini *var, int exit_code)
 	free(var->argv_for_cmd);
 	free(var);
 	rl_clear_history();
-	exit (exit_code);
+	exit(exit_code);
 }
 
 // old
