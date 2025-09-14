@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 15:30:51 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/09/11 16:31:54 by jasminelage      ###   ########.fr       */
+/*   Updated: 2025/09/14 16:20:58 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,5 +178,6 @@ void execute_cmds(t_mini *var);
 void error_exit(t_mini *var, char *str);
 void command_not_found(t_mini *var, char **path);
 void dup2_error(t_mini *var);
+void	print_tokens(t_token *tokens);
 
 #endif

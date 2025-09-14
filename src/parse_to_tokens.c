@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_to_tokens.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 19:53:07 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/09/11 16:14:12 by jasminelage      ###   ########.fr       */
+/*   Updated: 2025/09/14 17:37:37 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	create_first_token(t_mini *var, int *start_token, int *end_token)
 	if (!var->tokens->content)
 		error_exit(var, "Malloc failled: create_first_token\n");
 	ft_strlcpy(var->tokens->content, &var->line[*start_token],
-			   end_token - start_token + 1);
+			   *end_token - *start_token + 1);
 	find_token_type(var, var->tokens, NULL);
 	*start_token = *end_token;
 }

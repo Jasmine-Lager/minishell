@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_define.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 17:35:51 by jasminelage       #+#    #+#             */
-/*   Updated: 2025/09/11 16:41:02 by jasminelage      ###   ########.fr       */
+/*   Updated: 2025/09/14 15:46:07 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

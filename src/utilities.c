@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utilities.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 12:50:24 by jlager            #+#    #+#             */
-/*   Updated: 2025/08/13 16:20:53 by jasminelage      ###   ########.fr       */
+/*   Updated: 2025/09/14 16:31:37 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,3 +33,11 @@ void dup2_error(t_mini *var)
 	free_var_exit(var, 1);
 }
 
+void	print_tokens(t_token *tokens)
+{
+	while (tokens)
+	{
+		ft_printf("%s (%i)\n", tokens->content, tokens->type);
+		tokens = tokens->next;
+	}
+}
