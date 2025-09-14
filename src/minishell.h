@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 15:30:51 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/09/14 16:20:58 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/09/14 20:21:46 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,8 @@ extern volatile sig_atomic_t g_signal; // only global allowed
 typedef enum e_token_type
 {
 	WORD,
-	CMD,  // not sure this will ever be used
-	FLAG, // or this
+	CMD,
+	FLAG,
 	PIPE,
 	REDIR_IN,
 	INFILE,
@@ -166,13 +166,16 @@ void close_pipes(t_mini *var);
 // redirecting.c
 void in_out_for_1st_cmd(t_mini *var);
 void in_out_for_last_cmd(t_mini *var);
+void	here_doc(t_mini *var);
 void redirect_for_pipes(t_mini *var, int cmd_n);
 
 // execution.c
 void find_path(t_mini *var, char **path, char *cmd);
-void cmds_to_struct(t_mini *var);
+void	cpy_content_to_argv(char **dst_argv, t_token *start, size_t argv_len);
+void find_nth_cmd_and_argv(t_mini *var, int cmd_n);
 void wait_for_children(t_mini *var, pid_t last_child_pid);
 void execute_cmds(t_mini *var);
+void	execute_cmd(t_mini *var);
 
 // utilities.c
 void error_exit(t_mini *var, char *str);

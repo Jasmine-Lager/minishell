@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 16:48:15 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/08/13 12:59:37 by jasminelage      ###   ########.fr       */
+/*   Updated: 2025/09/14 19:19:13 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	create_pipes(t_mini *var)
 
 	var->pipes = malloc(var->nbr_pipes * sizeof(int [2]));
 	if (!var->pipes)
-		error_exit(var, "pipex: malloc failed\n");
+		error_exit(var, "Malloc failed: create_pipes\n");
 	i = 0;
 	while (i < var->nbr_pipes)
 	{
