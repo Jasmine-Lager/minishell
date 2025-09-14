@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 20:38:35 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/09/14 19:37:58 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/09/14 21:39:29 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,9 @@ void free_tokens(t_mini *var)
 	var->tokens = NULL;
 }
 
-//cannot free var->delimiter here, because it is a pointer to the same thing as tokens->content, and we free that instead, the same thing with infile, outfile and argv for cmd
+//cannot free var->delimiter here, because it is a pointer to the same 
+//thing as tokens->content, and we free that instead, the same thing with 
+//infile, outfile and argv for cmd
 void	free_var_exit(t_mini *var, int exit_code)
 {
 	if (var && var->paths)
@@ -95,4 +97,8 @@ void free_one_line(t_mini *var)
 	var->cmd = NULL;
 	free(var->argv_for_cmd);
 	var->argv_for_cmd = NULL;
+	var->append_mode = 0;
+	var->here_doc = 0;
+	var->nbr_pipes = 0;
+	var->exit_code = 0;
 }
