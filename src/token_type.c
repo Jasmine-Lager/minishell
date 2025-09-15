@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_type.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 12:50:30 by jlager            #+#    #+#             */
-/*   Updated: 2025/08/13 13:04:55 by jasminelage      ###   ########.fr       */
+/*   Updated: 2025/09/15 19:57:40 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ bool	check_in_out_delim(t_mini *var, t_token *new, t_token *last)
 	{
 		new->type = DELIMITER;
 		var->delimiter = new->content;
+		var->nbr_pipes++; //heredoc needs a pipe too
 	}
 	else if (last && last->type == REDIR_IN)
 	{

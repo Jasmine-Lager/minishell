@@ -70,20 +70,21 @@ void	here_doc(t_mini *var)
 		line_in = readline(">");
 	}
 	free(line_in);
+	free_var_exit(var, 0);
 }
 
 void	redirect_for_pipes(t_mini *var, int cmd_n)
 {
-	if (cmd_n == 0)// && !var->here_doc)
+	if (cmd_n == 0 && !var->here_doc)
 		in_out_for_1st_cmd(var);
-	// else if (cmd_n == 0 && var->here_doc)
-	// {
-	// 	if (dup2(var->pipes[0][1], 1) == -1)
-	// 	{
-	// 		dup2_error(var);
-	// 	}
-	// 	here_doc(var);
-	// }
+	else if (cmd_n == 0 && var->here_doc)
+	{
+		if (dup2(var->pipes[0][1], 1) == -1)
+		{
+			dup2_error(var);
+		}
+		here_doc(var);
+	}
 	else if (cmd_n == var->nbr_pipes)
 	{
 		in_out_for_last_cmd(var);
@@ -95,5 +96,7 @@ void	redirect_for_pipes(t_mini *var, int cmd_n)
 		{
 			dup2_error(var);
 		}
+		if (cmd_n == 1 && var->here_doc)
+			wait();
 	}
 }

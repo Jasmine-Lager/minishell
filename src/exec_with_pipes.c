@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 20:59:49 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/09/14 20:45:18 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/09/15 20:06:19 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	find_path(t_mini *var, char **path, char *cmd)
 	int		j;
 
 	if (!cmd || !*cmd)
-		error_exit(var, BOLD RED "Pipex: invalid command\n" RESET);
+		error_exit(var, BOLD RED "Pipex: invalid command\n" RESET); //TODO: check this whole function, it should not say pipex
 	*path = ft_strdup(cmd);
 	if (!*path)
 		error_exit(var, BOLD RED "Pipex: malloc failed\n" RESET);
@@ -122,7 +122,7 @@ void	execute_cmds(t_mini *var)
 		else if (pid == 0)
 		{
 			redirect_for_pipes(var, n);
-			find_nth_cmd_and_argv(var, n);
+			find_nth_cmd_and_argv(var, n - var->here_doc);
 			close_pipes(var);
 			execve(var->cmd, var->argv_for_cmd, var->envp);
 			perror("execve");

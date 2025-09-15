@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 15:30:51 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/09/14 22:01:59 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/09/15 19:20:26 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,7 @@ typedef struct s_mini // stores all variables usefull for the whole program
 } t_mini;
 
 // clean_up.c
+void free_tokens(t_mini *var);
 void free_var_exit(t_mini *var, int exit_code);
 void free_one_line(t_mini *var);
 
@@ -133,8 +134,10 @@ void handle_command(t_mini *var);
 // main.c
 int main(int argv, char **argc, char **envp);
 
-// initialize_var.c
+// environment.c
 char *find_env_var(char **envp, char *key);
+
+// initialize_minishell.c
 void initialize_minishell(t_mini *var, int argc, char **argv,
 						  char **envp);
 
@@ -142,7 +145,7 @@ void initialize_minishell(t_mini *var, int argc, char **argv,
 void handle_ctrl_c(int signal_number);
 void signals_setup(void);
 
-// parse_o_token.c
+// parse_to_token.c
 void create_first_token(t_mini *var, int *start_token, int *end_token);
 void append_token(t_mini *var, int *start_token, int *end_token,
 				  t_token **last);
@@ -169,12 +172,15 @@ void in_out_for_last_cmd(t_mini *var);
 void	here_doc(t_mini *var);
 void redirect_for_pipes(t_mini *var, int cmd_n);
 
-// execution.c
+// exec_with_pipes.c
 void find_path(t_mini *var, char **path, char *cmd);
 void	cpy_content_to_argv(char **dst_argv, t_token *start, size_t argv_len);
 void find_nth_cmd_and_argv(t_mini *var, int cmd_n);
 void wait_for_children(t_mini *var, pid_t last_child_pid);
 void execute_cmds(t_mini *var);
+
+// exec_no_pipes.c
+void	redirect_no_pipes(t_mini *var);
 void	execute_cmd(t_mini *var);
 
 // utilities.c
@@ -182,10 +188,5 @@ void error_exit(t_mini *var, char *str);
 void command_not_found(t_mini *var, char **path);
 void dup2_error(t_mini *var);
 void	print_tokens(t_token *tokens);
-
-
-// signals.c
-void	signals_setup(void);
-void	handle_ctrl_c(int signal_number);
 
 #endif

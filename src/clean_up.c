@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 20:38:35 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/09/14 22:23:35 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/09/15 19:19:22 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
 // }
 
 // new
-void free_tokens(t_mini *var)
+void	free_tokens(t_mini *var)
 {
 	t_token *ptr;
 	t_token *temp;

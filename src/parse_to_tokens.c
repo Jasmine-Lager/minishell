@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 19:53:07 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/09/14 22:11:23 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/09/15 19:25:08 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,8 @@ void	parse(t_mini *var)
 	end_token = 0;
 	if (!var->line || !*var->line)
 		return;
-	if (!ft_strncmp("exit", var->line, 5)) // only here now for testing, remove later
-		free_var_exit(var, 0);
+	// if (!ft_strncmp("exit", var->line, 5)) // only here now for testing, remove later
+	// 	free_var_exit(var, 0);
 	create_first_token(var, &start_token, &end_token);
 	if (!var->tokens)
 		return;
