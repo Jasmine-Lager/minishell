@@ -96,7 +96,5 @@ void	redirect_for_pipes(t_mini *var, int cmd_n)
 		{
 			dup2_error(var);
 		}
-		if (cmd_n == 1 && var->here_doc)
-			wait();
 	}
 }
