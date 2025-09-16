@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clean_up.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 20:38:35 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/09/15 19:19:22 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/09/16 11:48:36 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,7 @@ void free_one_line(t_mini *var)
 	var->argv_for_cmd = NULL;
 	var->append_mode = 0;
 	var->here_doc = 0;
+	var->delim_quoted = 0;
 	var->nbr_pipes = 0;
 	var->exit_code = 0;
 }

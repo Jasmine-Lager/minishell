@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_with_pipes.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 20:59:49 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/09/15 20:06:19 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/09/16 12:07:17 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ void	execute_cmds(t_mini *var)
 	int		n;
 	pid_t	pid;
 
-	n = 0;
+	n = var->here_doc;
 	while (n <= var->nbr_pipes)
 	{
 		pid = fork();

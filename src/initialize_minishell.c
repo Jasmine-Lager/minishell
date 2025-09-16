@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initialize_minishell.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 19:04:09 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/09/11 16:49:01 by jasminelage      ###   ########.fr       */
+/*   Updated: 2025/09/16 11:49:03 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	initialize_minishell(t_mini *var, int argc, char **argv, char **envp)
 	var->append_mode = 0;
 	var->here_doc = 0;
 	var->delimiter = NULL;
+	var->delim_quoted = 0;
 	var->nbr_pipes = 0;
 	var->pipes = NULL;
 	var->cmd = NULL;

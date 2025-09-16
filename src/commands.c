@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 10:29:08 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/09/14 21:35:17 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/09/16 12:12:58 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	handle_command(t_mini *var)
 {
-	parse(var); //(handle quotes, $, >, <, >>, <<, |) //if here_doc, nbr_pipes++
+	parse(var);
 	// print_tokens(var->tokens);
 	if (var->nbr_pipes > 0)
 	{

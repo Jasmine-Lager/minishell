@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 15:30:51 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/09/15 19:20:26 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/09/16 11:47:03 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,7 @@ typedef struct s_mini // stores all variables usefull for the whole program
 	bool append_mode;
 	bool here_doc;
 	char *delimiter;
+	bool	delim_quoted;
 	int nbr_pipes;
 	int (*pipes)[2];
 	char *cmd;
