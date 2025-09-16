@@ -3,12 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 12:50:57 by jlager            #+#    #+#             */
-/*   Updated: 2025/08/13 13:03:23 by jasminelage      ###   ########.fr       */
+/*   Updated: 2025/09/16 15:46:32 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "minishell.h"
 
 // The expander handles variable substitution, tilde expansion,
 // and quote removal before execution. This stage processes $HOME, $?,
@@ -22,4 +24,24 @@
 // Home directory expansion (~)
 // Quote removal after expansion
 
+void	expand(char **str, bool double_quoted)
+{
+	int	i;
 
+	i = 0;
+	while ((*str)[i])
+	{
+		if ((*str)[i] == '$')
+		{
+			//expand that
+		}
+		else if ((*str)[i] == '"')
+		{
+			//handle "
+		}
+		else if (!double_quoted && (*str)[i] == 39)
+		{
+			//handle '
+		}
+	}
+}

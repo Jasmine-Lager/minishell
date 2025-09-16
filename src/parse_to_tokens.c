@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_to_tokens.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 19:53:07 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/09/15 19:25:08 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/09/16 13:14:49 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,8 @@ void	parse(t_mini *var)
 	last = var->tokens;
 	while (var->line[start_token])
 	{
+		// if (last->quotes != SINGLE)
+		// 	expand(&last->content, last->quotes == DOUBLE);
 		// Skip spaces before trying to create next token
 		while (var->line[start_token] == ' ')
 			start_token++;
@@ -92,8 +94,8 @@ void	parse(t_mini *var)
 			break;
 		append_token(var, &start_token, &end_token, &last);
 	}
-	// expand_tokens(var); // TODO, check double quote first
 }
+
 
 // The parser validates syntax and constructs an Abstract Syntax Tree (AST) 
 // representing command structure. It ensures proper operator placement and
