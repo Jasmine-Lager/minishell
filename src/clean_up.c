@@ -3,33 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   clean_up.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 20:38:35 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/09/16 11:48:36 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/09/18 14:09:45 by jasminelage      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// old
-// void free_tokens(t_mini *var)
-// {
-// 	t_token *ptr;
-// 	t_token *temp;
-
-// 	if (!var || !var->tokens)
-// 		return;
-// 	ptr = var->tokens;
-// 	while (ptr)
-// 	{
-// 		free(ptr->content);
-// 		temp = ptr;
-// 		ptr = ptr->next;
-// 		free(temp);
-// 	}
-// 	var->tokens = NULL;
-// }
 
 // new
 void	free_tokens(t_mini *var)
@@ -67,21 +48,6 @@ void	free_var_exit(t_mini *var, int exit_code)
 	exit(exit_code);
 }
 
-// old
-// void	free_one_line(t_mini *var)
-// {
-// 	free(var->line);
-// 	var->line = NULL;
-// 	free_tokens(var);
-// 	free(var->pipes);
-// 	var->pipes = NULL;
-// 	free(var->cmd);
-// 	var->cmd = NULL;
-// 	if (var && var->argv_for_cmd)
-// 		free_arr(var->argv_for_cmd);
-// }
-
-// new
 void free_one_line(t_mini *var)
 {
 	free(var->line);

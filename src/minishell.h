@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 15:30:51 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/09/16 11:47:03 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/09/18 14:23:08 by jasminelage      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,21 @@ typedef enum e_quotes
 	DOUBLE
 } t_quotes;
 
+// Determine the quote structure of a token - more sophisticated analysis
+typedef struct s_quote_info
+{
+	t_quotes dominant_type; // Overall quote behavior for expansion
+	int mixed_quotes;		// Flag indicating complex quote mixing
+	int needs_processing;	// Flag for expansion stage
+} t_quote_info;
+
+typedef struct s_quote_counts
+{
+	int single_sections;
+	int double_sections;
+	int unquoted_sections;
+} t_quote_counts;
+
 typedef struct s_token
 {
 	char *content;
@@ -115,7 +130,7 @@ typedef struct s_mini // stores all variables usefull for the whole program
 	bool append_mode;
 	bool here_doc;
 	char *delimiter;
-	bool	delim_quoted;
+	bool delim_quoted;
 	int nbr_pipes;
 	int (*pipes)[2];
 	char *cmd;
@@ -129,65 +144,97 @@ void free_tokens(t_mini *var);
 void free_var_exit(t_mini *var, int exit_code);
 void free_one_line(t_mini *var);
 
+// command_utils.c
+
+
 // commands.c
 void handle_command(t_mini *var);
 
-// main.c
-int main(int argv, char **argc, char **envp);
-
 // environment.c
 char *find_env_var(char **envp, char *key);
+
+// exec_no_pipes.c
+void redirect_no_pipes(t_mini *var);
+void execute_cmd(t_mini *var);
+
+// exec_with_pipes.c
+void find_path(t_mini *var, char **path, char *cmd);
+void cpy_content_to_argv(char **dst_argv, t_token *ptr, size_t argv_len);
+void find_nth_cmd_and_argv(t_mini *var, int cmd_n);
+void wait_for_children(t_mini *var, pid_t last_child_pid);
+void execute_cmds(t_mini *var);
+
+// expansion_utils.c
+int find_var_name_end(char *str, int start);
+char *extract_var_name(char *str, int start, int end);
+char *get_var_value(t_mini *var, char *var_name);
+char *get_variable_value(t_mini *var, char *str, int start, int end);
+char *build_result_string(char *str, int pos, int end, char *var_value);
+
+// expansion.c
+char *expand_single_variable(t_mini *var, char *str, int *pos);
+char *expand_variables_in_string(t_mini *var, char *str, t_quotes quotes);
+void expand_tokens(t_mini *var);
 
 // initialize_minishell.c
 void initialize_minishell(t_mini *var, int argc, char **argv,
 						  char **envp);
 
-// signals.c
-void handle_ctrl_c(int signal_number);
-void signals_setup(void);
+// main.c
+int main(int argv, char **argc, char **envp);
 
 // parse_to_token.c
+t_quotes analyze_token_quotes(char *content);
+void set_token_quote_info(t_token *token);
 void create_first_token(t_mini *var, int *start_token, int *end_token);
 void append_token(t_mini *var, int *start_token, int *end_token,
 				  t_token **last);
 void parse(t_mini *var);
 
-// token_define.c
-int get_metachar_end(t_mini *var, int start);
-char get_divider(t_mini *var, int start, t_token *new);
-int quoted_token(t_mini *var, int *start_token, int *end_token, char divider);
-void define_token(t_mini *var, int *start_token, int *end_token, t_token *new);
-
-// token_type.c
-void find_token_type(t_mini *var, t_token *new, t_token *last);
-bool check_in_out_delim(t_mini *var, t_token *new, t_token *last);
-bool check_metacharacters(t_mini *var, t_token *new);
-
 // pipes.c
 void create_pipes(t_mini *var);
 void close_pipes(t_mini *var);
 
+// quotes_handling_utils.c
+int is_pure_single(t_quote_counts counts);
+int is_pure_double(t_quote_counts counts);
+t_quotes get_dominant_type(t_quote_counts counts);
+void handle_single_quote(int *in_single, t_quote_counts *counts);
+void handle_double_quote(int *in_double, t_quote_counts *counts);
+
+// quotes_handling.c
+t_quote_info set_quote_behavior(t_quote_counts counts);
+t_quote_counts count_quote_sections(char *content);
+t_quote_info analyze_token_quotes_detailed(char *content);
+
 // redirecting.c
 void in_out_for_1st_cmd(t_mini *var);
 void in_out_for_last_cmd(t_mini *var);
-void	here_doc(t_mini *var);
+void here_doc(t_mini *var);
 void redirect_for_pipes(t_mini *var, int cmd_n);
 
-// exec_with_pipes.c
-void find_path(t_mini *var, char **path, char *cmd);
-void	cpy_content_to_argv(char **dst_argv, t_token *start, size_t argv_len);
-void find_nth_cmd_and_argv(t_mini *var, int cmd_n);
-void wait_for_children(t_mini *var, pid_t last_child_pid);
-void execute_cmds(t_mini *var);
+// remove_quotes.c
+void remove_quotes_from_token(t_token *token);
+void remove_quotes_from_tokens(t_mini *var);
 
-// exec_no_pipes.c
-void	redirect_no_pipes(t_mini *var);
-void	execute_cmd(t_mini *var);
+// signals.c
+void handle_ctrl_c(int signal_number);
+void signals_setup(void);
+
+// token_define.c
+int process_quote(t_mini *var, int i, char quote);
+int find_token_end(t_mini *var, int start);
+int get_metachar_end(t_mini *var, int start);
+void define_token(t_mini *var, int *start_token, int *end_token, t_token *new);
+
+// token_type.c
+bool check_metacharacters(t_mini *var, t_token *new);
+bool check_in_out_delim(t_mini *var, t_token *new, t_token *last);
+void find_token_type(t_mini *var, t_token *new, t_token *last);
 
 // utilities.c
 void error_exit(t_mini *var, char *str);
 void command_not_found(t_mini *var, char **path);
 void dup2_error(t_mini *var);
-void	print_tokens(t_token *tokens);
 
 #endif
