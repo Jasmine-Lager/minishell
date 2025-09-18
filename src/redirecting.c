@@ -26,9 +26,7 @@ void	in_out_for_1st_cmd(t_mini *var)
 		free_var_exit(var, 1);
 	}
 	if (dup2(fd, 0) == -1 || dup2(var->pipes[0][1], 1) == -1)
-	{
 		dup2_error(var);
-	}
 	if (fd != 0)
 		close(fd);
 }
@@ -49,9 +47,7 @@ void	in_out_for_last_cmd(t_mini *var)
 		free_var_exit(var, 1);
 	}
 	if (dup2(var->pipes[var->nbr_pipes - 1][0], 0) == -1 || dup2(fd, 1) == -1)
-	{
 		dup2_error(var);
-	}
 	if (fd != 1)
 		close(fd);
 }
@@ -79,21 +75,15 @@ void	here_doc(t_mini *var)
 void	redirect_for_pipes(t_mini *var, int cmd_n)
 {
 	if (cmd_n == 1 && var->here_doc)
-	{
 		here_doc(var);
-	}
 	if (cmd_n == 0)
 		in_out_for_1st_cmd(var);
 	else if (cmd_n == var->nbr_pipes)
-	{
 		in_out_for_last_cmd(var);
-	}
 	else
 	{
 		if (dup2(var->pipes[cmd_n - 1][0], 0) == -1
 			|| dup2(var->pipes[cmd_n][1], 1) == -1)
-		{
 			dup2_error(var);
-		}
 	}
 }

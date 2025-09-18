@@ -3,14 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   commands.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 10:29:08 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/09/16 12:12:58 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/09/18 14:09:01 by jasminelage      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+// static void print_tokens(t_token *tokens)
+// {
+// 	while (tokens)
+// 	{
+// 		ft_printf("%s (%i)\n", tokens->content, tokens->type);
+// 		tokens = tokens->next;
+// 	}
+// }
 
 void	handle_command(t_mini *var)
 {
