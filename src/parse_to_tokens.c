@@ -6,11 +6,18 @@
 /*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 19:53:07 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/09/18 11:23:16 by jasminelage      ###   ########.fr       */
+/*   Updated: 2025/09/18 13:30:25 by jasminelage      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+// Simplified version for backward compatibility
+t_quotes analyze_token_quotes(char *content)
+{
+	t_quote_info info = analyze_token_quotes_detailed(content);
+	return (info.dominant_type);
+}
 
 // Analyze and set quote information after token content is created
 void set_token_quote_info(t_token *token)

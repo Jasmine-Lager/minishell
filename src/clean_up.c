@@ -6,7 +6,7 @@
 /*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 20:38:35 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/08/14 14:50:24 by jasminelage      ###   ########.fr       */
+/*   Updated: 2025/09/18 13:54:11 by jasminelage      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ void free_tokens(t_mini *var)
 	var->tokens = NULL;
 }
 
-//cannot free var->delimiter here, because it is a pointer to the same thing as tokens->content, and we free that instead, the same thing with infile and outfile
-void	free_var_exit(t_mini *var, int exit_code)
+// cannot free var->delimiter here, because it is a pointer to the same thing as tokens->content, and we free that instead, the same thing with infile and outfile
+void free_var_exit(t_mini *var, int exit_code)
 {
 	if (var && var->paths)
 		free_arr(var->paths);
@@ -63,7 +63,7 @@ void	free_var_exit(t_mini *var, int exit_code)
 		free_arr(var->argv_for_cmd);
 	free(var);
 	rl_clear_history();
-	exit (exit_code);
+	exit(exit_code);
 }
 
 // old

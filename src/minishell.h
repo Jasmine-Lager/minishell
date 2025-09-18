@@ -6,7 +6,7 @@
 /*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 15:30:51 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/09/18 13:12:58 by jasminelage      ###   ########.fr       */
+/*   Updated: 2025/09/18 13:54:10 by jasminelage      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,7 @@ typedef struct s_mini // stores all variables usefull for the whole program
 } t_mini;
 
 // clean_up.c
+void free_tokens(t_mini *var);
 void free_var_exit(t_mini *var, int exit_code);
 void free_one_line(t_mini *var);
 
@@ -156,23 +157,28 @@ void cmds_to_struct(t_mini *var);
 void wait_for_children(t_mini *var, pid_t last_child_pid);
 void execute_cmds(t_mini *var);
 
-// expantion.c
+// expansion_utils.c
 int find_var_name_end(char *str, int start);
 char *extract_var_name(char *str, int start, int end);
 char *get_var_value(t_mini *var, char *var_name);
+char *get_variable_value(t_mini *var, char *str, int start, int end);
+char *build_result_string(char *str, int pos, int end, char *var_value);
+
+// expansion.c
 char *expand_single_variable(t_mini *var, char *str, int *pos);
 char *expand_variables_in_string(t_mini *var, char *str, t_quotes quotes);
 void expand_tokens(t_mini *var);
 
 // initialize_minishell.c
-char *find_env_var(char **envp, char *key);
 void initialize_minishell(t_mini *var, int argc, char **argv,
-	char **envp);
+						  char **envp);
 
 // main.c
 int main(int argv, char **argc, char **envp);
 
-// parse_o_token.c
+// parse_to_token.c
+t_quotes analyze_token_quotes(char *content);
+void set_token_quote_info(t_token *token);
 void create_first_token(t_mini *var, int *start_token, int *end_token);
 void append_token(t_mini *var, int *start_token, int *end_token,
 				  t_token **last);
@@ -181,6 +187,18 @@ void parse(t_mini *var);
 // pipes.c
 void create_pipes(t_mini *var);
 void close_pipes(t_mini *var);
+
+// quotes_handling_utils.c
+int is_pure_single(t_quote_counts counts);
+int is_pure_double(t_quote_counts counts);
+t_quotes get_dominant_type(t_quote_counts counts);
+void handle_single_quote(int *in_single, t_quote_counts *counts);
+void handle_double_quote(int *in_double, t_quote_counts *counts);
+
+// quotes_handling.c
+t_quote_info set_quote_behavior(t_quote_counts counts);
+t_quote_counts count_quote_sections(char *content);
+t_quote_info analyze_token_quotes_detailed(char *content);
 
 // redirecting.c
 void in_out_for_1st_cmd(t_mini *var);
@@ -196,18 +214,9 @@ void handle_ctrl_c(int signal_number);
 void signals_setup(void);
 
 // token_define.c
-int get_metachar_end(t_mini *var, int start);
 int process_quote(t_mini *var, int i, char quote);
 int find_token_end(t_mini *var, int start);
-void handle_single_quote(int *in_single, t_quote_counts *counts);
-void handle_double_quote(int *in_double, t_quote_counts *counts);
-t_quote_counts count_quote_sections(char *content);
-t_quotes get_dominant_type(t_quote_counts counts);
-int is_pure_single(t_quote_counts counts);
-int is_pure_double(t_quote_counts counts);
-t_quote_info set_quote_behavior(t_quote_counts counts);
-t_quote_info analyze_token_quotes_detailed(char *content);
-t_quotes analyze_token_quotes(char *content);
+int get_metachar_end(t_mini *var, int start);
 void define_token(t_mini *var, int *start_token, int *end_token, t_token *new);
 
 // token_type.c
