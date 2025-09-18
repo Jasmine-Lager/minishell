@@ -6,7 +6,7 @@
 /*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 13:00:41 by jasminelage       #+#    #+#             */
-/*   Updated: 2025/08/13 13:32:07 by jasminelage      ###   ########.fr       */
+/*   Updated: 2025/09/11 17:15:14 by jasminelage      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,3 +27,8 @@ char *find_env_var(char **envp, char *key)
 	}
 	return (NULL);
 }
+
+// Handle environment variables ($ followed by a sequence of characters) which
+// should expand to their values.
+// Handle $? which should expand to the exit status of the most recently 
+// executed foreground pipeline.

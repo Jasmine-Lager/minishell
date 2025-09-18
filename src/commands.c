@@ -6,15 +6,29 @@
 /*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 10:29:08 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/08/13 13:42:13 by jasminelage      ###   ########.fr       */
+/*   Updated: 2025/09/18 13:22:22 by jasminelage      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	handle_command(t_mini *var)
+// ---------------------- Command/Built-in implementation ----------------------
+// -----------------------------------------------------------------------------
+
+// -----------------------------------------------------------------------------
+
+static void print_tokens(t_token *tokens)
 {
-	parse(var); //(handle quotes, $, >, <, >>, <<, |) //if here_doc, nbr_pipes++
+	while (tokens)
+	{
+		ft_printf("%s (%i)\n", tokens->content, tokens->type);
+		tokens = tokens->next;
+	}
+}
+void handle_command(t_mini *var)
+{
+	parse(var);
+	print_tokens(var->tokens);
 	// if (var->nbr_pipes > 0)
 	// {
 	// 	create_pipes(var);
@@ -22,7 +36,7 @@ void	handle_command(t_mini *var)
 	// }
 	// else
 	// {
-	// 	exec_cmd(var);
+	// 	execute_cmd(var);
 	// }
 }
 
