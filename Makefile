@@ -6,7 +6,7 @@
 #    By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/13 12:27:43 by jasminelage       #+#    #+#              #
-#    Updated: 2025/09/14 21:57:14 by ksevciko         ###   ########.fr        #
+#    Updated: 2025/09/23 10:43:15 by ksevciko         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,6 +31,8 @@ SOURCES =	clean_up.c \
 			main.c \
 			parse_to_tokens.c \
 			pipes.c \
+			quotes_handling.c \
+			quotes_handling_utils.c \
 			redirecting.c \
 			signals.c \
 			token_define.c \
