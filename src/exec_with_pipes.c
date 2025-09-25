@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 20:59:49 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/09/16 12:07:17 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/09/25 14:49:54 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,12 @@ void	cpy_content_to_argv(char **dst_argv, t_token *ptr, size_t argv_len)
 	i = 0;
 	while (i < argv_len)
 	{
-		dst_argv[i] = ptr->content;
+		if (ptr->type == CMD || ptr->type == WORD || ptr->type == FLAG)
+		{
+			dst_argv[i] = ptr->content;
+			i++;
+		}
 		ptr = ptr->next;
-		i++;
 	}
 	dst_argv[i] = NULL;
 }
@@ -66,7 +69,7 @@ void	find_nth_cmd_and_argv(t_mini *var, int cmd_n)
 
 	i = 0;
 	ptr = var->tokens;
-	while ((i < cmd_n && ptr) || ptr->type != CMD) //??not sure this works
+	while ((i < cmd_n && ptr) || ptr->type != CMD) //??
 	{
 		if (ptr->type == CMD)
 			i++;
@@ -74,9 +77,10 @@ void	find_nth_cmd_and_argv(t_mini *var, int cmd_n)
 	}
 	argv_len = 1;
 	tmp = ptr->next;
-	while (tmp && (tmp->type == FLAG || tmp->type == WORD))
+	while (tmp && (tmp->type != CMD))
 	{
-		argv_len++;
+		if (tmp->type == FLAG || tmp->type == WORD)
+			argv_len++;
 		tmp = tmp->next;
 	}
 	var->argv_for_cmd = malloc((argv_len + 1) * sizeof(char *));

@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 12:50:30 by jlager            #+#    #+#             */
-/*   Updated: 2025/09/16 12:11:54 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/09/25 14:22:27 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,9 @@ void	find_token_type(t_mini *var, t_token *new, t_token *last)
 		;
 	else if (check_in_out_delim(var, new, last))
 		;
-	else if (last && (last->type == CMD || last->type == FLAG)
-		&& *new->content == '-')
+	else if (last && (last->type == CMD || last->type == FLAG
+		|| last->type == WORD || last->type == INFILE || last->type == OUTFILE
+		|| last->type == DELIMITER) && *new->content == '-')
 		new->type = FLAG;
 	else if ((last && (last->type == PIPE || last->type == INFILE
 				|| last->type == OUTFILE || last->type == DELIMITER)) || !last)
