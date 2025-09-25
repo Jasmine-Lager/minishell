@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_define.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
+/*   By: jlager <jlager@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 17:35:51 by jasminelage       #+#    #+#             */
-/*   Updated: 2025/09/25 13:23:59 by jasminelage      ###   ########.fr       */
+/*   Updated: 2025/09/25 19:07:10 by jlager           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int find_complete_token_end(t_mini *var, int start)
 			i = skip_quoted_section(var, i, '"');
 			if (!var->line[i])
 			{
-				write(2, "Error: unclosed quotes\n", 23);
+				write(2, "error: unclosed quotes\n", 23);
 				return (i);
 			}
 		}
@@ -57,7 +57,7 @@ int find_complete_token_end(t_mini *var, int start)
 			i = skip_quoted_section(var, i, '\'');
 			if (!var->line[i])
 			{
-				write(2, "Error: unclosed quotes\n", 23);
+				write(2, "error: unclosed quotes\n", 23);
 				return (i);
 			}
 		}

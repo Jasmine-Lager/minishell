@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utilities.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
+/*   By: jlager <jlager@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 12:50:24 by jlager            #+#    #+#             */
-/*   Updated: 2025/09/18 14:08:53 by jasminelage      ###   ########.fr       */
+/*   Updated: 2025/09/25 18:55:52 by jlager           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void command_not_found(t_mini *var, char **path)
 {
 	free(*path);
 	*path = NULL;
-	perror("Command not found");
+	perror("command not found");
 	free_var_exit(var, 127);
 }
 
