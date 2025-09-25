@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 20:59:49 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/09/25 14:49:54 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/09/25 19:12:52 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@ void	find_path(t_mini *var, char **path, char *cmd)
 	int		j;
 
 	if (!cmd || !*cmd)
-		error_exit(var, BOLD RED "Pipex: invalid command\n" RESET); //TODO: check this whole function, it should not say pipex
+		error_exit(var, BOLD RED "minishell: invalid command\n" RESET); //TODO: check this whole function, it should not say pipex
 	*path = ft_strdup(cmd);
 	if (!*path)
-		error_exit(var, BOLD RED "Pipex: malloc failed\n" RESET);
+		error_exit(var, BOLD RED "minishell: malloc failed\n" RESET);
 	j = 0;
 	while (access(*path, X_OK) == -1 && var->paths && var->paths[j])
 	{
@@ -35,7 +35,7 @@ void	find_path(t_mini *var, char **path, char *cmd)
 			free(tmp);
 			free(*path);
 			*path = NULL;
-			error_exit(var, BOLD RED "Pipex: malloc failed\n" RESET);
+			error_exit(var, BOLD RED "minishell: malloc failed\n" RESET);
 		}
 		free(tmp);
 	}
@@ -43,11 +43,14 @@ void	find_path(t_mini *var, char **path, char *cmd)
 		command_not_found(var, path);
 }
 
-void	cpy_content_to_argv(char **dst_argv, t_token *ptr, size_t argv_len)
+void	cpy_content_to_argv(t_mini *var, char **dst_argv, t_token *ptr,
+			size_t argv_len)
 {
 	size_t	i;
 
 	i = 0;
+	if (!dst_argv)
+		error_exit(var, "malloc failed: find_nth_cmd_and_argv\n");
 	while (i < argv_len)
 	{
 		if (ptr->type == CMD || ptr->type == WORD || ptr->type == FLAG)
@@ -84,9 +87,7 @@ void	find_nth_cmd_and_argv(t_mini *var, int cmd_n)
 		tmp = tmp->next;
 	}
 	var->argv_for_cmd = malloc((argv_len + 1) * sizeof(char *));
-	if (!var->argv_for_cmd)
-		error_exit(var, "Malloc failed: find_nth_cmd_and_argv\n");
-	cpy_content_to_argv(var->argv_for_cmd, ptr, argv_len);
+	cpy_content_to_argv(var, var->argv_for_cmd, ptr, argv_len);
 	find_path(var, &var->cmd, var->argv_for_cmd[0]);
 }
 

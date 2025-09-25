@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlager <jlager@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 15:30:51 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/09/25 19:02:11 by jlager           ###   ########.fr       */
+/*   Updated: 2025/09/25 19:13:03 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,7 +158,7 @@ void				execute_cmd(t_mini *var);
 
 // exec_with_pipes.c
 void				find_path(t_mini *var, char **path, char *cmd);
-void				cpy_content_to_argv(char **dst_argv, t_token *ptr,
+void				cpy_content_to_argv(t_mini *var, char **dst_argv, t_token *ptr,
 						size_t argv_len);
 void				find_nth_cmd_and_argv(t_mini *var, int cmd_n);
 void				wait_for_children(t_mini *var, pid_t last_child_pid);
