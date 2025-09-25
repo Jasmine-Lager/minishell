@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+         #
+#    By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/13 12:27:43 by jasminelage       #+#    #+#              #
-#    Updated: 2025/09/23 10:43:15 by ksevciko         ###   ########.fr        #
+#    Updated: 2025/09/25 13:15:42 by jasminelage      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,7 @@ SRC_DIR = src
 OBJ_DIR = obj
 
 SOURCES =	clean_up.c \
+			command_utils.c \
 			commands.c \
 			environment.c \
 			exec_no_pipes.c \
@@ -34,6 +35,7 @@ SOURCES =	clean_up.c \
 			quotes_handling.c \
 			quotes_handling_utils.c \
 			redirecting.c \
+			remove_quotes.c \
 			signals.c \
 			token_define.c \
 			token_type.c \

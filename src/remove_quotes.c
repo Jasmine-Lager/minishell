@@ -6,32 +6,90 @@
 /*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 11:25:20 by jasminelage       #+#    #+#             */
-/*   Updated: 2025/09/18 13:07:12 by jasminelage      ###   ########.fr       */
+/*   Updated: 2025/09/25 13:24:41 by jasminelage      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// Remove quotes after expansion (separate function for clarity)
+// Calculate the length of the string after quote removal
+int calculate_unquoted_length(char *str)
+{
+	int len = 0;
+	int i = 0;
+	char quote_char;
+
+	while (str[i])
+	{
+		if (str[i] == '\'' || str[i] == '"')
+		{
+			quote_char = str[i];
+			i++; // Skip opening quote
+			while (str[i] && str[i] != quote_char)
+			{
+				len++;
+				i++;
+			}
+			if (str[i] == quote_char)
+				i++; // Skip closing quote
+		}
+		else
+		{
+			len++;
+			i++;
+		}
+	}
+	return (len);
+}
+
+// Copy string content while removing quotes
+void copy_without_quotes(char *dst, char *src)
+{
+	int i = 0;
+	int j = 0;
+	char quote_char;
+
+	while (src[i])
+	{
+		if (src[i] == '\'' || src[i] == '"')
+		{
+			quote_char = src[i];
+			i++; // Skip opening quote
+			while (src[i] && src[i] != quote_char)
+			{
+				dst[j++] = src[i];
+				i++;
+			}
+			if (src[i] == quote_char)
+				i++; // Skip closing quote
+		}
+		else
+		{
+			dst[j++] = src[i];
+			i++;
+		}
+	}
+	dst[j] = '\0';
+}
+
+// Remove quotes from a token that may have multiple quoted sections
 void remove_quotes_from_token(t_token *token)
 {
 	char *new_content;
-	int len;
+	int new_len;
 
-	if (!token || !token->content || token->quotes == NONE)
+	if (!token || !token->content)
 		return;
-	len = ft_strlen(token->content);
-	// For quoted tokens, remove the outer quotes
-	if ((token->quotes == SINGLE || token->quotes == DOUBLE) && len >= 2)
-	{
-		new_content = ft_substr(token->content, 1, len - 2);
-		if (new_content)
-		{
-			free(token->content);
-			token->content = new_content;
-			token->quotes = NONE; // Mark as processed
-		}
-	}
+	if (!ft_strchr(token->content, '\'') && !ft_strchr(token->content, '"'))
+		return;
+	new_len = calculate_unquoted_length(token->content);
+	new_content = malloc(new_len + 1);
+	if (!new_content)
+		return;
+	copy_without_quotes(new_content, token->content);
+	free(token->content);
+	token->content = new_content;
+	token->quotes = NONE; // Mark as processed
 }
 
 void remove_quotes_from_tokens(t_mini *var)
@@ -41,7 +99,9 @@ void remove_quotes_from_tokens(t_mini *var)
 	current = var->tokens;
 	while (current)
 	{
-		remove_quotes_from_token(current);
+		// Skip delimiter tokens (they should keep their quotes for heredoc detection)
+		if (current->type != DELIMITER)
+			remove_quotes_from_token(current);
 		current = current->next;
 	}
 }

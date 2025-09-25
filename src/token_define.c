@@ -3,79 +3,74 @@
 /*                                                        :::      ::::::::   */
 /*   token_define.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
+/*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 17:35:51 by jasminelage       #+#    #+#             */
-/*   Updated: 2025/09/23 10:37:52 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/09/25 13:23:59 by jasminelage      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int check_unclosed_quotes(t_mini *var, int start, int end)
+// Helper function to skip past a quoted section
+int skip_quoted_section(t_mini *var, int i, char quote)
 {
-	int i;
+	i++; // Skip opening quote
+	while (var->line[i] && var->line[i] != quote)
+		i++;
+	if (var->line[i] == quote)
+		i++; // Skip closing quote
+	return (i);
+}
 
-	i = start;
-	while (i < end)
+// Check if character at position i is a token boundary
+int is_token_boundary(t_mini *var, int i)
+{
+	if (!var->line[i])
+		return (1);
+	if (var->line[i] == ' ' || var->line[i] == '\t')
+		return (1);
+	if (var->line[i] == '|' || var->line[i] == '<' || var->line[i] == '>')
+		return (1);
+
+	return (0);
+}
+
+// Find the end of a token that may contain multiple quoted/unquoted sections
+int find_complete_token_end(t_mini *var, int start)
+{
+	int i = start;
+
+	while (var->line[i] && !is_token_boundary(var, i))
 	{
-		if (var->line[i] == '"' || var->line[i] == 39)
+		if (var->line[i] == '"')
 		{
-			char quote = var->line[i];
-			i++; // Skip opening quote
-			// Look for closing quote
-			while (i < end && var->line[i] != quote)
-				i++;
-			if (i >= end) // Reached end without finding closing quote
+			i = skip_quoted_section(var, i, '"');
+			if (!var->line[i])
 			{
 				write(2, "Error: unclosed quotes\n", 23);
-				return (1); // Found unclosed quote
+				return (i);
 			}
-			i++; // Skip closing quote
+		}
+		else if (var->line[i] == '\'')
+		{
+			i = skip_quoted_section(var, i, '\'');
+			if (!var->line[i])
+			{
+				write(2, "Error: unclosed quotes\n", 23);
+				return (i);
+			}
 		}
 		else
 			i++;
 	}
-	return (0); // No unclosed quotes found
+	return (i);
 }
 
-// Return the divider character to determine token boundaries and set quote type
-char get_divider(t_mini *var, int start, t_token *new)
-{
-	if (var->line[start] == '"')
-	{
-		new->quotes = DOUBLE;
-		return ('"');
-	}
-	else if (var->line[start] == 39) // single quote '
-	{
-		new->quotes = SINGLE;
-		return (39);
-	}
-	new->quotes = NONE;
-	return (' ');
-}
-
-int quoted_token(t_mini *var, int *start_token, int *end_token, char divider)
-{
-	(*start_token)++;
-	*end_token = *start_token;
-	while (var->line[*end_token] && var->line[*end_token] != divider)
-		(*end_token)++;
-	if (!var->line[*end_token])
-	{
-		write(2, "Error: unclosed quotes\n", 23);
-		return (1);
-	}
-	else
-		(*end_token)++;
-	return (1); // handled
-}
-
-// Detect metachar tokens |, <, >, <<, >>
+// Get the end position of a metacharacter token (|, <, <<, >, >>)
 int get_metachar_end(t_mini *var, int start)
 {
-	if (!var->line[start]) // Add null check
+	if (!var->line[start])
 		return (0);
 	if (var->line[start] == '|')
 		return (start + 1);
@@ -94,154 +89,24 @@ int get_metachar_end(t_mini *var, int start)
 	return (0); // Not a metacharacter
 }
 
-// Helper function to find the end of a mixed token (text with quotes)
-int find_mixed_token_end(t_mini *var, int start)
-{
-	int i = start;
-
-	while (var->line[i] && var->line[i] != ' ' && !get_metachar_end(var, i))
-	{
-		if (var->line[i] == '"' || var->line[i] == 39)
-		{
-			char quote = var->line[i];
-			i++; // Skip opening quote
-			// Find closing quote
-			while (var->line[i] && var->line[i] != quote)
-				i++;
-			if (!var->line[i]) // Unclosed quote
-				return (i);
-			i++; // Skip closing quote
-		}
-		else
-			i++;
-	}
-	return (i);
-}
-
-// Set the end_token index to mark token boundary, starting from *start_token
+// Main tokenization function
 void define_token(t_mini *var, int *start_token, int *end_token, t_token *new)
 {
-	char divider;
 	int metachar_end;
 
-	while (var->line[*start_token] == ' ')
+	while (var->line[*start_token] == ' ' || var->line[*start_token] == '\t')
 		(*start_token)++;
 	if (!var->line[*start_token])
 	{
 		*end_token = *start_token;
 		return;
 	}
-	new->quotes = NONE;
 	if ((metachar_end = get_metachar_end(var, *start_token)))
 	{
 		*end_token = metachar_end;
+		new->quotes = NONE;
 		return;
 	}
-	if (var->line[*start_token] == '"' || var->line[*start_token] == 39)
-	{
-		divider = get_divider(var, *start_token, new);
-		if (quoted_token(var, start_token, end_token, divider))
-			return;
-	}
-	*end_token = find_mixed_token_end(var, *start_token);
-	if (check_unclosed_quotes(var, *start_token, *end_token))
-		*end_token = *start_token;
+	*end_token = find_complete_token_end(var, *start_token);
+	new->quotes = NONE;
 }
-// /* ************************************************************************** */
-// /*                                                                            */
-// /*                                                        :::      ::::::::   */
-// /*   token_define.c                                     :+:      :+:    :+:   */
-// /*                                                    +:+ +:+         +:+     */
-// /*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
-// /*                                                +#+#+#+#+#+   +#+           */
-// /*   Created: 2025/08/13 17:35:51 by jasminelage       #+#    #+#             */
-// /*   Updated: 2025/09/18 14:00:41 by jasminelage      ###   ########.fr       */
-// /*                                                                            */
-// /* ************************************************************************** */
-
-// #include "minishell.h"
-
-// // Helper function to handle quote processing
-// int process_quote(t_mini *var, int i, char quote)
-// {
-// 	i++;
-// 	while (var->line[i] && var->line[i] != quote)
-// 		i++;
-// 	if (!var->line[i])
-// 	{
-// 		write(2, "Error: unclosed quotes\n", 23);
-// 		return (-1);
-// 	}
-// 	return (i + 1);
-// }
-
-// // Find the end of a regular token, respecting quote boundaries
-// int find_token_end(t_mini *var, int start)
-// {
-// 	int i;
-
-// 	i = start;
-// 	while (var->line[i])
-// 	{
-// 		if (var->line[i] == ' ' || var->line[i] == '|' || var->line[i] == '<' || var->line[i] == '>')
-// 			break;
-// 		if (var->line[i] == '"' || var->line[i] == '\'')
-// 		{
-// 			i = process_quote(var, i, var->line[i]);
-// 			if (i == -1)
-// 				return (-1);
-// 		}
-// 		else
-// 			i++;
-// 	}
-// 	return (i);
-// }
-
-// // Get the end position of a metacharacter token (|, <, <<, >, >>)
-// int get_metachar_end(t_mini *var, int start)
-// {
-// 	if (!var->line[start])
-// 		return (0);
-// 	if (var->line[start] == '|')
-// 		return (start + 1);
-// 	if (var->line[start] == '<')
-// 	{
-// 		if (var->line[start + 1] == '<')
-// 			return (start + 2);
-// 		return (start + 1);
-// 	}
-// 	if (var->line[start] == '>')
-// 	{
-// 		if (var->line[start + 1] == '>')
-// 			return (start + 2);
-// 		return (start + 1);
-// 	}
-// 	return (0); // Not a metacharacter
-// }
-
-// // Main tokenization function - clean separation of concerns
-// void define_token(t_mini *var, int *start_token, int *end_token, t_token *new)
-// {
-// 	int metachar_end;
-
-// 	while (var->line[*start_token] == ' ')
-// 		(*start_token)++;
-// 	if (!var->line[*start_token])
-// 	{
-// 		*end_token = *start_token;
-// 		return;
-// 	}
-// 	if ((metachar_end = get_metachar_end(var, *start_token)))
-// 	{
-// 		*end_token = metachar_end;
-// 		new->quotes = NONE; // Metacharacters are never quoted
-// 		return;
-// 	}
-// 	*end_token = find_token_end(var, *start_token);
-// 	if (*end_token == -1) // Error in quote handling
-// 	{
-// 		*end_token = *start_token; // Reset to start to indicate error
-// 		return;
-// 	}
-// 	new->quotes = NONE; // Will be set later in the parsing process
-// }

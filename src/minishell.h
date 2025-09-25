@@ -6,7 +6,7 @@
 /*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 15:30:51 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/09/18 14:23:08 by jasminelage      ###   ########.fr       */
+/*   Updated: 2025/09/25 13:26:20 by jasminelage      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,6 +214,8 @@ void here_doc(t_mini *var);
 void redirect_for_pipes(t_mini *var, int cmd_n);
 
 // remove_quotes.c
+int calculate_unquoted_length(char *str);
+void copy_without_quotes(char *dst, char *src);
 void remove_quotes_from_token(t_token *token);
 void remove_quotes_from_tokens(t_mini *var);
 
@@ -222,8 +224,9 @@ void handle_ctrl_c(int signal_number);
 void signals_setup(void);
 
 // token_define.c
-int process_quote(t_mini *var, int i, char quote);
-int find_token_end(t_mini *var, int start);
+int skip_quoted_section(t_mini *var, int i, char quote);
+int is_token_boundary(t_mini *var, int i);
+int find_complete_token_end(t_mini *var, int start);
 int get_metachar_end(t_mini *var, int start);
 void define_token(t_mini *var, int *start_token, int *end_token, t_token *new);
 
