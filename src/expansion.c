@@ -1,28 +1,95 @@
-// /* ************************************************************************** */
-// /*                                                                            */
-// /*                                                        :::      ::::::::   */
-// /*   expansion.c                                        :+:      :+:    :+:   */
-// /*                                                    +:+ +:+         +:+     */
-// /*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
-// /*                                                +#+#+#+#+#+   +#+           */
-// /*   Created: 2025/08/05 12:50:57 by jlager            #+#    #+#             */
-// /*   Updated: 2025/09/18 14:06:00 by jasminelage      ###   ########.fr       */
-// /*                                                                            */
-// /* ************************************************************************** */
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expansion.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/05 12:50:57 by jlager            #+#    #+#             */
+/*   Updated: 2025/09/27 21:56:48 by ksevciko         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-// // The expander handles variable substitution, tilde expansion,
-// // and quote removal before execution. This stage processes $HOME, $?,
-// // and environment variables.
+// The expander handles variable substitution, tilde expansion,
+// and quote removal before execution. This stage processes $HOME, $?,
+// and environment variables.
 
-// // Expansion Tasks (Variable Processing):
-// // Environment variable substitution ($VAR)  - use find_env_var from initialize_var.c
-// //DO NOT expand anything in delimiter, do not do variable substitution for delimiter
-// // DO mark if each token was quoted
-// // Exit status expansion ($?)
-// // Home directory expansion (~)
-// // Quote removal after expansion
+// Expansion Tasks (Variable Processing):
+// Environment variable substitution ($VAR)  - use find_env_var from initialize_var.c
+//DO NOT expand anything in delimiter, do not do variable substitution for delimiter
+// DO mark if each token was quoted
+// Exit status expansion ($?)
+// Quote removal after expansion
 
-// #include "minishell.h"
+#include "minishell.h"
+
+int	count_env_var_len(t_mini *var, char *str)
+{
+	
+}
+
+int	len_expanded(t_mini *var, char *str)
+{
+	int	len;
+	int	dquote;
+	int	squote;
+	int	i;
+
+	len = 0;
+	dquote = 0;
+	squote = 0;
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '"' && !squote)
+			dquote = 1 - dquote;
+		else if (str[i] == 39 && !dquote)
+			squote = 1 - squote;
+		else if (str[i] == '$' && !squote)
+			count_env_var_len(var, &str[i]);
+		else
+			len++;
+		i++;
+	}
+	return (len);
+}
+
+char	*expand_str(t_mini *var, char *str)
+{
+	int		len;
+	char	*result;
+
+	len = len_expanded(var, str);
+	result = (char *)malloc((len + 1) * sizeof(char));
+	if (!result)
+		error_exit(var, BOLD RED "minishell: malloc failed\n" RESET);
+	result = copy_expanded(var, str);
+	return (result);
+}
+
+void	expand_tokens(t_mini *var)
+{
+	t_token	*current;
+	char	*expanded;
+
+	current = var->tokens;
+	while (current)
+	{
+		if (current->type == DELIMITER)
+		{
+			current = current->next;
+			continue;
+		}
+		expanded = expand_str(var, current->content);
+		if (expanded)
+		{
+			free(current->content);
+			current->content = expanded;
+		}
+		current = current->next;
+	}
+}
+
 
 // // Replace $VAR with its value in a string
 // char *expand_single_variable(t_mini *var, char *str, int *pos)
