@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 12:50:57 by jlager            #+#    #+#             */
-/*   Updated: 2025/09/28 01:41:16 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/09/28 12:18:54 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ int cpy_env_var(t_mini *var, char *str, int *i, char *dst)
 		temp = ft_itoa(var->exit_code);
 		if (!temp)
 			error_exit(var, BOLD RED "minishell: malloc failed\n" RESET);
-		ft_strlcpy(dst, temp, len);
+		ft_strlcpy(dst, temp, len + 1);
 	}
 	else
 	{
