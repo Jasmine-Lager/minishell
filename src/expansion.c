@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 12:50:57 by jlager            #+#    #+#             */
-/*   Updated: 2025/09/27 21:56:48 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/09/28 01:41:16 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,44 @@
 
 #include "minishell.h"
 
-int	count_env_var_len(t_mini *var, char *str)
+int	len_keyword(char *str)
 {
-	
+	int len;
+
+	len = 0;
+	while (str[len] && str[len] != '"' && str[len] != 39 && str[len] != '$')
+	{
+		len++;
+	}
+	return (len);
+}
+
+int	count_env_var_len(t_mini *var, char *str, int *i)
+{
+	int	len;
+	char *temp;
+	int	key_len;
+
+	(*i)++;
+	if (str[*i] == '?')
+	{
+		temp = ft_itoa(var->exit_code);
+		if (!temp)
+			error_exit(var, BOLD RED "minishell: malloc failed\n" RESET);
+		len = ft_strlen(temp);
+	}
+	else
+	{
+		key_len = len_keyword(&str[*i]);
+		temp = malloc((key_len + 1) * sizeof(char));
+		if (!temp)
+			error_exit(var, BOLD RED "minishell: malloc failed\n" RESET);
+		ft_strlcpy(temp, &str[*i], key_len + 1);
+		len = ft_strlen(find_env_var(var->envp, temp));
+		*i += key_len - 1;
+	}
+	free(temp);
+	return (len);
 }
 
 int	len_expanded(t_mini *var, char *str)
@@ -46,12 +81,68 @@ int	len_expanded(t_mini *var, char *str)
 		else if (str[i] == 39 && !dquote)
 			squote = 1 - squote;
 		else if (str[i] == '$' && !squote)
-			count_env_var_len(var, &str[i]);
+			len += count_env_var_len(var, str, &i);
 		else
 			len++;
 		i++;
 	}
 	return (len);
+}
+
+int cpy_env_var(t_mini *var, char *str, int *i, char *dst)
+{
+	int	len;
+	char *temp;
+	int	key_len;
+
+	key_len = 0;
+	len = count_env_var_len(var, &str[*i], &key_len);
+	(*i)++;
+	if (str[*i] == '?')
+	{
+		temp = ft_itoa(var->exit_code);
+		if (!temp)
+			error_exit(var, BOLD RED "minishell: malloc failed\n" RESET);
+		ft_strlcpy(dst, temp, len);
+	}
+	else
+	{
+		key_len = len_keyword(&str[*i]);
+		temp = malloc((key_len + 1) * sizeof(char));
+		if (!temp)
+			error_exit(var, BOLD RED "minishell: malloc failed\n" RESET);
+		ft_strlcpy(temp, &str[*i], key_len + 1);
+		ft_strlcpy(dst, find_env_var(var->envp, temp), len + 1);
+		*i += key_len - 1;
+	}
+	return (free(temp), len);
+}
+
+char	*cpy_expanded(t_mini *var, char *str, char *result)
+{
+	int	dquote;
+	int	squote;
+	int	i;
+	int	j;
+
+	dquote = 0;
+	squote = 0;
+	i = 0;
+	j = 0;
+	while (str[i])
+	{
+		if (str[i] == '"' && !squote)
+			dquote = 1 - dquote;
+		else if (str[i] == 39 && !dquote)
+			squote = 1 - squote;
+		else if (str[i] == '$' && !squote)
+			j += cpy_env_var(var, str, &i, &result[j]);
+		else
+			result[j++] = str[i];
+		i++;
+	}
+	result[j] = '\0';
+	return (result);
 }
 
 char	*expand_str(t_mini *var, char *str)
@@ -63,7 +154,7 @@ char	*expand_str(t_mini *var, char *str)
 	result = (char *)malloc((len + 1) * sizeof(char));
 	if (!result)
 		error_exit(var, BOLD RED "minishell: malloc failed\n" RESET);
-	result = copy_expanded(var, str);
+	cpy_expanded(var, str, result);
 	return (result);
 }
 
