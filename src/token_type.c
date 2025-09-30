@@ -3,23 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   token_type.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 12:50:30 by jlager            #+#    #+#             */
-/*   Updated: 2025/09/30 13:27:33 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/09/30 18:26:42 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// The lexer breaks input strings into meaningful tokens while handling quote
-// parsing and special characters. This stage transforms raw input like
-// echo "hello world" | wc-l > output.txt into discrete tokens.
-
-// COMMAND, ARGUMENT, PIPE, REDIRECT_IN, REDIRECT_OUT, etc.
-// Handle single and double quotes appropriately
-// Manage whitespace and special character separation
-// Store tokens in a linked list or array structure
 
 bool	check_metacharacters(t_mini *var, t_token *new)
 {
@@ -56,7 +47,6 @@ bool	check_in_out_delim(t_mini *var, t_token *new, t_token *last)
 	if (last && last->type == HEREDOC)
 	{
 		new->type = DELIMITER;
-		var->nbr_pipes++; //heredoc needs a pipe too
 	}
 	else if (last && last->type == REDIR_IN)
 	{

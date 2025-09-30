@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 15:30:51 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/09/30 13:36:45 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/09/30 19:49:13 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,21 @@
 
 extern volatile sig_atomic_t g_signal; // only global allowed
 
+// Determine the quote structure of a token - more sophisticated analysis
+typedef struct s_quote_info
+{
+	t_quotes dominant_type;	// Overall quote behavior for expansion
+	int mixed_quotes;		// Flag indicating complex quote mixing
+	int needs_processing;	// Flag for expansion stage
+}					t_quote_info;
+
+typedef struct s_quote_counts
+{
+	int				single_sections;
+	int				double_sections;
+	int				unquoted_sections;
+}					t_quote_counts;
+
 typedef enum e_token_type
 {
 	WORD,
@@ -96,21 +111,6 @@ typedef enum e_quotes
 	DOUBLE
 }					t_quotes;
 
-// Determine the quote structure of a token - more sophisticated analysis
-typedef struct s_quote_info
-{
-	t_quotes dominant_type;	// Overall quote behavior for expansion
-	int mixed_quotes;		// Flag indicating complex quote mixing
-	int needs_processing;	// Flag for expansion stage
-}					t_quote_info;
-
-typedef struct s_quote_counts
-{
-	int				single_sections;
-	int				double_sections;
-	int				unquoted_sections;
-}					t_quote_counts;
-
 typedef struct s_token
 {
 	char			*content;
@@ -119,17 +119,16 @@ typedef struct s_token
 	struct s_token	*next;
 }					t_token;
 
-typedef struct s_cmd
-{
-	char *cmd;
-	char **argv_for_cmd;
-	char *infile;
-	char *outfile;
-	bool append_mode;
-	bool here_doc;
-	char *delimiter;
-	bool delim_quoted;
-}	t_cmd;
+// typedef struct s_cmd
+// {
+	
+// 	char *infile; //remove
+// 	char *outfile;
+// 	bool append_mode;
+// 	bool here_doc;
+// 	char *delimiter;
+// 	bool delim_quoted; //till here
+// }	t_cmd;
 
 typedef struct s_mini // stores all variables usefull for the whole program
 {
@@ -139,7 +138,8 @@ typedef struct s_mini // stores all variables usefull for the whole program
 	t_token *tokens;
 	int nbr_pipes;
 	int (*pipes)[2];
-	t_cmd	*current;
+	char *cmd;
+	char **argv_for_cmd;
 	int exit_code; // should only be used for pipes,
 					// not for signals (is here for expanding $?)
 }					t_mini;
@@ -167,7 +167,7 @@ void				redirect_no_pipes(t_mini *var);
 void				execute_cmd(t_mini *var);
 
 // exec_with_pipes.c
-void				find_path(t_mini *var, char **path, char *cmd);
+void				find_path_to_cmd(t_mini *var, char **path, char *cmd);
 void				cpy_content_to_argv(t_mini *var, char **dst_argv, t_token *ptr,
 						size_t argv_len);
 void				find_nth_cmd_and_argv(t_mini *var, int cmd_n);
@@ -195,7 +195,7 @@ void				initialize_minishell(t_mini *var, int argc, char **argv,
 // main.c
 int					main(int argv, char **argc, char **envp);
 
-// parse_to_token.c
+// parse.c
 t_quotes			analyze_token_quotes(char *content);
 void				set_token_quote_info(t_token *token);
 void				create_first_token(t_mini *var, int *start_token,
@@ -220,7 +220,7 @@ t_quote_info		set_quote_behavior(t_quote_counts counts);
 t_quote_counts		count_quote_sections(char *content);
 t_quote_info		analyze_token_quotes_detailed(char *content);
 
-// redirecting.c
+// redirect.c
 void				in_out_for_1st_cmd(t_mini *var);
 void				in_out_for_last_cmd(t_mini *var);
 void				here_doc(t_mini *var);

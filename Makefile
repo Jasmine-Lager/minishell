@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+         #
+#    By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/13 12:27:43 by jasminelage       #+#    #+#              #
-#    Updated: 2025/09/30 13:19:46 by ksevciko         ###   ########.fr        #
+#    Updated: 2025/09/30 18:31:46 by ksevciko         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,11 +33,11 @@ SOURCES =	clean_up.c \
 			heredoc.c \
 			initialize_minishell.c \
 			main.c \
-			parse_to_tokens.c \
+			parse.c \
 			pipes.c \
 			quotes_handling.c \
 			quotes_handling_utils.c \
-			redirecting.c \
+			redirect.c \
 			remove_quotes.c \
 			signals.c \
 			token_define.c \
