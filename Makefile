@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+         #
+#    By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/13 12:27:43 by jasminelage       #+#    #+#              #
-#    Updated: 2025/09/25 13:15:42 by jasminelage      ###   ########.fr        #
+#    Updated: 2025/09/30 13:19:46 by ksevciko         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,9 +25,12 @@ SOURCES =	clean_up.c \
 			command_utils.c \
 			commands.c \
 			environment.c \
+			errors.c \
 			exec_no_pipes.c \
 			exec_with_pipes.c \
-			expansion.c \
+			expand_len.c \
+			expand.c \
+			heredoc.c \
 			initialize_minishell.c \
 			main.c \
 			parse_to_tokens.c \
@@ -39,7 +42,6 @@ SOURCES =	clean_up.c \
 			signals.c \
 			token_define.c \
 			token_type.c \
-			utilities.c
 			
 OBJECTS = $(SOURCES:%.c=$(OBJ_DIR)/%.o)
 

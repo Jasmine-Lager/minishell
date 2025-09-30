@@ -1,29 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   environment.c                                      :+:      :+:    :+:   */
+/*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/13 13:00:41 by jasminelage       #+#    #+#             */
-/*   Updated: 2025/09/30 13:32:38 by ksevciko         ###   ########.fr       */
+/*   Created: 2025/09/30 12:34:17 by ksevciko          #+#    #+#             */
+/*   Updated: 2025/09/30 13:28:16 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*find_env_var(char **envp, char *key)
+void	handle_heredocs(t_mini *var)
 {
-	int	i;
-	int	len;
-
-	len = ft_strlen(key);
-	i = 0;
-	while (envp[i])
-	{
-		if (!ft_strncmp(envp[i], key, len) && envp[i][len] == '=')
-			return (envp[i] + len + 1);
-		i++;
-	}
-	return (NULL);
+	if (var)
+		return ;
 }

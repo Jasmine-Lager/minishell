@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/14 20:22:26 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/09/30 12:13:20 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/09/30 13:32:55 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,17 @@
 
 void	redirect_no_pipes(t_mini *var)
 {
-	int fd0;
+	int	fd0;
 	int	fd1;
 
-	if (var->infile)
-		fd0 = open(var->infile, O_RDONLY | O_CREAT, 0644);
+	if (var->current->infile)
+		fd0 = open(var->current->infile, O_RDONLY | O_CREAT, 0644);
 	else
 		fd0 = 0;
-	if (var->outfile && !var->append_mode)
-		fd1 = open(var->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	else if (var->outfile)
-		fd1 = open(var->outfile, O_WRONLY | O_CREAT | O_APPEND , 0644);
+	if (var->current->outfile && !var->current->append_mode)
+		fd1 = open(var->current->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	else if (var->current->outfile)
+		fd1 = open(var->current->outfile, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	else
 		fd1 = 1;
 	if (fd0 == -1 || fd1 == -1)
@@ -45,7 +45,7 @@ void	execute_cmd(t_mini *var)
 	pid_t	pid;
 
 	pid = fork();
-	if (pid == -1) 
+	if (pid == -1)
 	{
 		perror("fork");
 		free_var_exit(var, 1);
@@ -54,7 +54,7 @@ void	execute_cmd(t_mini *var)
 	{
 		redirect_no_pipes(var);
 		find_nth_cmd_and_argv(var, 0);
-		execve(var->cmd, var->argv_for_cmd, var->envp);
+		execve(var->current->cmd, var->current->argv_for_cmd, var->envp);
 		perror("execve");
 		free_var_exit(var, 1);
 	}

@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 20:59:49 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/09/30 11:12:34 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/09/30 13:33:21 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	find_path(t_mini *var, char **path, char *cmd)
 	int		j;
 
 	if (!cmd || !*cmd)
-		error_exit(var, BOLD RED "minishell: invalid command\n" RESET); //TODO: check this whole function, it should not say pipex
+		error_exit(var, BOLD RED "minishell: invalid command\n" RESET);
 	*path = ft_strdup(cmd);
 	if (!*path)
 		error_exit(var, BOLD RED "minishell: malloc failed\n" RESET);
@@ -61,15 +61,15 @@ void	cpy_content_to_argv(t_mini *var, char **dst_argv, t_token *ptr,
 		ptr = ptr->next;
 	}
 	dst_argv[i] = NULL;
-	find_path(var, &var->cmd, var->argv_for_cmd[0]);
+	find_path(var, &var->current->cmd, var->current->argv_for_cmd[0]);
 }
 
 void	find_nth_cmd_and_argv(t_mini *var, int cmd_n)
 {
-	int	i;
+	int		i;
 	t_token	*ptr;
-	t_token *tmp;
-	int	argv_len;
+	t_token	*tmp;
+	int		argv_len;
 
 	i = 0;
 	ptr = var->tokens;
@@ -89,8 +89,8 @@ void	find_nth_cmd_and_argv(t_mini *var, int cmd_n)
 			argv_len++;
 		tmp = tmp->next;
 	}
-	var->argv_for_cmd = malloc((argv_len + 1) * sizeof(char *));
-	cpy_content_to_argv(var, var->argv_for_cmd, ptr, argv_len);
+	var->current->argv_for_cmd = malloc((argv_len + 1) * sizeof(char *));
+	cpy_content_to_argv(var, var->current->argv_for_cmd, ptr, argv_len);
 }
 
 void	wait_for_children(t_mini *var, pid_t last_child_pid)
@@ -117,11 +117,11 @@ void	execute_cmds(t_mini *var)
 	int		n;
 	pid_t	pid;
 
-	n = var->here_doc;
+	n = var->current->here_doc;
 	while (n <= var->nbr_pipes)
 	{
 		pid = fork();
-		if (pid == -1) 
+		if (pid == -1)
 		{
 			perror("fork");
 			free_var_exit(var, 1);
@@ -129,9 +129,9 @@ void	execute_cmds(t_mini *var)
 		else if (pid == 0)
 		{
 			redirect_for_pipes(var, n);
-			find_nth_cmd_and_argv(var, n - var->here_doc);
+			find_nth_cmd_and_argv(var, n - var->current->here_doc);
 			close_pipes(var);
-			execve(var->cmd, var->argv_for_cmd, var->envp);
+			execve(var->current->cmd, var->current->argv_for_cmd, var->envp);
 			perror("execve");
 			free_var_exit(var, 1);
 		}
@@ -140,15 +140,3 @@ void	execute_cmds(t_mini *var)
 	close_pipes(var);
 	wait_for_children(var, pid);
 }
-
-// The executor creates processes, establishes pipes, handles redirections,
-// and manages command execution.This stage orchestrates the actual work.
-
-// Execution Components :
-
-// Process creation with
-// fork() / execve()
-// Pipe establishment and management
-// File descriptor redirection
-// Built in command detection and handling
-// 	Step-by-Step Implementation Approach

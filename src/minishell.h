@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 15:30:51 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/09/27 17:42:52 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/09/30 13:36:45 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,9 +99,9 @@ typedef enum e_quotes
 // Determine the quote structure of a token - more sophisticated analysis
 typedef struct s_quote_info
 {
-	t_quotes dominant_type; // Overall quote behavior for expansion
-	int mixed_quotes;       // Flag indicating complex quote mixing
-	int needs_processing;   // Flag for expansion stage
+	t_quotes dominant_type;	// Overall quote behavior for expansion
+	int mixed_quotes;		// Flag indicating complex quote mixing
+	int needs_processing;	// Flag for expansion stage
 }					t_quote_info;
 
 typedef struct s_quote_counts
@@ -119,22 +119,27 @@ typedef struct s_token
 	struct s_token	*next;
 }					t_token;
 
+typedef struct s_cmd
+{
+	char *cmd;
+	char **argv_for_cmd;
+	char *infile;
+	char *outfile;
+	bool append_mode;
+	bool here_doc;
+	char *delimiter;
+	bool delim_quoted;
+}	t_cmd;
+
 typedef struct s_mini // stores all variables usefull for the whole program
 {
 	char **envp;
 	char **paths;
 	char *line;
 	t_token *tokens;
-	char *infile; //will be removed
-	char *outfile; //this too
-	bool append_mode; //and this
-	bool here_doc; //and this
-	char *delimiter; //and this
-	bool delim_quoted; //and this
 	int nbr_pipes;
 	int (*pipes)[2];
-	char *cmd;
-	char **argv_for_cmd;
+	t_cmd	*current;
 	int exit_code; // should only be used for pipes,
 					// not for signals (is here for expanding $?)
 }					t_mini;
@@ -152,6 +157,11 @@ void				handle_command(t_mini *var);
 // environment.c
 char				*find_env_var(char **envp, char *key);
 
+// errors.c
+void				error_exit(t_mini *var, char *str);
+void				command_not_found(t_mini *var, char **path);
+void				dup2_error(t_mini *var);
+
 // exec_no_pipes.c
 void				redirect_no_pipes(t_mini *var);
 void				execute_cmd(t_mini *var);
@@ -164,20 +174,19 @@ void				find_nth_cmd_and_argv(t_mini *var, int cmd_n);
 void				wait_for_children(t_mini *var, pid_t last_child_pid);
 void				execute_cmds(t_mini *var);
 
-// expansion_utils.c
-int					find_var_name_end(char *str, int start);
-char				*extract_var_name(char *str, int start, int end);
-char				*get_var_value(t_mini *var, char *var_name);
-char				*get_variable_value(t_mini *var, char *str, int start,
-						int end);
-char				*build_result_string(char *str, int pos, int end,
-						char *var_value);
+// expand_len.c
+int	len_keyword(char *str);
+int	count_env_var_len(t_mini *var, char *str, int *i);
+int	len_expanded(t_mini *var, char *str);
 
-// expansion.c
-char				*expand_single_variable(t_mini *var, char *str, int *pos);
-char				*expand_variables_in_string(t_mini *var, char *str,
-						t_quotes quotes);
+// expand.c
+int cpy_env_var(t_mini *var, char *str, int *i, char *dst);
+char	*cpy_expanded(t_mini *var, char *str, char *result);
+char	*expand_str(t_mini *var, char *str);
 void				expand_tokens(t_mini *var);
+
+// heredoc.c
+void	handle_heredocs(t_mini *var);
 
 // initialize_minishell.c
 void				initialize_minishell(t_mini *var, int argc, char **argv,
@@ -240,10 +249,5 @@ bool				check_metacharacters(t_mini *var, t_token *new);
 bool				check_in_out_delim(t_mini *var, t_token *new,
 						t_token *last);
 void				find_token_type(t_mini *var, t_token *new, t_token *last);
-
-// utilities.c
-void				error_exit(t_mini *var, char *str);
-void				command_not_found(t_mini *var, char **path);
-void				dup2_error(t_mini *var);
 
 #endif

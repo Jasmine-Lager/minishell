@@ -16,8 +16,8 @@ void	in_out_for_1st_cmd(t_mini *var)
 {
 	int	fd;
 
-	if (var->infile)
-		fd = open(var->infile, O_RDONLY | O_CREAT, 0644);
+	if (var->current->infile)
+		fd = open(var->current->infile, O_RDONLY | O_CREAT, 0644);
 	else
 		fd = 0;
 	if (fd == -1)
@@ -35,10 +35,10 @@ void	in_out_for_last_cmd(t_mini *var)
 {
 	int	fd;
 
-	if (var->outfile && !var->append_mode)
-		fd = open(var->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	else if (var->outfile)
-		fd = open(var->outfile, O_WRONLY | O_CREAT | O_APPEND , 0644);
+	if (var->current->outfile && !var->current->append_mode)
+		fd = open(var->current->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	else if (var->current->outfile)
+		fd = open(var->current->outfile, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	else
 		fd = 1;
 	if (fd == -1)
@@ -57,7 +57,8 @@ void	here_doc(t_mini *var)
 	char	*line_in;
 
 	line_in = readline(BOLD GRAY ">" RESET);
-	while (ft_strncmp(line_in, var->delimiter, ft_strlen(var->delimiter) + 1))
+	while (ft_strncmp(line_in, var->current->delimiter,
+			ft_strlen(var->current->delimiter) + 1))
 	{
 		if (line_in)
 		{
@@ -74,7 +75,7 @@ void	here_doc(t_mini *var)
 
 void	redirect_for_pipes(t_mini *var, int cmd_n)
 {
-	if (cmd_n == 1 && var->here_doc)
+	if (cmd_n == 1 && var->current->here_doc)
 		here_doc(var);
 	if (cmd_n == 0)
 		in_out_for_1st_cmd(var);
