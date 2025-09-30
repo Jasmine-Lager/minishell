@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 12:50:57 by jlager            #+#    #+#             */
-/*   Updated: 2025/09/30 13:30:17 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/09/30 22:28:15 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,12 +103,12 @@ void	expand_tokens(t_mini *var)
 		{
 			free(current->content);
 			current->content = expanded;
-			if (current->type == INFILE) //will be removed later from this line
-				var->current->infile = current->content;
-			else if (current->type == OUTFILE)
-				var->current->outfile = current->content;
-			else if (current->type == DELIMITER)
-				var->current->delimiter = current->content; //to here
+			// if (current->type == INFILE) //will be removed later from this line
+			// 	var->current->infile = current->content;
+			// else if (current->type == OUTFILE)
+			// 	var->current->outfile = current->content;
+			// else if (current->type == DELIMITER)
+			// 	var->current->delimiter = current->content; //to here
 		}
 		current = current->next;
 	}

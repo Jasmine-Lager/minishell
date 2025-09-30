@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clean_up.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 20:38:35 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/09/30 13:32:23 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/09/30 22:15:08 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ void	free_var_exit(t_mini *var, int exit_code)
 	free(var->line);
 	free_tokens(var);
 	free(var->pipes);
-	free(var->current->cmd);
-	free(var->current->argv_for_cmd);
+	free(var->cmd);
+	free(var->argv_for_cmd);
 	free(var);
 	rl_clear_history();
 	exit(exit_code);
@@ -54,17 +54,17 @@ void	free_one_line(t_mini *var)
 	var->line = NULL;
 	free_tokens(var);
 	var->tokens = NULL;
-	var->current->delimiter = NULL;
-	var->current->infile = NULL;
-	var->current->outfile = NULL;
+	// var->delimiter = NULL;
+	// var->infile = NULL;
+	// var->outfile = NULL;
 	free(var->pipes);
 	var->pipes = NULL;
-	free(var->current->cmd);
-	var->current->cmd = NULL;
-	free(var->current->argv_for_cmd);
-	var->current->argv_for_cmd = NULL;
-	var->current->append_mode = 0;
-	var->current->here_doc = 0;
-	var->current->delim_quoted = 0;
+	free(var->cmd);
+	var->cmd = NULL;
+	free(var->argv_for_cmd);
+	var->argv_for_cmd = NULL;
+	// var->append_mode = 0;
+	// var->here_doc = 0;
+	// var->delim_quoted = 0;
 	var->nbr_pipes = 0;
 }

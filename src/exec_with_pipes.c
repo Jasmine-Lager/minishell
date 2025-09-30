@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 20:59:49 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/09/30 20:34:36 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/09/30 22:27:51 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ t_token	*find_start_of_nth_cmd(t_mini *var, int cmd_n)
 	if (!cmd_n)
 		return (ptr);
 	error_exit(var, "missing a command\n");
+	return (NULL);
 }
 
 void redirect_in_out_to_pipes(t_mini *var, int cmd_n)
@@ -94,8 +95,8 @@ void redirect_in_out_to_pipes(t_mini *var, int cmd_n)
 		out = 1;
 	else
 		out = var->pipes[cmd_n][1];
-	if (dup2(var->pipes[cmd_n - 1][0], 0) == -1
-		|| dup2(var->pipes[cmd_n][1], 1) == -1)
+	if (dup2(in, 0) == -1
+		|| dup2(out, 1) == -1)
 	{
 		dup2_error(var);
 	}
@@ -103,6 +104,8 @@ void redirect_in_out_to_pipes(t_mini *var, int cmd_n)
 
 void open_redir_infile(t_mini *var, char *infile)
 {
+	int	fd;
+
 	fd = open(infile, O_RDONLY | O_CREAT, 0644);
 	if (fd == -1)
 	{
@@ -116,6 +119,8 @@ void open_redir_infile(t_mini *var, char *infile)
 
 void open_redir_outfile(t_mini *var, char *outfile, bool append)
 {
+	int	fd;
+
 	if (!append)
 		fd = open(outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	else
@@ -130,7 +135,7 @@ void open_redir_outfile(t_mini *var, char *outfile, bool append)
 	close(fd);
 }
 
-void	redir_files_and_count_argv_len(t_mini *var, t_token *ptr,
+int	redir_files_and_count_argv_len(t_mini *var, t_token *ptr,
 		t_token **cmd, int argv_len)
 {
 	bool	append;
@@ -148,10 +153,10 @@ void	redir_files_and_count_argv_len(t_mini *var, t_token *ptr,
 			open_redir_infile(var, ptr->content); //close those files here too!
 		else if (ptr->type == REDIR_OUT)
 			append = 0;
-		else if (ptr-type == REDIR_APPEND)
+		else if (ptr->type == REDIR_APPEND)
 			append = 1;
 		else if (ptr->type == OUTFILE)
-			open_redir_outfile(var, ptr->content, append) //also use close on the files!
+			open_redir_outfile(var, ptr->content, append); //also use close on the files!
 		ptr = ptr->next;
 	}
 	if (!*cmd)
@@ -212,7 +217,7 @@ void	execute_cmds(t_mini *var)
 		{
 			prepare_argv_and_redir(var, n);
 			close_pipes(var);
-			execve(var->current->cmd, var->current->argv_for_cmd, var->envp);
+			execve(var->cmd, var->argv_for_cmd, var->envp);
 			perror("execve");
 			free_var_exit(var, 1);
 		}

@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 10:29:08 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/09/30 18:31:01 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/09/30 22:23:56 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,7 @@ void	handle_command(t_mini *var)
 {
 	parse(var);
 	// print_tokens(var->tokens);
-	if (var->nbr_pipes > 0)
-		execute_cmds(var);
-	else
-		execute_cmd(var);
+	execute_cmds(var);
 }
 
 // echo with option -n

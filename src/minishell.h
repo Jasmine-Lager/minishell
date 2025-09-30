@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 15:30:51 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/09/30 19:49:13 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/09/30 22:30:51 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,13 @@
 
 extern volatile sig_atomic_t g_signal; // only global allowed
 
+typedef enum e_quotes
+{
+	NONE,
+	SINGLE,
+	DOUBLE
+}					t_quotes;
+
 // Determine the quote structure of a token - more sophisticated analysis
 typedef struct s_quote_info
 {
@@ -103,13 +110,6 @@ typedef enum e_token_type
 	HEREDOC,
 	DELIMITER
 }					t_token_type;
-
-typedef enum e_quotes
-{
-	NONE,
-	SINGLE,
-	DOUBLE
-}					t_quotes;
 
 typedef struct s_token
 {
@@ -246,8 +246,7 @@ void				define_token(t_mini *var, int *start_token, int *end_token,
 
 // token_type.c
 bool				check_metacharacters(t_mini *var, t_token *new);
-bool				check_in_out_delim(t_mini *var, t_token *new,
-						t_token *last);
+bool				check_in_out_delim(t_token *new, t_token *last);
 void				find_token_type(t_mini *var, t_token *new, t_token *last);
 
 #endif
