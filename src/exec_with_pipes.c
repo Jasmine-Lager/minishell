@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 20:59:49 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/09/30 22:27:51 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/09/30 23:09:21 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,13 +106,13 @@ void open_redir_infile(t_mini *var, char *infile)
 {
 	int	fd;
 
-	fd = open(infile, O_RDONLY | O_CREAT, 0644);
+	fd = open(infile, O_RDONLY);
 	if (fd == -1)
 	{
 		perror("failed to open input");
 		free_var_exit(var, 1);
 	}
-	if (dup2(fd, 0) == -1) //is this okay with dup2? sdince i already redirected it? should i maybe somehow close the last file i did this for first?
+	if (dup2(fd, 0) == -1)
 		dup2_error(var);
 	close(fd);
 }
@@ -130,7 +130,7 @@ void open_redir_outfile(t_mini *var, char *outfile, bool append)
 		perror("failed to open output");
 		free_var_exit(var, 1);
 	}
-	if (dup2(fd, 0) == -1)
+	if (dup2(fd, 1) == -1)
 		dup2_error(var);
 	close(fd);
 }
