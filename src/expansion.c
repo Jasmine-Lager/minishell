@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 12:50:57 by jlager            #+#    #+#             */
-/*   Updated: 2025/09/28 12:18:54 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/09/30 12:17:28 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,6 +176,12 @@ void	expand_tokens(t_mini *var)
 		{
 			free(current->content);
 			current->content = expanded;
+			if (current->type == INFILE)
+				var->infile = current->content;
+			else if (current->type == OUTFILE)
+				var->outfile = current->content;
+			else if (current->type == DELIMITER)
+				var->delimiter = current->content;
 		}
 		current = current->next;
 	}

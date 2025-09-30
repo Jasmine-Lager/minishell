@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_no_pipes.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/14 20:22:26 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/09/14 20:22:26 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/09/30 12:13:20 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	redirect_no_pipes(t_mini *var)
 	}
 	if (dup2(fd0, 0) == -1 || dup2(fd1, 1) == -1)
 		dup2_error(var);
-	if (fd0)
+	if (fd0 != 0)
 		close(fd0);
 	if (fd1 != 1)
 		close(fd1);

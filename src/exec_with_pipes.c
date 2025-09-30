@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 20:59:49 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/09/25 19:12:52 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/09/30 11:12:34 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ void	cpy_content_to_argv(t_mini *var, char **dst_argv, t_token *ptr,
 		ptr = ptr->next;
 	}
 	dst_argv[i] = NULL;
+	find_path(var, &var->cmd, var->argv_for_cmd[0]);
 }
 
 void	find_nth_cmd_and_argv(t_mini *var, int cmd_n)
@@ -72,12 +73,14 @@ void	find_nth_cmd_and_argv(t_mini *var, int cmd_n)
 
 	i = 0;
 	ptr = var->tokens;
-	while ((i < cmd_n && ptr) || ptr->type != CMD) //??
+	while (ptr && (i < cmd_n || ptr->type != CMD))
 	{
 		if (ptr->type == CMD)
 			i++;
 		ptr = ptr->next;
 	}
+	if (!ptr)
+		error_exit(var, "missing a command\n");
 	argv_len = 1;
 	tmp = ptr->next;
 	while (tmp && (tmp->type != CMD))
@@ -88,7 +91,6 @@ void	find_nth_cmd_and_argv(t_mini *var, int cmd_n)
 	}
 	var->argv_for_cmd = malloc((argv_len + 1) * sizeof(char *));
 	cpy_content_to_argv(var, var->argv_for_cmd, ptr, argv_len);
-	find_path(var, &var->cmd, var->argv_for_cmd[0]);
 }
 
 void	wait_for_children(t_mini *var, pid_t last_child_pid)

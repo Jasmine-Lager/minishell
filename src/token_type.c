@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 12:50:30 by jlager            #+#    #+#             */
-/*   Updated: 2025/09/25 14:22:27 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/09/30 11:38:34 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ bool	check_metacharacters(t_mini *var, t_token *new)
 	else if (ft_strncmp(new->content, "<<", 3) == 0)
 	{
 		new->type = HEREDOC;
-		var->here_doc = 1;
+		var->here_doc = 1; //??
 	}
 	else
 		out = 0;
@@ -58,24 +58,28 @@ bool	check_in_out_delim(t_mini *var, t_token *new, t_token *last)
 	if (last && last->type == HEREDOC)
 	{
 		new->type = DELIMITER;
-		var->delimiter = new->content;
-		if 	(new->quotes == SINGLE || new->quotes == DOUBLE)
-			var->delim_quoted = 1;
 		var->nbr_pipes++; //heredoc needs a pipe too
 	}
 	else if (last && last->type == REDIR_IN)
 	{
 		new->type = INFILE;
-		var->infile = new->content;
 	}
 	else if (last && (last->type == REDIR_OUT || last->type == REDIR_APPEND))
 	{
 		new->type = OUTFILE;
-		var->outfile = new->content;
 	}
 	else
 		out = 0;
 	return (out);
+}
+
+char	first_non_quote_char(char *str)
+{
+	while (*str == '"' || *str == 39)
+	{
+		str++;
+	}
+	return (*str);
 }
 
 void	find_token_type(t_mini *var, t_token *new, t_token *last)
@@ -86,7 +90,7 @@ void	find_token_type(t_mini *var, t_token *new, t_token *last)
 		;
 	else if (last && (last->type == CMD || last->type == FLAG
 		|| last->type == WORD || last->type == INFILE || last->type == OUTFILE
-		|| last->type == DELIMITER) && *new->content == '-')
+		|| last->type == DELIMITER) && first_non_quote_char(new->content) == '-')
 		new->type = FLAG;
 	else if ((last && (last->type == PIPE || last->type == INFILE
 				|| last->type == OUTFILE || last->type == DELIMITER)) || !last)
