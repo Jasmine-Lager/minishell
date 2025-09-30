@@ -6,13 +6,11 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 20:59:49 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/09/30 20:04:07 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/09/30 20:34:36 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-//for now coppied from pipex, needs to be modified for linked list of tokens
 
 void	find_path_to_cmd(t_mini *var, char **path, char *cmd)
 {
@@ -67,25 +65,6 @@ void	cpy_content_to_argv(t_mini *var, char **dst_argv, t_token *ptr,
 	dst_argv[i] = NULL;
 }
 
-void	wait_for_children(t_mini *var, pid_t last_child_pid)
-{
-	int	i;
-	int	status;
-
-	i = 0;
-	while (i <= var->nbr_pipes)
-	{
-		if (wait(&status) == last_child_pid)
-		{
-			if (WIFEXITED(status))
-				var->exit_code = WEXITSTATUS(status);
-			else
-				var->exit_code = 1;
-		}
-		i++;
-	}
-}
-
 t_token	*find_start_of_nth_cmd(t_mini *var, int cmd_n)
 {
 	t_token *ptr;
@@ -108,26 +87,47 @@ void redirect_in_out_to_pipes(t_mini *var, int cmd_n)
 	int	out;
 
 	if (cmd_n == 0)
-	{
 		in = 0;
-	}
 	else
-	{
 		in = var->pipes[cmd_n - 1][0];
-	}
 	if (cmd_n == var->nbr_pipes)
-	{
 		out = 1;
-	}
 	else
-	{
 		out = var->pipes[cmd_n][1];
-	}
 	if (dup2(var->pipes[cmd_n - 1][0], 0) == -1
 		|| dup2(var->pipes[cmd_n][1], 1) == -1)
 	{
 		dup2_error(var);
 	}
+}
+
+void open_redir_infile(t_mini *var, char *infile)
+{
+	fd = open(infile, O_RDONLY | O_CREAT, 0644);
+	if (fd == -1)
+	{
+		perror("failed to open input");
+		free_var_exit(var, 1);
+	}
+	if (dup2(fd, 0) == -1) //is this okay with dup2? sdince i already redirected it? should i maybe somehow close the last file i did this for first?
+		dup2_error(var);
+	close(fd);
+}
+
+void open_redir_outfile(t_mini *var, char *outfile, bool append)
+{
+	if (!append)
+		fd = open(outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	else
+		fd = open(outfile, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	if (fd == -1)
+	{
+		perror("failed to open output");
+		free_var_exit(var, 1);
+	}
+	if (dup2(fd, 0) == -1)
+		dup2_error(var);
+	close(fd);
 }
 
 void	redir_files_and_count_argv_len(t_mini *var, t_token *ptr,
@@ -159,7 +159,7 @@ void	redir_files_and_count_argv_len(t_mini *var, t_token *ptr,
 	return (argv_len);
 }
 
-void	prepare_argv_redir(t_mini *var, int cmd_n)
+void	prepare_argv_and_redir(t_mini *var, int cmd_n)
 {
 	t_token	*ptr;
 	t_token	*cmd;
@@ -172,6 +172,25 @@ void	prepare_argv_redir(t_mini *var, int cmd_n)
 	var->argv_for_cmd = malloc((argv_len + 1) * sizeof(char *));
 	cpy_content_to_argv(var, var->argv_for_cmd, cmd, argv_len);
 	find_path_to_cmd(var, &var->cmd, cmd->content);
+}
+
+void	wait_for_children(t_mini *var, pid_t last_child_pid)
+{
+	int	i;
+	int	status;
+
+	i = 0;
+	while (i <= var->nbr_pipes)
+	{
+		if (wait(&status) == last_child_pid)
+		{
+			if (WIFEXITED(status))
+				var->exit_code = WEXITSTATUS(status);
+			else
+				var->exit_code = 1;
+		}
+		i++;
+	}
 }
 
 void	execute_cmds(t_mini *var)
