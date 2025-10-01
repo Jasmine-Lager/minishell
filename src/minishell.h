@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 15:30:51 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/10/01 19:19:15 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/10/01 19:33:58 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,16 +119,17 @@ typedef struct s_token
 	struct s_token	*next;
 }					t_token;
 
-// typedef struct s_cmd
-// {
-	
-// 	char *infile; //remove
-// 	char *outfile;
-// 	bool append_mode;
-// 	bool here_doc;
-// 	char *delimiter;
-// 	bool delim_quoted; //till here
-// }	t_cmd;
+typedef struct s_expand
+{
+	char	*str;
+	char	*result;
+	char	*i;
+	char	*j;
+	int		nbr_of_splitting;
+	int		**i_of_splitting;
+	bool	can_be_rm;
+}	t_expand;
+
 
 typedef struct s_mini // stores all variables usefull for the whole program
 {

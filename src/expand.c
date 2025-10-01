@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 12:50:57 by jlager            #+#    #+#             */
-/*   Updated: 2025/10/01 17:51:32 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/10/01 19:49:05 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,8 @@ char	*cpy_expanded(t_mini *var, char *str, char *result)
 	result[j] = '\0';
 	return (result);
 }
+
+// t_expand	*init_exp()
 
 char	*expand_str(t_mini *var, char *str)
 {
