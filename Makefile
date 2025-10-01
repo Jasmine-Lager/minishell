@@ -6,7 +6,7 @@
 #    By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/13 12:27:43 by jasminelage       #+#    #+#              #
-#    Updated: 2025/09/30 18:31:46 by ksevciko         ###   ########.fr        #
+#    Updated: 2025/10/01 19:01:54 by ksevciko         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,8 +26,7 @@ SOURCES =	clean_up.c \
 			commands.c \
 			environment.c \
 			errors.c \
-			exec_no_pipes.c \
-			exec_with_pipes.c \
+			execute.c \
 			expand_len.c \
 			expand.c \
 			heredoc.c \

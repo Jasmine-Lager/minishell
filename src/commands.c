@@ -6,13 +6,13 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 10:29:08 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/09/30 22:23:56 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/10/01 19:21:24 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// static void print_tokens(t_token *tokens)
+// static void	print_tokens(t_token *tokens)
 // {
 // 	while (tokens)
 // 	{
@@ -20,6 +20,23 @@
 // 		tokens = tokens->next;
 // 	}
 // }
+
+t_token	*find_start_of_nth_cmd(t_mini *var, int cmd_n) //for prepare_argv_and_redir in execute.c, but will be needed for buid ins too
+{
+	t_token	*ptr;
+
+	ptr = var->tokens;
+	while (ptr && cmd_n > 0)
+	{
+		if (ptr->type == PIPE)
+			cmd_n--;
+		ptr = ptr->next;
+	}
+	if (!cmd_n)
+		return (ptr);
+	error_exit(var, "missing a command\n");
+	return (NULL);
+}
 
 void	handle_command(t_mini *var)
 {

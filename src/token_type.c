@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 12:50:30 by jlager            #+#    #+#             */
-/*   Updated: 2025/09/30 22:30:26 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/10/01 17:29:10 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,5 +85,5 @@ void	find_token_type(t_mini *var, t_token *new, t_token *last)
 				|| last->type == OUTFILE || last->type == DELIMITER)) || !last)
 		new->type = CMD;
 	else
-		new->type = WORD;
+		new->type = WORD; //not fully reliable - sometimes it says that it is a CMD when it is a WORD, but this is corrected in function process_cmd. that is only called during execution, and this might be a problem for built in commands, so if it is, it is necessary to correct it there too
 }

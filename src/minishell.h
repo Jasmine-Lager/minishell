@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 15:30:51 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/09/30 22:30:51 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/10/01 19:19:15 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,6 +152,7 @@ void				free_one_line(t_mini *var);
 // command_utils.c
 
 // commands.c
+t_token	*find_start_of_nth_cmd(t_mini *var, int cmd_n);
 void				handle_command(t_mini *var);
 
 // environment.c
@@ -162,15 +163,11 @@ void				error_exit(t_mini *var, char *str);
 void				command_not_found(t_mini *var, char **path);
 void				dup2_error(t_mini *var);
 
-// exec_no_pipes.c
-void				redirect_no_pipes(t_mini *var);
-void				execute_cmd(t_mini *var);
-
-// exec_with_pipes.c
+// execute.c
 void				find_path_to_cmd(t_mini *var, char **path, char *cmd);
 void				cpy_content_to_argv(t_mini *var, char **dst_argv, t_token *ptr,
 						size_t argv_len);
-void				find_nth_cmd_and_argv(t_mini *var, int cmd_n);
+void				prepare_argv_and_redir(t_mini *var, int cmd_n);
 void				wait_for_children(t_mini *var, pid_t last_child_pid);
 void				execute_cmds(t_mini *var);
 
@@ -221,10 +218,12 @@ t_quote_counts		count_quote_sections(char *content);
 t_quote_info		analyze_token_quotes_detailed(char *content);
 
 // redirect.c
-void				in_out_for_1st_cmd(t_mini *var);
-void				in_out_for_last_cmd(t_mini *var);
-void				here_doc(t_mini *var);
-void				redirect_for_pipes(t_mini *var, int cmd_n);
+void	redirect_in_out_to_pipes(t_mini *var, int cmd_n);
+void	open_redir_infile(t_mini *var, char *infile);
+void	open_redir_outfile(t_mini *var, char *outfile, bool append);
+void	process_cmd(t_token *ptr, t_token **cmd, int *argv_len);					
+int		redir_files_and_count_argv_len(t_mini *var, t_token *ptr,
+		t_token **cmd, int argv_len);
 
 // remove_quotes.c
 int					calculate_unquoted_length(char *str);
