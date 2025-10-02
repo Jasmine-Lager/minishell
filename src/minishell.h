@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 15:30:51 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/10/02 20:37:02 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/10/03 00:12:58 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,11 +151,11 @@ typedef struct s_mini // stores all variables usefull for the whole program
 void				free_tokens(t_mini *var);
 void				free_var_exit(t_mini *var, int exit_code);
 void				free_one_line(t_mini *var);
+void				wait_for_children(t_mini *var, pid_t last_child_pid);
 
 // command_utils.c
 
 // commands.c
-t_token	*find_start_of_nth_cmd(t_mini *var, int cmd_n);
 void				handle_command(t_mini *var);
 
 // environment.c
@@ -170,24 +170,23 @@ void				dup2_error(t_mini *var);
 void				find_path_to_cmd(t_mini *var, char **path, char *cmd);
 void				cpy_content_to_argv(t_mini *var, char **dst_argv, t_token *ptr,
 						size_t argv_len);
+t_token				*find_start_of_nth_cmd(t_mini *var, int cmd_n);
 void				prepare_argv_and_redir(t_mini *var, int cmd_n);
-void				wait_for_children(t_mini *var, pid_t last_child_pid);
-void				execute_cmds(t_mini *var);
+bool				execute_cmds(t_mini *var);
 
 // expand_len.c
 int	len_keyword(char *str);
 int	count_env_var_len(t_mini *var, char *str, int *i);
-int	len_expanded(t_mini *var, char *str);
+int	len_expanded(t_mini *var, char *str, int dquote, int squote);
 
 // expand.c
 int cpy_env_var(t_mini *var, char *str, int *i, char *dst);
-char	*cpy_expanded(t_mini *var, char *str, char *result, bool delim);
+char	*cpy_expanded(t_mini *var, char *str, char *result);
 char	*expand_str(t_mini *var, char *str);
-void				expand_tokens(t_mini *var);
+bool			expand_tokens(t_mini *var);
 
-// heredoc_utils.c
-char	*get_tmp_file_name(t_mini *var);
-int		open_tmp_file(t_mini *var, char *filename);
+// heredoc_expand.c
+char	*cpy_expanded_delim(char *str, char *result);
 int		len_expanded_heredoc(t_mini *var, char *str);
 char	*cpy_expanded_heredoc(t_mini *var, char *str, char *result);
 char	*expand_heredoc(t_mini *var, char *str);
@@ -197,7 +196,7 @@ int		len_no_quotes(char *delim, bool *quoted);
 bool	rm_quotes_delim(t_mini *var, char **delim);
 void	read_heredoc(t_mini *var, char *delim, int fd, bool delim_quoted);
 void	heredoc_to_file(t_mini *var, char *filename, char **delim);
-void	heredoc(t_mini *var, t_token *delim);
+bool	heredoc(t_mini *var, t_token *delim);
 
 // initialize_minishell.c
 void				initialize_minishell(t_mini *var, int argc, char **argv,
@@ -213,10 +212,10 @@ void				create_first_token(t_mini *var, int *start_token,
 						int *end_token);
 void				append_token(t_mini *var, int *start_token, int *end_token,
 						t_token **last);
-void				parse(t_mini *var);
+bool				parse(t_mini *var);
 
 // pipes.c
-void				create_pipes(t_mini *var);
+bool				create_pipes(t_mini *var);
 void				close_pipes(t_mini *var);
 
 // quotes_handling_utils.c
@@ -248,6 +247,10 @@ void				remove_quotes_from_tokens(t_mini *var);
 // signals.c
 void				handle_ctrl_c(int signal_number);
 void				signals_setup(void);
+
+// tmp_file.c
+char	*get_tmp_file_name(t_mini *var);
+int		open_tmp_file(t_mini *var, char *filename);
 
 // token_define.c
 int					skip_quoted_section(t_mini *var, int i, char quote);

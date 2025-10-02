@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 12:50:57 by jlager            #+#    #+#             */
-/*   Updated: 2025/10/02 19:58:48 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/10/03 00:11:58 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 int	cpy_env_var(t_mini *var, char *str, int *i, char *dst)
 {
 	int		len;
-	char	*temp;
+	char	*tmp;
 	int		key_len;
 
 	key_len = 0;
@@ -27,25 +27,25 @@ int	cpy_env_var(t_mini *var, char *str, int *i, char *dst)
 	(*i)++;
 	if (str[*i] == '?')
 	{
-		temp = ft_itoa(var->exit_code);
-		if (!temp)
-			error_exit(var, BOLD RED "minishell: malloc failed\n" RESET);
-		ft_strlcpy(dst, temp, len + 1);
+		tmp = ft_itoa(var->exit_code);
+		if (!tmp || len == -1)
+			return (free(tmp), write(2, "minishell: malloc failed\n", 25), -1);
+		ft_strlcpy(dst, tmp, len + 1);
 	}
 	else
 	{
 		key_len = len_keyword(&str[*i]);
-		temp = malloc((key_len + 1) * sizeof(char));
-		if (!temp)
-			error_exit(var, BOLD RED "minishell: malloc failed\n" RESET);
-		ft_strlcpy(temp, &str[*i], key_len + 1);
-		ft_strlcpy(dst, find_env_var(var->envp, temp), len + 1);
+		tmp = malloc((key_len + 1) * sizeof(char));
+		if (!tmp || len == -1)
+			return (free(tmp), write(2, "minishell: malloc failed\n", 25), -1);
+		ft_strlcpy(tmp, &str[*i], key_len + 1);
+		ft_strlcpy(dst, find_env_var(var->envp, tmp), len + 1);
 		*i += key_len - 1;
 	}
-	return (free(temp), len);
+	return (free(tmp), len);
 }
 
-char	*cpy_expanded(t_mini *var, char *str, char *result, bool delim)
+char	*cpy_expanded(t_mini *var, char *str, char *result)
 {
 	int	dquote;
 	int	squote;
@@ -54,20 +54,21 @@ char	*cpy_expanded(t_mini *var, char *str, char *result, bool delim)
 
 	dquote = 0;
 	squote = 0;
-	i = 0;
+	i = -1;
 	j = 0;
-	while (str[i])
+	while (str[++i])
 	{
 		if (str[i] == '"' && !squote)
 			dquote = 1 - dquote;
 		else if (str[i] == 39 && !dquote)
 			squote = 1 - squote;
-		else if (str[i] == '$' && !squote && !delim
+		else if (str[i] == '$' && !squote
 			&& (ft_isalnum(str[i + 1]) || str[i + 1] == '?'))
-			j += cpy_env_var(var, str, &i, &result[j]);
+		{
+			j += cpy_env_var(var, str, &i, &result[j]); //check if this returned -1
+		}
 		else
 			result[j++] = str[i];
-		i++;
 	}
 	result[j] = '\0';
 	return (result);
@@ -80,11 +81,15 @@ char	*expand_str(t_mini *var, char *str) //todo: word splitting here, including 
 	int		len;
 	char	*result;
 
-	len = len_expanded(var, str);
+	len = len_expanded(var, str, 0, 0);
 	result = (char *)malloc((len + 1) * sizeof(char));
-	if (!result)
-		error_exit(var, BOLD RED "minishell: malloc failed\n" RESET);
-	cpy_expanded(var, str, result, 0);
+	if (!result || len == -1)
+	{
+		free(result);
+		write(2, BOLD RED "minishell: malloc failed\n" RESET, 25);
+		return (NULL);
+	}
+	result = cpy_expanded(var, str, result);
 	return (result);
 }
 
@@ -109,7 +114,7 @@ void	empty_token(t_mini *var, t_token *last, t_token **current,
 	free(expanded);
 }
 
-void	expand_tokens(t_mini *var)
+bool	expand_tokens(t_mini *var)
 {
 	t_token	*current;
 	t_token	*last;
@@ -136,4 +141,5 @@ void	expand_tokens(t_mini *var)
 			current = current->next;
 		}
 	}
+	return (1); //todo: make this function check for errors and return 0, but only after implementing wird splitting
 }

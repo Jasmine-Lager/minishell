@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 10:29:08 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/10/02 12:52:53 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/10/02 23:34:21 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,30 +21,18 @@
 // 	}
 // }
 
-t_token	*find_start_of_nth_cmd(t_mini *var, int cmd_n) //for prepare_argv_and_redir in execute.c, but will be needed for buid ins too
-{
-	t_token	*ptr;
-
-	ptr = var->tokens;
-	while (ptr && cmd_n > 0)
-	{
-		if (ptr->type == PIPE)
-			cmd_n--;
-		ptr = ptr->next;
-	}
-	if (!cmd_n)
-		return (ptr);
-	error_exit(var, "missing a command\n");
-	return (NULL);
-}
+//a function that will check if the current command is built-in
+//and if it is, it will call functions to execute it, will be 
+//called in execute.c in function prepare_argv_and_redir.
+//built ins must call exit after execution or on error
 
 void	handle_command(t_mini *var)
 {
-	parse(var);
-	if (!var->tokens)
+	if (!parse(var) || !var->tokens)
 		return ;
 	// print_tokens(var->tokens);
-	execute_cmds(var);
+	if (!execute_cmds(var))
+		return ;
 }
 
 // echo with option -n

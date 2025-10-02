@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 19:53:07 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/10/02 12:52:10 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/10/02 22:55:49 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void append_token(t_mini *var, int *start_token, int *end_token, t_token **last)
 	*start_token = *end_token;
 }
 
-void parse(t_mini *var)
+bool parse(t_mini *var)
 {
 	int start_token;
 	int end_token;
@@ -86,20 +86,20 @@ void parse(t_mini *var)
 	start_token = 0;
 	end_token = 0;
 	if (!var->line || !*var->line)
-		return;
-	if (!ft_strncmp("exit", var->line, 5)) // Testing only - remove later
-		free_var_exit(var, 0);
+		return (0);
 	create_first_token(var, &start_token, &end_token);
 	if (!var->tokens)
-		return;
+		return (0);
 	last = var->tokens;
 	while (var->line[start_token])
 	{
 		while (var->line[start_token] == ' ')
 			start_token++;
 		if (!var->line[start_token])
-			break;
+			break ;
 		append_token(var, &start_token, &end_token, &last);
 	}
-	expand_tokens(var);
+	if (!expand_tokens(var))
+		return (0);
+	return (1);
 }

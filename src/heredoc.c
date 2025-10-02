@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/30 12:34:17 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/10/02 20:29:51 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/10/03 00:13:15 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ bool	rm_quotes_delim(t_mini *var, char **delim)
 	result = (char *)malloc((len + 1) * sizeof(char));
 	if (!result)
 		error_exit(var, BOLD RED "minishell: malloc failed\n" RESET);
-	cpy_expanded(var, *delim, result, 1);
+	cpy_expanded_delim(*delim, result);
 	free(*delim);
 	*delim = result;
 	return (quoted);
@@ -90,7 +90,7 @@ void	heredoc_to_file(t_mini *var, char *filename, char **delim)
 	free_var_exit(var, 0);
 }
 
-void	heredoc(t_mini *var, t_token *delim)
+bool	heredoc(t_mini *var, t_token *delim)
 {
 	char	*file;
 	pid_t	pid;
@@ -98,12 +98,12 @@ void	heredoc(t_mini *var, t_token *delim)
 
 	file = get_tmp_file_name(var);
 	if (!file)
-		return ;
+		return (0);
 	pid = fork();
 	if (pid == -1)
 	{
 		perror("fork");
-		return ; //make it return all the way to main
+		return (0); //make it return all the way to main
 	}
 	else if (pid == 0)
 		heredoc_to_file(var, file, &delim->content);
@@ -112,8 +112,9 @@ void	heredoc(t_mini *var, t_token *delim)
 	{
 		unlink(file);
 		g_signal = 130;  // 128 + SIGINT
-		return ;  // return all the way to main immediately, do not execute anything
+		return (0);  // return all the way to main immediately, do not execute anything
 	}
 	free(delim->content);
 	delim->content = file;
+	return (1);
 }

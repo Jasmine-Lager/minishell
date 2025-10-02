@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 20:38:35 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/10/02 13:29:07 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/10/02 23:27:38 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,4 +62,23 @@ void	free_one_line(t_mini *var)
 	var->argv_for_cmd = NULL;
 	var->nbr_pipes = 0;
 	var->nbr_heredoc = 0;
+}
+
+void	wait_for_children(t_mini *var, pid_t last_child_pid)
+{
+	int	i;
+	int	status;
+
+	i = 0;
+	while (i <= var->nbr_pipes)
+	{
+		if (wait(&status) == last_child_pid)
+		{
+			if (WIFEXITED(status))
+				var->exit_code = WEXITSTATUS(status);
+			else
+				var->exit_code = 1;
+		}
+		i++;
+	}
 }

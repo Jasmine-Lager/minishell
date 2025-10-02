@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 20:59:49 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/10/02 13:45:49 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/10/02 23:34:37 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,23 @@ void	cpy_content_to_argv(t_mini *var, char **dst_argv, t_token *ptr,
 	dst_argv[i] = NULL;
 }
 
+t_token	*find_start_of_nth_cmd(t_mini *var, int cmd_n)
+{
+	t_token	*ptr;
+
+	ptr = var->tokens;
+	while (ptr && cmd_n > 0)
+	{
+		if (ptr->type == PIPE)
+			cmd_n--;
+		ptr = ptr->next;
+	}
+	if (!cmd_n)
+		return (ptr);
+	error_exit(var, "missing a command\n");
+	return (NULL);
+}
+
 void	prepare_argv_and_redir(t_mini *var, int cmd_n)
 {
 	t_token	*ptr;
@@ -77,53 +94,36 @@ void	prepare_argv_and_redir(t_mini *var, int cmd_n)
 	if (!var->argv_for_cmd)
 		error_exit(var, "malloc failed: prepare_argv_and_redir\n");
 	cpy_content_to_argv(var, var->argv_for_cmd, cmd, argv_len);
+	//check and execute built ins here
 	find_path_to_cmd(var, &var->cmd, cmd->content);
+	close_pipes(var);
 }
 
-void	wait_for_children(t_mini *var, pid_t last_child_pid)
-{
-	int	i;
-	int	status;
-
-	i = 0;
-	while (i <= var->nbr_pipes)
-	{
-		if (wait(&status) == last_child_pid)
-		{
-			if (WIFEXITED(status))
-				var->exit_code = WEXITSTATUS(status);
-			else
-				var->exit_code = 1;
-		}
-		i++;
-	}
-}
-
-void	execute_cmds(t_mini *var)
+bool	execute_cmds(t_mini *var)
 {
 	int		n;
 	pid_t	pid;
 
-	create_pipes(var);
-	n = 0;
-	while (n <= var->nbr_pipes)
+	if (!create_pipes(var))
+		return (0);
+	n = -1;
+	while (++n <= var->nbr_pipes)
 	{
 		pid = fork();
 		if (pid == -1)
 		{
 			perror("fork");
-			free_var_exit(var, 1);
+			return (0);
 		}
 		else if (pid == 0)
 		{
 			prepare_argv_and_redir(var, n);
-			close_pipes(var);
 			execve(var->cmd, var->argv_for_cmd, var->envp);
 			perror("execve");
 			free_var_exit(var, 1);
 		}
-		n++;
 	}
 	close_pipes(var);
 	wait_for_children(var, pid);
+	return (1);
 }

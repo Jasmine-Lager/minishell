@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/30 13:13:18 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/10/02 19:59:36 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/10/02 23:46:46 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	count_env_var_len(t_mini *var, char *str, int *i)
 	{
 		temp = ft_itoa(var->exit_code);
 		if (!temp)
-			error_exit(var, BOLD RED "minishell: malloc failed\n" RESET);
+			return (write(2, "minishell: malloc failed\n", 25), -1);
 		len = ft_strlen(temp);
 	}
 	else
@@ -44,7 +44,7 @@ int	count_env_var_len(t_mini *var, char *str, int *i)
 		key_len = len_keyword(&str[*i]);
 		temp = malloc((key_len + 1) * sizeof(char));
 		if (!temp)
-			error_exit(var, BOLD RED "minishell: malloc failed\n" RESET);
+			return (write(2, "minishell: malloc failed\n", 25), -1);
 		ft_strlcpy(temp, &str[*i], key_len + 1);
 		len = ft_strlen(find_env_var(var->envp, temp));
 		*i += key_len - 1;
@@ -53,18 +53,16 @@ int	count_env_var_len(t_mini *var, char *str, int *i)
 	return (len);
 }
 
-int	len_expanded(t_mini *var, char *str)
+int	len_expanded(t_mini *var, char *str, int dquote, int squote)
 {
 	int	len;
-	int	dquote;
-	int	squote;
 	int	i;
+	int	check;
 
 	len = 0;
-	dquote = 0;
-	squote = 0;
-	i = 0;
-	while (str[i])
+	i = -1;
+	check = 0;
+	while (str[++i])
 	{
 		if (str[i] == '"' && !squote)
 			dquote = 1 - dquote;
@@ -72,10 +70,14 @@ int	len_expanded(t_mini *var, char *str)
 			squote = 1 - squote;
 		else if (str[i] == '$' && !squote
 			&& (ft_isalnum(str[i + 1]) || str[i + 1] == '?'))
-			len += count_env_var_len(var, str, &i);
+		{
+			check = count_env_var_len(var, str, &i);
+			len += check;
+		}
 		else
 			len++;
-		i++;
+		if (check == -1)
+			return (-1);
 	}
 	return (len);
 }

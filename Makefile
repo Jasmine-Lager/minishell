@@ -6,7 +6,7 @@
 #    By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/13 12:27:43 by jasminelage       #+#    #+#              #
-#    Updated: 2025/10/02 20:32:42 by ksevciko         ###   ########.fr        #
+#    Updated: 2025/10/03 00:02:07 by ksevciko         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,7 @@ SOURCES =	clean_up.c \
 			execute.c \
 			expand_len.c \
 			expand.c \
-			heredoc_utils.c \
+			heredoc_expand.c \
 			heredoc.c \
 			initialize_minishell.c \
 			main.c \
@@ -40,6 +40,7 @@ SOURCES =	clean_up.c \
 			redirect.c \
 			remove_quotes.c \
 			signals.c \
+			tmp_file.c \
 			token_define.c \
 			token_type.c \
 			
