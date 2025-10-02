@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 10:29:08 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/10/01 19:21:24 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/10/02 12:52:53 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ t_token	*find_start_of_nth_cmd(t_mini *var, int cmd_n) //for prepare_argv_and_re
 void	handle_command(t_mini *var)
 {
 	parse(var);
+	if (!var->tokens)
+		return ;
 	// print_tokens(var->tokens);
 	execute_cmds(var);
 }

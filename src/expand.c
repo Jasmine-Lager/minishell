@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 12:50:57 by jlager            #+#    #+#             */
-/*   Updated: 2025/10/01 19:49:05 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/10/02 13:00:58 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ char	*cpy_expanded(t_mini *var, char *str, char *result)
 			dquote = 1 - dquote;
 		else if (str[i] == 39 && !dquote)
 			squote = 1 - squote;
-		else if (str[i] == '$' && !squote)
+		else if (str[i] == '$' && !squote && (ft_isalnum(str[i + 1]) || str[i + 1] == '?'))
 			j += cpy_env_var(var, str, &i, &result[j]);
 		else
 			result[j++] = str[i];
@@ -72,9 +72,9 @@ char	*cpy_expanded(t_mini *var, char *str, char *result)
 	return (result);
 }
 
-// t_expand	*init_exp()
+// t_expand	*init_expanded(char *str)
 
-char	*expand_str(t_mini *var, char *str)
+char	*expand_str(t_mini *var, char *str) //todo: word splitting here, including detecting whethter the token cam be deleted (and only if it can = there are no "", run empty token in expand_tokens)
 {
 	int		len;
 	char	*result;
@@ -87,12 +87,35 @@ char	*expand_str(t_mini *var, char *str)
 	return (result);
 }
 
+void	empty_token(t_mini *var, t_token *last, t_token **current,
+		char *expanded)
+{
+	if ((*current)->type == CMD && (*current)->next &&
+		(*current)->next->type == WORD)
+		(*current)->next->type = CMD;
+	if (!last)
+	{
+		var->tokens = (*current)->next;
+		free(*current);
+		*current = var->tokens;
+	}
+	else
+	{
+		last->next = (*current)->next;
+		free(*current);
+		*current = last->next;
+	}
+	free(expanded);
+}
+
 void	expand_tokens(t_mini *var)
 {
 	t_token	*current;
+	t_token	*last;
 	char	*expanded;
 
 	current = var->tokens;
+	last = NULL;
 	while (current)
 	{
 		if (current->type == DELIMITER)
@@ -101,11 +124,14 @@ void	expand_tokens(t_mini *var)
 			continue ;
 		}
 		expanded = expand_str(var, current->content);
-		if (expanded)
+		free(current->content);
+		if (!*expanded) //&& can_be_rm)
+			empty_token(var, last, &current, expanded);
+		else
 		{
-			free(current->content);
 			current->content = expanded;
+			last = current;
+			current = current->next;
 		}
-		current = current->next;
 	}
 }
