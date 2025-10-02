@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 15:30:51 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/10/02 12:15:40 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/10/02 14:00:51 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ typedef struct s_token
 {
 	char			*content;
 	t_token_type	type;
-	t_quotes		quotes;
+	// t_quotes		quotes; //not needed, works fine without
 	struct s_token	*next;
 }					t_token;
 
@@ -141,6 +141,7 @@ typedef struct s_mini // stores all variables usefull for the whole program
 	int (*pipes)[2];
 	char *cmd;
 	char **argv_for_cmd;
+	int	nbr_heredoc;
 	int exit_code; // should only be used for pipes,
 					// not for signals (is here for expanding $?)
 }					t_mini;

@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 12:50:57 by jlager            #+#    #+#             */
-/*   Updated: 2025/10/02 13:00:58 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/10/02 13:48:46 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,7 @@ void	expand_tokens(t_mini *var)
 	{
 		if (current->type == DELIMITER)
 		{
+			// heredoc(var, current);
 			current = current->next;
 			continue ;
 		}

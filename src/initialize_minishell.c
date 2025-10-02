@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 19:04:09 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/09/30 22:29:22 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/10/02 13:28:44 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void	initialize_minishell(t_mini *var, int argc, char **argv, char **envp)
 	var->pipes = NULL;
 	var->cmd = NULL;
 	var->argv_for_cmd = NULL;
+	var->nbr_heredoc = 0;
 	var->exit_code = 0;
 	var->paths = ft_split(find_env_var(envp, "PATH"), ':');
 	if (!var->paths)

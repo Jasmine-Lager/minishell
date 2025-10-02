@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 20:38:35 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/10/02 12:49:51 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/10/02 13:29:07 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,4 +61,5 @@ void	free_one_line(t_mini *var)
 	free(var->argv_for_cmd);
 	var->argv_for_cmd = NULL;
 	var->nbr_pipes = 0;
+	var->nbr_heredoc = 0;
 }
