@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 09:09:21 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/10/01 19:09:26 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/10/02 19:25:16 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,19 +32,21 @@ void	redirect_in_out_to_pipes(t_mini *var, int cmd_n)
 	}
 }
 
-void	open_redir_infile(t_mini *var, char *infile)
+void	open_redir_infile(t_mini *var, char *infile, bool heredoc)
 {
 	int	fd;
 
 	fd = open(infile, O_RDONLY);
 	if (fd == -1)
 	{
-		perror("failed to open input");
+		perror(infile);
 		free_var_exit(var, 1);
 	}
 	if (dup2(fd, 0) == -1)
 		dup2_error(var);
 	close(fd);
+	if (heredoc)
+		unlink(infile);
 }
 
 void	open_redir_outfile(t_mini *var, char *outfile, bool append)
@@ -92,8 +94,8 @@ int	redir_files_and_count_argv_len(t_mini *var, t_token *ptr,
 			process_cmd(ptr, cmd, &argv_len);
 		else if (ptr->type == PIPE)
 			break ;
-		else if (ptr->type == INFILE)
-			open_redir_infile(var, ptr->content);
+		else if (ptr->type == INFILE || ptr->type == DELIMITER)
+			open_redir_infile(var, ptr->content, ptr->type == DELIMITER);
 		else if (ptr->type == REDIR_OUT)
 			append = 0;
 		else if (ptr->type == REDIR_APPEND)
@@ -155,14 +157,15 @@ int	redir_files_and_count_argv_len(t_mini *var, t_token *ptr,
 // 	while (ft_strncmp(line_in, var->current->delimiter,
 // 			ft_strlen(var->current->delimiter) + 1))
 // 	{
-// 		if (line_in)
+// 		if (!line_in)
 // 		{
-// 			// if (!var->delim_quoted)
-// 			// 	expand(var, line_in);
-// 			write(var->pipes[0][1], line_in, ft_strlen(line_in));
-// 			write(var->pipes[0][1], "\n", 1);
-// 			free(line_in);
+// 			error_exit(var, "heredoc delimited by end-of-file\n");
 // 		}
+// 		// if (!var->delim_quoted)
+// 		// 	expand(var, line_in);
+// 		write(var->pipes[0][1], line_in, ft_strlen(line_in));
+// 		write(var->pipes[0][1], "\n", 1);
+// 		free(line_in);
 // 		line_in = readline(BOLD GRAY ">" RESET);
 // 	}
 // 	free(line_in);

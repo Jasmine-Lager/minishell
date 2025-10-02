@@ -12,7 +12,7 @@ get_next_line_utils_bonus.c get_next_line_bonus.c \
 ft_printf.c ft_putunsigned_fd.c ft_putnbr_base_fd.c ft_putptr_base_fd.c \
 \
 ft_split_charset.c min_max.c ft_base_to_uint.c ft_abs.c ft_arr_str_len.c \
-ft_atoi_strict.c free_arr.c
+ft_atoi_strict.c free_arr.c replace_char.c ft_strjoin_four.c
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror

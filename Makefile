@@ -6,7 +6,7 @@
 #    By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/13 12:27:43 by jasminelage       #+#    #+#              #
-#    Updated: 2025/10/01 19:01:54 by ksevciko         ###   ########.fr        #
+#    Updated: 2025/10/02 19:13:16 by ksevciko         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,6 +39,7 @@ SOURCES =	clean_up.c \
 			redirect.c \
 			remove_quotes.c \
 			signals.c \
+			tmp_file.c \
 			token_define.c \
 			token_type.c \
 			

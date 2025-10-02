@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 17:56:27 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/07/21 15:17:34 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/10/02 19:09:16 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,5 +84,8 @@ size_t	ft_abs(int n);
 int		ft_arr_str_len(char **array);
 int		ft_atoi_strict(const char *nptr);
 void	free_arr(char **split_line);
+char	*replace_char(char *str, char old, char new);
+char	*ft_strjoin_four(const char *s1, const char *s2,
+			const char *s3, const char *s4);
 
 #endif

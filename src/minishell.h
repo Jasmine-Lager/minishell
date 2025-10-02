@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 15:30:51 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/10/02 14:00:51 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/10/02 19:47:43 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@
 // execve, getcwd, chdir, unlink, dup, dup2, isatty, ttyname, ttyslot, kill
 # include "libft.h"
 # include <fcntl.h> //open
+# include <errno.h>
 
 // ----------ASCI escape codes for text formating----------
 # define RESET "\x1b[0m"
@@ -115,7 +116,7 @@ typedef struct s_token
 {
 	char			*content;
 	t_token_type	type;
-	// t_quotes		quotes; //not needed, works fine without
+	t_quotes		quotes;
 	struct s_token	*next;
 }					t_token;
 
@@ -180,12 +181,16 @@ int	len_expanded(t_mini *var, char *str);
 
 // expand.c
 int cpy_env_var(t_mini *var, char *str, int *i, char *dst);
-char	*cpy_expanded(t_mini *var, char *str, char *result);
+char	*cpy_expanded(t_mini *var, char *str, char *result, bool delim);
 char	*expand_str(t_mini *var, char *str);
 void				expand_tokens(t_mini *var);
 
 // heredoc.c
-void	handle_heredocs(t_mini *var);
+int		len_no_quotes(char *delim, bool *quoted);
+bool	rm_quotes_delim(t_mini *var, char **delim);
+void	read_heredoc(t_mini *var, char *delim, int fd, bool delim_quoted);
+void	heredoc_to_file(t_mini *var, char *filename, char **delim);
+void	heredoc(t_mini *var, t_token *delim);
 
 // initialize_minishell.c
 void				initialize_minishell(t_mini *var, int argc, char **argv,
@@ -221,7 +226,7 @@ t_quote_info		analyze_token_quotes_detailed(char *content);
 
 // redirect.c
 void	redirect_in_out_to_pipes(t_mini *var, int cmd_n);
-void	open_redir_infile(t_mini *var, char *infile);
+void	open_redir_infile(t_mini *var, char *infile, bool heredoc);
 void	open_redir_outfile(t_mini *var, char *outfile, bool append);
 void	process_cmd(t_token *ptr, t_token **cmd, int *argv_len);					
 int		redir_files_and_count_argv_len(t_mini *var, t_token *ptr,
@@ -236,6 +241,10 @@ void				remove_quotes_from_tokens(t_mini *var);
 // signals.c
 void				handle_ctrl_c(int signal_number);
 void				signals_setup(void);
+
+// tmp_file.c
+char	*get_tmp_file_name(t_mini *var);
+int		open_tmp_file(t_mini *var, char *filename);
 
 // token_define.c
 int					skip_quoted_section(t_mini *var, int i, char quote);

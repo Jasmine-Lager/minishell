@@ -6,91 +6,114 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/30 12:34:17 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/10/02 14:58:00 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/10/02 20:20:13 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*replace_char(char *str, char old, char new)
+int	len_no_quotes(char *delim, bool *quoted)
 {
-    int i = 0;
+	int	len;
+	int	dquote;
+	int	squote;
+	int	i;
 
-    while (str && str[i])
-    {
-        if (str[i] == old)
-            str[i] = new;
-        i++;
-    }
-	return (str);
+	len = 0;
+	dquote = 0;
+	squote = 0;
+	i = -1;
+	while (delim[++i])
+	{
+		if (delim[i] == '"' && !squote)
+		{
+			dquote = 1 - dquote;
+			*quoted = 1;
+		}
+		else if (delim[i] == 39 && !dquote)
+		{
+			squote = 1 - squote;
+			*quoted = 1;
+		}
+		else
+			len++;
+	}
+	return (len);
 }
 
-char	*ft_strjoin_four_strings(const char *s1, const char *s2,
-			const char *s3, const char *s4)
+bool	rm_quotes_delim(t_mini *var, char **delim)
 {
+	int		len;
 	char	*result;
-	char	*tmp;
+	bool	quoted;
 
-	result = ft_strjoin(s1, s2);
+	quoted = 0;
+	len = len_no_quotes(*delim, &quoted);
+	result = (char *)malloc((len + 1) * sizeof(char));
 	if (!result)
-		return (NULL);
-	tmp = ft_strjoin(result, s3);
-	free(result);
-	if (!tmp)
-		return (NULL);
-	result = ft_strjoin(tmp, s4);
-	free(tmp);
-	if (!result)
-		return (NULL);
-	return (result);
+		error_exit(var, BOLD RED "minishell: malloc failed\n" RESET);
+	cpy_expanded(var, *delim, result, 1);
+	free(*delim);
+	*delim = result;
+	return (quoted);
 }
 
-char	*get_tmp_file_name(t_mini *var)
+void	read_heredoc(t_mini *var, char *delim, int fd, bool delim_quoted)
 {
-	char	*id_s;
-	char	*file;
-	char	*tty;
+	char	*line_in;
 
-	tty = ttyname(0);
-	if (!tty)
+	line_in = readline(BOLD GRAY ">" RESET);
+	while (ft_strncmp(line_in, delim, ft_strlen(delim) + 1))
 	{
-		perror("error of function ttyname");
-		return (NULL);
+		if (!line_in)
+			error_exit(var, "heredoc delimited by end-of-file\n");
+		if (!delim_quoted)
+			line_in = expand_str(var, line_in);
+		write(fd, line_in, ft_strlen(line_in));
+		write(fd, "\n", 1);
+		free(line_in);
+		line_in = readline(BOLD GRAY ">" RESET);
 	}
-	tty = replace_char(tty, '/', '_');
-	id_s = ft_itoa(var->nbr_heredoc);
-	if (!id_s)
-		return (NULL);
-	file = ft_strjoin_four_strings("/tmp/.minishell_heredoc_", id_s, "_", tty);
-	free(id_s);
-	if (!file)
-		return (NULL);
-	if (!*file)
-	{
-		free(file);
-		return (NULL);
-	}
-	return (file);
+	free(line_in);
+}
+
+void	heredoc_to_file(t_mini *var, char *filename, char **delim)
+{
+	int		fd;
+	bool	delim_quoted;
+
+	fd = open_tmp_file(var, filename);
+	delim_quoted = rm_quotes_delim(var, delim);
+	read_heredoc(var, *delim, fd, delim_quoted);
+	close(fd);
+	free(filename);
+	free_var_exit(var, 0);
 }
 
 void	heredoc(t_mini *var, t_token *delim)
 {
 	char	*file;
 	pid_t	pid;
+	int		status;
 
 	file = get_tmp_file_name(var);
 	if (!file)
 		return ;
-	var->nbr_heredoc++;
 	pid = fork();
 	if (pid == -1)
 	{
 		perror("fork");
-		return ;//make it return all the way to main
+		return ; //make it return all the way to main
 	}
-	else if (pid == 0 && !read_heredoc())
-		free_var_exit(var, 1);
+	else if (pid == 0)
+		heredoc_to_file(var, file, &delim->content);
+	waitpid(pid, &status, 0);
+	if (WIFSIGNALED(status)) // kinda what a signal should do here (AI generated, please check it)
+	{
+		unlink(file);
+		g_signal = 130;  // 128 + SIGINT
+		return ;  // return all the way to main immediately, do not execute anything
+	}
 	free(delim->content);
 	delim->content = file;
-	delim->type = INFILE;
 }

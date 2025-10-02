@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/30 13:13:18 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/10/02 11:10:02 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/10/02 19:59:36 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	len_keyword(char *str)
 
 	len = 0;
 	while (str[len] && str[len] != '"' && str[len] != 39 && str[len] != '$'
-			&& str[len] != ' ')
+		&& str[len] != ' ')
 	{
 		len++;
 	}
@@ -70,7 +70,8 @@ int	len_expanded(t_mini *var, char *str)
 			dquote = 1 - dquote;
 		else if (str[i] == 39 && !dquote)
 			squote = 1 - squote;
-		else if (str[i] == '$' && !squote  && (ft_isalnum(str[i + 1]) || str[i + 1] == '?'))
+		else if (str[i] == '$' && !squote
+			&& (ft_isalnum(str[i + 1]) || str[i + 1] == '?'))
 			len += count_env_var_len(var, str, &i);
 		else
 			len++;
