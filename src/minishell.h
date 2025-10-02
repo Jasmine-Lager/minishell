@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 15:30:51 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/10/02 19:47:43 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/10/02 20:37:02 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,6 +185,13 @@ char	*cpy_expanded(t_mini *var, char *str, char *result, bool delim);
 char	*expand_str(t_mini *var, char *str);
 void				expand_tokens(t_mini *var);
 
+// heredoc_utils.c
+char	*get_tmp_file_name(t_mini *var);
+int		open_tmp_file(t_mini *var, char *filename);
+int		len_expanded_heredoc(t_mini *var, char *str);
+char	*cpy_expanded_heredoc(t_mini *var, char *str, char *result);
+char	*expand_heredoc(t_mini *var, char *str);
+
 // heredoc.c
 int		len_no_quotes(char *delim, bool *quoted);
 bool	rm_quotes_delim(t_mini *var, char **delim);
@@ -241,10 +248,6 @@ void				remove_quotes_from_tokens(t_mini *var);
 // signals.c
 void				handle_ctrl_c(int signal_number);
 void				signals_setup(void);
-
-// tmp_file.c
-char	*get_tmp_file_name(t_mini *var);
-int		open_tmp_file(t_mini *var, char *filename);
 
 // token_define.c
 int					skip_quoted_section(t_mini *var, int i, char quote);
