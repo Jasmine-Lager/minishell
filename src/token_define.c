@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_define.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlager <jlager@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 17:35:51 by jasminelage       #+#    #+#             */
-/*   Updated: 2025/09/25 19:07:10 by jlager           ###   ########.fr       */
+/*   Updated: 2025/10/08 10:04:22 by jasminelage      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,12 @@ int skip_quoted_section(t_mini *var, int i, char quote)
 	i++; // Skip opening quote
 	while (var->line[i] && var->line[i] != quote)
 		i++;
-	if (var->line[i] == quote)
-		i++; // Skip closing quote
+	if (var->line[i] != quote)  // Changed from == to !=
+	{
+		write(2, "error: unclosed quotes\n", 23);
+		return (i);
+	}
+	i++; // Skip closing quote
 	return (i);
 }
 
@@ -32,7 +36,6 @@ int is_token_boundary(t_mini *var, int i)
 		return (1);
 	if (var->line[i] == '|' || var->line[i] == '<' || var->line[i] == '>')
 		return (1);
-
 	return (0);
 }
 
@@ -44,23 +47,9 @@ int find_complete_token_end(t_mini *var, int start)
 	while (var->line[i] && !is_token_boundary(var, i))
 	{
 		if (var->line[i] == '"')
-		{
 			i = skip_quoted_section(var, i, '"');
-			if (!var->line[i])
-			{
-				write(2, "error: unclosed quotes\n", 23);
-				return (i);
-			}
-		}
 		else if (var->line[i] == '\'')
-		{
 			i = skip_quoted_section(var, i, '\'');
-			if (!var->line[i])
-			{
-				write(2, "error: unclosed quotes\n", 23);
-				return (i);
-			}
-		}
 		else
 			i++;
 	}

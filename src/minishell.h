@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
+/*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 15:30:51 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/10/03 00:12:58 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/10/07 12:59:17 by jasminelage      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 # define MINISHELL_H
 
 # include <limits.h>            // INT_MAX, INT_MAX
+# include <stdio.h>             // printf, perror
 # include <readline/history.h>  // add_history, rl_clear_history
 # include <readline/readline.h> // readline, rl_on_new_line, rl_replace_line,
-# include <stdio.h>             // printf, perror
 // rl_redisplay
 # include <dirent.h>    // opendir, readdir, closedir
 # include <signal.h>    // signal, sigaction, sigemptyset, sigaddset
@@ -180,10 +180,12 @@ int	count_env_var_len(t_mini *var, char *str, int *i);
 int	len_expanded(t_mini *var, char *str, int dquote, int squote);
 
 // expand.c
-int cpy_env_var(t_mini *var, char *str, int *i, char *dst);
-char	*cpy_expanded(t_mini *var, char *str, char *result);
-char	*expand_str(t_mini *var, char *str);
-bool			expand_tokens(t_mini *var);
+int					cpy_env_var(t_mini *var, char *str, int *i, char *dst);
+char				*cpy_expanded(t_mini *var, char *str, char *result);
+char				*expand_str(t_mini *var, char *str);
+void				empty_token(t_mini *var, t_token *last, t_token **current,
+						char *expanded);
+bool				expand_tokens(t_mini *var);
 
 // heredoc_expand.c
 char	*cpy_expanded_delim(char *str, char *result);
@@ -246,7 +248,12 @@ void				remove_quotes_from_tokens(t_mini *var);
 
 // signals.c
 void				handle_ctrl_c(int signal_number);
+void				handle_ctrl_c_execution(int signal_number);
+void				handle_ctrl_c_heredoc(int signal_number);
 void				signals_setup(void);
+void				signals_execution(void);
+void				signals_heredoc(void);
+void				signals_child(void);
 
 // tmp_file.c
 char	*get_tmp_file_name(t_mini *var);

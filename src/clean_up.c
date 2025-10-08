@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clean_up.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
+/*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 20:38:35 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/10/02 23:27:38 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/10/07 12:51:19 by jasminelage      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,16 @@ void	wait_for_children(t_mini *var, pid_t last_child_pid)
 		{
 			if (WIFEXITED(status))
 				var->exit_code = WEXITSTATUS(status);
+			else if (WIFSIGNALED(status))
+			{
+				// Check if terminated by signal
+				if (WTERMSIG(status) == SIGINT)
+					var->exit_code = 130;  // Ctrl+C
+				else if (WTERMSIG(status) == SIGQUIT)
+					var->exit_code = 131;  // Ctrl+backslash
+				else
+					var->exit_code = 128 + WTERMSIG(status);
+			}
 			else
 				var->exit_code = 1;
 		}

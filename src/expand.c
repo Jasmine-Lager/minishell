@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
+/*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 12:50:57 by jlager            #+#    #+#             */
-/*   Updated: 2025/10/03 00:11:58 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/10/08 09:49:05 by jasminelage      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,8 +131,14 @@ bool	expand_tokens(t_mini *var)
 			continue ;
 		}
 		expanded = expand_str(var, current->content);
+		if (!expanded)  // Check for NULL before dereferencing
+		{
+			write(2, BOLD RED "minishell: expansion failed\n" RESET, 
+				ft_strlen(BOLD RED "minishell: expansion failed\n" RESET));
+			return (0);
+		}
 		free(current->content);
-		if (!*expanded) //&& can_be_rm)
+		if (!*expanded) // Now safe to dereference
 			empty_token(var, last, &current, expanded);
 		else
 		{
@@ -141,5 +147,5 @@ bool	expand_tokens(t_mini *var)
 			current = current->next;
 		}
 	}
-	return (1); //todo: make this function check for errors and return 0, but only after implementing wird splitting
+	return (1);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
+/*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 16:00:52 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/10/02 22:50:42 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/10/08 10:32:57 by jasminelage      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,36 +20,40 @@ volatile sig_atomic_t g_signal = 0;
 
 int main(int argc, char **argv, char **envp)
 {
-	t_mini *var;
+    t_mini *var;
 
-	// extra edge case? would just about fit
-	// if (envp == NULL || *envp == NULL)
-	// 	return (printsdr(BOLD RED "No environment found. \nExiting..", RESET));
-	var = malloc(sizeof(t_mini));
-	initialize_minishell(var, argc, argv, envp);
-	signals_setup();
-	// REPL
-	// = Read > Evaluate > Print > Loop
-	while (1)
-	{
-		g_signal = 0;
-		var->line = readline(BOLD GRAY "$ " RESET);
-		// making the BOLD GRAY the defult color??
-		if (var->line == NULL)
-		// Ctrl+D has been pressed to terminate the program
-		{
-			ft_printf(BOLD GRAY "Exiting..\n" RESET);
-			free_var_exit(var, 0);
-		}
-		if (*var->line)
-		{
-			add_history(var->line);
-			handle_command(var);
-		}
-		free_one_line(var);
-	}
-	free_var_exit(var, 0);
-	return (0);
+    var = malloc(sizeof(t_mini));
+    initialize_minishell(var, argc, argv, envp);
+    signals_setup();
+    while (1)
+    {
+        var->line = readline("$ ");
+        if (g_signal == 130)  // Ctrl+C was pressed
+        {
+            var->exit_code = 130;
+            g_signal = 0;
+        }
+        if (var->line == NULL) // Check if Ctrl+D was pressed (EOF)
+        {
+            printf("Exiting..\n");
+            free_var_exit(var, 0);
+        }
+        if (*var->line)
+        {
+            add_history(var->line);
+            handle_command(var);
+            // Check if heredoc was interrupted
+            if (g_signal == 130)
+            {
+				var->exit_code = 130;
+                g_signal = 0;  // Reset signal flag
+                // Continue to next iteration without executing
+            }
+        }
+        free_one_line(var);
+    }
+    free_var_exit(var, 0);
+    return (0);
 }
 
 // envv (also called envp) = environment variables

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
+/*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 20:59:49 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/10/02 23:34:37 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/10/07 12:50:55 by jasminelage      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ bool	execute_cmds(t_mini *var)
 
 	if (!create_pipes(var))
 		return (0);
+	signals_execution();  // Change signal handling during execution
 	n = -1;
 	while (++n <= var->nbr_pipes)
 	{
@@ -113,10 +114,12 @@ bool	execute_cmds(t_mini *var)
 		if (pid == -1)
 		{
 			perror("fork");
+			signals_setup();  // Restore interactive signals
 			return (0);
 		}
 		else if (pid == 0)
 		{
+			signals_child();  // Child uses default signal handling
 			prepare_argv_and_redir(var, n);
 			execve(var->cmd, var->argv_for_cmd, var->envp);
 			perror("execve");
@@ -125,5 +128,6 @@ bool	execute_cmds(t_mini *var)
 	}
 	close_pipes(var);
 	wait_for_children(var, pid);
+	signals_setup();  // Restore interactive signals after execution
 	return (1);
 }
