@@ -3,14 +3,44 @@
 /*                                                        :::      ::::::::   */
 /*   initialize_minishell.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
+/*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/04 19:04:09 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/10/02 13:28:44 by ksevciko         ###   ########.fr       */
+/*   Created: 2025/10/30 15:10:05 by jasminelage       #+#    #+#             */
+/*   Updated: 2025/10/30 15:10:14 by jasminelage      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+// Copy environment variables so we can modify them
+static char	**copy_envp(char **envp)
+{
+	int		count;
+	int		i;
+	char	**new_envp;
+
+	count = 0;
+	while (envp[count])
+		count++;
+	new_envp = malloc(sizeof(char *) * (count + 1));
+	if (!new_envp)
+		return (NULL);
+	i = 0;
+	while (i < count)
+	{
+		new_envp[i] = ft_strdup(envp[i]);
+		if (!new_envp[i])
+		{
+			while (i > 0)
+				free(new_envp[--i]);
+			free(new_envp);
+			return (NULL);
+		}
+		i++;
+	}
+	new_envp[i] = NULL;
+	return (new_envp);
+}
 
 void	initialize_minishell(t_mini *var, int argc, char **argv, char **envp)
 {
@@ -25,7 +55,14 @@ void	initialize_minishell(t_mini *var, int argc, char **argv, char **envp)
 		free(var);
 		exit(2);
 	}
-	var->envp = envp;
+	// Copy environment variables so we can modify them
+	var->envp = copy_envp(envp);
+	if (!var->envp)
+	{
+		write(2, "malloc in initialize_minishell failed\n", 38);
+		free(var);
+		exit(1);
+	}
 	var->line = NULL;
 	var->tokens = NULL;
 	var->nbr_pipes = 0;
@@ -34,7 +71,7 @@ void	initialize_minishell(t_mini *var, int argc, char **argv, char **envp)
 	var->argv_for_cmd = NULL;
 	var->nbr_heredoc = 0;
 	var->exit_code = 0;
-	var->paths = ft_split(find_env_var(envp, "PATH"), ':');
+	var->paths = ft_split(find_env_var(var->envp, "PATH"), ':');
 	if (!var->paths)
-		error_exit(var, "malloc in initialize_minishell failed\n"); //can only be called after everything is initialized to null
+		error_exit(var, "malloc in initialize_minishell failed\n");
 }

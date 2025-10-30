@@ -6,21 +6,11 @@
 /*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 12:50:33 by jlager            #+#    #+#             */
-/*   Updated: 2025/10/08 10:32:01 by jasminelage      ###   ########.fr       */
+/*   Updated: 2025/10/30 15:17:23 by jasminelage      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// Ctrl+C: interrupts the current input and redisplays the prompts (SIGINT)
-//		but not the shell itself.
-// Ctrl+\: Normally quits, here it should not do anything (SIGQUIT)
-// Ctrl+D and EOF: Exit shell, Check for NULL/0 from input (in main)
-
-// write(1, "\n", 1) ensures the cursor moves to a new line.
-// 	rl_replace_line("", 0) clears the current buffer
-// 	rl_on_new_line() tells readline a new line started
-// 	rl_redisplay() reprints the prompt and the (now empty) buffer
 
 // signo is the integer ID of the signal that triggered the handler
 // Handler for interactive prompt (main shell)

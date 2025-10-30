@@ -6,7 +6,7 @@
 /*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 12:50:57 by jlager            #+#    #+#             */
-/*   Updated: 2025/10/08 09:49:05 by jasminelage      ###   ########.fr       */
+/*   Updated: 2025/10/30 15:29:51 by jasminelage      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ char	*expand_str(t_mini *var, char *str) //todo: word splitting here, including 
 	if (!result || len == -1)
 	{
 		free(result);
-		write(2, BOLD RED "minishell: malloc failed\n" RESET, 25);
+		write(2, "minishell: malloc failed\n", 25);
 		return (NULL);
 	}
 	result = cpy_expanded(var, str, result);
@@ -133,8 +133,8 @@ bool	expand_tokens(t_mini *var)
 		expanded = expand_str(var, current->content);
 		if (!expanded)  // Check for NULL before dereferencing
 		{
-			write(2, BOLD RED "minishell: expansion failed\n" RESET, 
-				ft_strlen(BOLD RED "minishell: expansion failed\n" RESET));
+			write(2, "minishell: expansion failed\n" , 
+				ft_strlen("minishell: expansion failed\n"));
 			return (0);
 		}
 		free(current->content);

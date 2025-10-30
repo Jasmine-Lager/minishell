@@ -6,72 +6,34 @@
 /*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 15:30:51 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/10/07 12:59:17 by jasminelage      ###   ########.fr       */
+/*   Updated: 2025/10/30 15:19:27 by jasminelage      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include <limits.h>            // INT_MAX, INT_MAX
-# include <stdio.h>             // printf, perror
-# include <readline/history.h>  // add_history, rl_clear_history
-# include <readline/readline.h> // readline, rl_on_new_line, rl_replace_line,
-// rl_redisplay
-# include <dirent.h>    // opendir, readdir, closedir
-# include <signal.h>    // signal, sigaction, sigemptyset, sigaddset
-# include <stdbool.h>   // bool flags
-# include <stdlib.h>    // malloc, free, exit, getenv, EXIT_SUCCESS
-# include <string.h>    // strerror
-# include <sys/ioctl.h> // ioctl
-# include <sys/stat.h>  // stat, lstat, fstat
-# include <sys/types.h> // general types, used with wait/fork/etc.
-# include <sys/wait.h>  // wait, waitpid, wait3, wait4
-# include <term.h>      // tgetent, tgetflag, tgetnum, tgetstr, tgoto,
-// tputs
-// or use <curses.h> if <term.h> isn't available
-# include <termios.h> // tcsetattr, tcgetattr
-# include <unistd.h>  // write, access, read, close, fork,
-// execve, getcwd, chdir, unlink, dup, dup2, isatty, ttyname, ttyslot, kill
+# include <limits.h>			// INT_MAX, INT_MAX
+# include <stdio.h>				// printf, perror
+# include <readline/history.h>	// add_history, rl_clear_history
+# include <readline/readline.h>	// readline, rl_on_new_line, rl_replace_line,
+								// rl_redisplay
+# include <dirent.h>	// opendir, readdir, closedir
+# include <signal.h>	// signal, sigaction, sigemptyset, sigaddset
+# include <stdbool.h>	// bool flags
+# include <stdlib.h>	// malloc, free, exit, getenv, EXIT_SUCCESS
+# include <string.h>	// strerror
+# include <sys/ioctl.h>	// ioctl
+# include <sys/stat.h>	// stat, lstat, fstat
+# include <sys/types.h>	// general types, used with wait/fork/etc.
+# include <sys/wait.h>	// wait, waitpid, wait3, wait4
+# include <term.h>		// tgetent, tgetflag, tgetnum, tgetstr, tgoto, tputs
+# include <termios.h>	// tcsetattr, tcgetattr
+# include <unistd.h>	// write, access, read, close, fork, execve, dup, dup2,
+						// chdir, unlink, getcwd, kill, isatty, ttyname, ttyslot 
 # include "libft.h"
-# include <fcntl.h> //open
+# include <fcntl.h>		//open
 # include <errno.h>
-
-// ----------ASCI escape codes for text formating----------
-# define RESET "\x1b[0m"
-
-// Text styles
-# define BOLD "\x1b[1m"
-# define ITALIC "\x1b[3m"
-# define UNDERLINE "\x1b[4m"
-# define DIM "\x1b[2m"
-
-// Text (foreground) color
-// Text colors are \x1b[3Xm (normal) or \x1b[9Xm (bright).
-# define RED "\x1b[91m"
-# define PURPLE "\x1b[35m"
-# define BLUE "\x1b[34m"
-# define CYAN "\x1b[94m"
-# define GREEN "\x1b[92m"
-# define GOLD "\x1b[33m"
-# define WHITE "\x1b[37m"
-# define GRAY "\x1b[90m"
-# define BLACK "\x1b[30m"
-
-// Background colors
-// Background colors are \x1b[4Xm (normal) or \x1b[10Xm (bright).
-# define BG_RED "\x1b[101m"
-# define BG_PURPLE "\x1b[45m"
-# define BG_BLUE "\x1b[44m"
-# define BG_CYAN "\x1b[106m"
-# define BG_GREEN "\x1b[102m"
-# define BG_GOLD "\x1b[43m"
-# define BG_WHITE "\x1b[47m"
-# define BG_GRAY "\x1b[100m"
-# define BG_BLACK "\x1b[40m"
-// Exaple use:
-//	ft_printf(UNDERLINE GREEN BG_BLACK "Success: " RESET "Operation complete.");
-//	write(1, BOLD CYAN "Load..." RESET, ft_strlen(BOLD CYAN "Load..." RESET));
 
 extern volatile sig_atomic_t g_signal; // only global allowed
 
@@ -120,18 +82,6 @@ typedef struct s_token
 	struct s_token	*next;
 }					t_token;
 
-// typedef struct s_expand //might use this later for word splitting
-// {
-// 	char	*str;
-// 	char	*result;
-// 	char	*i;
-// 	char	*j;
-// 	int		nbr_of_splitting;
-// 	int		**i_of_splitting;
-// 	bool	can_be_rm;
-// }	t_expand;
-
-
 typedef struct s_mini // stores all variables usefull for the whole program
 {
 	char **envp;
@@ -147,19 +97,40 @@ typedef struct s_mini // stores all variables usefull for the whole program
 					// not for signals (is here for expanding $?)
 }					t_mini;
 
+// builtins.c
+int					builtin_echo(char **argv);
+int					builtin_cd(t_mini *var, char **argv);
+int					builtin_pwd(void);
+int					builtin_env(t_mini *var, char **argv);
+int					builtin_exit(t_mini *var, char **argv);
+
+// builtins_env.c
+int					builtin_export(t_mini *var, char **argv);
+int					builtin_unset(t_mini *var, char **argv);
+
+// builtins_utils.c
+int					is_valid_number(char *str);
+int					is_builtin(char *cmd);
+int					execute_builtin(t_mini *var, char **argv);
+
 // clean_up.c
 void				free_tokens(t_mini *var);
 void				free_var_exit(t_mini *var, int exit_code);
 void				free_one_line(t_mini *var);
 void				wait_for_children(t_mini *var, pid_t last_child_pid);
 
-// command_utils.c
-
 // commands.c
 void				handle_command(t_mini *var);
 
 // environment.c
 char				*find_env_var(char **envp, char *key);
+
+// environment_utils.c
+int					count_env_vars(char **envp);
+int					find_env_index(char **envp, char *key);
+int					update_env_var(t_mini *var, char *key, char *value);
+int					set_env_var(t_mini *var, char *key, char *value);
+int					unset_env_var(t_mini *var, char *key);
 
 // errors.c
 void				error_exit(t_mini *var, char *str);

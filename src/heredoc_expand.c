@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_expand.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
+/*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/03 00:00:29 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/10/03 00:00:29 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/10/30 15:29:58 by jasminelage      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ char	*expand_heredoc(t_mini *var, char *str)
 	len = len_expanded_heredoc(var, str);
 	result = (char *)malloc((len + 1) * sizeof(char));
 	if (!result)
-		error_exit(var, BOLD RED "minishell: malloc failed\n" RESET);
+		error_exit(var, "minishell: malloc failed\n");
 	cpy_expanded_heredoc(var, str, result);
 	return (result);
 }

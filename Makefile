@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+         #
+#    By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/13 12:27:43 by jasminelage       #+#    #+#              #
-#    Updated: 2025/10/03 00:02:07 by ksevciko         ###   ########.fr        #
+#    Updated: 2025/10/30 15:29:00 by jasminelage      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,9 +21,12 @@ LIBFT = $(LIBFT_DIR)/libft.a
 SRC_DIR = src
 OBJ_DIR = obj
 
-SOURCES =	clean_up.c \
-			command_utils.c \
+SOURCES =	builtins_more.c \
+			builtins_utils.c \
+			builtins.c \
+			clean_up.c \
 			commands.c \
+			environment_utils.c \
 			environment.c \
 			errors.c \
 			execute.c \
@@ -38,7 +41,6 @@ SOURCES =	clean_up.c \
 			quotes_handling.c \
 			quotes_handling_utils.c \
 			redirect.c \
-			remove_quotes.c \
 			signals.c \
 			tmp_file.c \
 			token_define.c \
@@ -46,24 +48,6 @@ SOURCES =	clean_up.c \
 			
 OBJECTS = $(SOURCES:%.c=$(OBJ_DIR)/%.o)
 
-# ----------------------------- for MAC compiling -----------------------------
-# the GNU library is not installed on Mac by defult
-# this looks up what systhem I am on and finds the library path accordingly
-UNAME_S := $(shell uname -s)
-
-ifeq ($(UNAME_S),Darwin)
-    # macOS Homebrew readline prefix (adjust if your brew is in /usr/local)
-    READLINE_PREFIX := /opt/homebrew
-    CPPFLAGS += -I$(READLINE_PREFIX)/include
-    LDFLAGS += -L$(READLINE_PREFIX)/lib -lreadline -liconv
-else ifeq ($(UNAME_S),Linux)
-    # Linux usually has readline in default system paths
-    CPPFLAGS +=
-    LDFLAGS += -lreadline
-endif
-# -----------------------------------------------------------------------------
-
-all: $(LIBFT) $(NAME)
 # ----------------------------- for MAC compiling -----------------------------
 # the GNU library is not installed on Mac by defult
 # this looks up what systhem I am on and finds the library path accordingly

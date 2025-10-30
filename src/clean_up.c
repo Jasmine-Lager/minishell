@@ -5,10 +5,11 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/04 20:38:35 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/10/07 12:51:19 by jasminelage      ###   ########.fr       */
+/*   Created: 2025/10/30 15:10:37 by jasminelage       #+#    #+#             */
+/*   Updated: 2025/10/30 15:10:38 by jasminelage      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "minishell.h"
 
@@ -31,6 +32,22 @@ void	free_tokens(t_mini *var)
 	var->tokens = NULL;
 }
 
+// Free environment variables array
+static void	free_envp(char **envp)
+{
+	int	i;
+
+	if (!envp)
+		return ;
+	i = 0;
+	while (envp[i])
+	{
+		free(envp[i]);
+		i++;
+	}
+	free(envp);
+}
+
 //cannot free var->delimiter here, because it is a pointer to the same 
 //thing as tokens->content, and we free that instead, the same thing with 
 //infile, outfile and strings in argv_for_cmd
@@ -43,6 +60,8 @@ void	free_var_exit(t_mini *var, int exit_code)
 	free(var->pipes);
 	free(var->cmd);
 	free(var->argv_for_cmd);
+	if (var && var->envp)
+		free_envp(var->envp);
 	free(var);
 	rl_clear_history();
 	exit(exit_code);
