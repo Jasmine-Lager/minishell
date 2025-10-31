@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 12:50:57 by jlager            #+#    #+#             */
-/*   Updated: 2025/10/31 17:19:13 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/10/31 17:22:56 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	cpy_env_var(t_mini *var, char *str, int *i, char *dst, t_split *split)
 	int		key_len;
 
 	key_len = 0;
-	len = count_env_var_len(var, &str[*i], &key_len);
+	len = count_env_var_len(var, &str[*i], &key_len, split);
 	(*i)++;
 	if (str[*i] == '?')
 	{
@@ -65,7 +65,7 @@ char	*cpy_expanded(t_mini *var, char *str, char *result, t_split *split)
 		else if (str[i] == '$' && !squote
 			&& (ft_isalnum(str[i + 1]) || str[i + 1] == '?'))
 		{
-			j += cpy_env_var(var, str, &i, &result[j]); //check if this returned -1
+			j += cpy_env_var(var, str, &i, &result[j], split); //check if this returned -1
 		}
 		else
 			result[j++] = str[i];
@@ -89,7 +89,7 @@ char	*expand_str(t_mini *var, char *str, t_split *split) //todo: word splitting 
 		write(2, "minishell: malloc failed\n", 25);
 		return (NULL);
 	}
-	result = cpy_expanded(var, str, result);
+	result = cpy_expanded(var, str, result, split);
 	return (result);
 }
 
@@ -129,7 +129,7 @@ bool	expand_tokens(t_mini *var)
 	while (current)
 	{
 		split->can_be_rm = 1;
-		split->nbr_word_split = 0;
+		split->nbr_split = 0;
 		if (current->type == DELIMITER)
 		{
 			heredoc(var, current);

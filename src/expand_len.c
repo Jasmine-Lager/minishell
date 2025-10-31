@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/30 13:13:18 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/10/31 17:13:50 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/10/31 17:23:43 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,10 @@ int	count_split(char *expanded, t_split *split)
 {
 	int	in_word;
 
-	if (split->dquote)
+	if (split->dquote && expanded)
 		return (0);
-	in_word = 
+	in_word = 1;
+	return (0);
 }
 
 int	count_env_var_len(t_mini *var, char *str, int *i, t_split *split)
