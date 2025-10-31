@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_more.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
+/*   By: jlager <jlager@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 15:10:22 by jasminelage       #+#    #+#             */
-/*   Updated: 2025/10/30 15:23:49 by jasminelage      ###   ########.fr       */
+/*   Updated: 2025/10/31 16:30:50 by jlager           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,14 +54,41 @@ static void	print_export(t_mini *var)
 	}
 }
 
-// export with no options
-int	builtin_export(t_mini *var, char **argv)
+// Helper function for export
+static int	export_single_arg(t_mini *var, char *arg)
 {
-	int		i;
 	char	*equal_sign;
 	char	*key;
 	char	*value;
 	int		key_len;
+
+	if (!is_valid_identifier(arg))
+	{
+		write(2, "minishell: export: `", 20);
+		write(2, arg, ft_strlen(arg));
+		write(2, "': not a valid identifier\n", 26);
+		return (0);
+	}
+	equal_sign = ft_strchr(arg, '=');
+	if (equal_sign)
+	{
+		key_len = equal_sign - arg;
+		key = malloc(key_len + 1);
+		if (!key)
+			return (1);
+		ft_strlcpy(key, arg, key_len + 1);
+		value = equal_sign + 1;
+		set_env_var(var, key, value);
+		free(key);
+	}
+	return (0);
+}
+
+// export with no options
+int	builtin_export(t_mini *var, char **argv)
+{
+	int	i;
+	int	ret;
 
 	if (!argv[1])
 	{
@@ -69,32 +96,14 @@ int	builtin_export(t_mini *var, char **argv)
 		return (0);
 	}
 	i = 1;
+	ret = 0;
 	while (argv[i])
 	{
-		if (!is_valid_identifier(argv[i]))
-		{
-			write(2, "minishell: export: `", 20);
-			write(2, argv[i], ft_strlen(argv[i]));
-			write(2, "': not a valid identifier\n", 26);
-			i++;
-			continue;
-		}
-		equal_sign = ft_strchr(argv[i], '=');
-		if (equal_sign)
-		{
-			key_len = equal_sign - argv[i];
-			key = malloc(key_len + 1);
-			if (!key)
-				return (1);
-			ft_strlcpy(key, argv[i], key_len + 1);
-			value = equal_sign + 1;
-			set_env_var(var, key, value);
-			free(key);
-		}
-		// If no '=', just validate but don't set anything (as per bash behavior)
+		if (export_single_arg(var, argv[i]) == 1)
+			ret = 1;
 		i++;
 	}
-	return (0);
+	return (ret);
 }
 
 // unset with no options
@@ -113,7 +122,7 @@ int	builtin_unset(t_mini *var, char **argv)
 			write(2, argv[i], ft_strlen(argv[i]));
 			write(2, "': not a valid identifier\n", 26);
 			i++;
-			continue;
+			continue ;
 		}
 		unset_env_var(var, argv[i]);
 		i++;

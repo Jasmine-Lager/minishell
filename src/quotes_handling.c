@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   quotes_handling.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
+/*   By: jlager <jlager@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 13:39:20 by jasminelage       #+#    #+#             */
-/*   Updated: 2025/09/18 13:40:42 by jasminelage      ###   ########.fr       */
+/*   Updated: 2025/10/31 17:02:42 by jlager           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // Set quote info based on section counts
-t_quote_info set_quote_behavior(t_quote_counts counts)
+t_quote_info	set_quote_behavior(t_quote_counts counts)
 {
-	t_quote_info info;
+	t_quote_info	info;
 
 	info.mixed_quotes = 0;
 	info.needs_processing = 0;
@@ -40,12 +40,12 @@ t_quote_info set_quote_behavior(t_quote_counts counts)
 }
 
 // Count quote sections in token content
-t_quote_counts count_quote_sections(char *content)
+t_quote_counts	count_quote_sections(char *content)
 {
-	t_quote_counts counts;
-	int i;
-	int in_single;
-	int in_double;
+	t_quote_counts	counts;
+	int				i;
+	int				in_single;
+	int				in_double;
 
 	counts.single_sections = 0;
 	counts.double_sections = 0;
@@ -59,8 +59,8 @@ t_quote_counts count_quote_sections(char *content)
 			handle_single_quote(&in_single, &counts);
 		else if (content[i] == '"' && !in_single)
 			handle_double_quote(&in_double, &counts);
-		else if (!in_single && !in_double &&
-				 content[i] != '\'' && content[i] != '"')
+		else if (!in_single && !in_double && content[i] != '\''
+			&& content[i] != '"')
 			if (i == 0 || (content[i - 1] == '\'' || content[i - 1] == '"'))
 				counts.unquoted_sections++;
 		i++;
@@ -68,7 +68,7 @@ t_quote_counts count_quote_sections(char *content)
 	return (counts);
 }
 
-t_quote_info analyze_token_quotes_detailed(char *content)
+t_quote_info	analyze_token_quotes_detailed(char *content)
 {
 	t_quote_counts counts;
 	t_quote_info info;

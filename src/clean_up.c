@@ -3,13 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   clean_up.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
+/*   By: jlager <jlager@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 15:10:37 by jasminelage       #+#    #+#             */
-/*   Updated: 2025/10/30 15:10:38 by jasminelage      ###   ########.fr       */
+/*   Updated: 2025/10/31 17:03:57 by jlager           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "minishell.h"
 
@@ -97,11 +96,10 @@ void	wait_for_children(t_mini *var, pid_t last_child_pid)
 				var->exit_code = WEXITSTATUS(status);
 			else if (WIFSIGNALED(status))
 			{
-				// Check if terminated by signal
 				if (WTERMSIG(status) == SIGINT)
-					var->exit_code = 130;  // Ctrl+C
+					var->exit_code = 130;
 				else if (WTERMSIG(status) == SIGQUIT)
-					var->exit_code = 131;  // Ctrl+backslash
+					var->exit_code = 131;
 				else
 					var->exit_code = 128 + WTERMSIG(status);
 			}

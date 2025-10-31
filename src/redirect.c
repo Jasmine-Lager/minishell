@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
+/*   By: jlager <jlager@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 09:09:21 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/10/30 15:30:14 by jasminelage      ###   ########.fr       */
+/*   Updated: 2025/10/31 17:02:37 by jlager           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,7 @@ void	redirect_in_out_to_pipes(t_mini *var, int cmd_n)
 		out = 1;
 	else
 		out = var->pipes[cmd_n][1];
-	if (dup2(in, 0) == -1
-		|| dup2(out, 1) == -1)
+	if (dup2(in, 0) == -1 || dup2(out, 1) == -1)
 	{
 		dup2_error(var);
 	}
@@ -80,8 +79,8 @@ void	process_cmd(t_token *ptr, t_token **cmd, int *argv_len)
 	}
 }
 
-int	redir_files_and_count_argv_len(t_mini *var, t_token *ptr,
-		t_token **cmd, int argv_len)
+int	redir_files_and_count_argv_len(t_mini *var, t_token *ptr, t_token **cmd,
+		int argv_len)
 {
 	bool	append;
 

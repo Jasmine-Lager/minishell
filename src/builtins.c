@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   buildins.c                                         :+:      :+:    :+:   */
+/*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
+/*   By: jlager <jlager@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 15:08:44 by jasminelage       #+#    #+#             */
-/*   Updated: 2025/10/30 15:08:45 by jasminelage      ###   ########.fr       */
+/*   Updated: 2025/10/31 16:00:20 by jlager           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,16 +47,10 @@ int	builtin_cd(t_mini *var, char **argv)
 	{
 		path = find_env_var(var->envp, "HOME");
 		if (!path)
-		{
-			write(2, "minishell: cd: HOME not set\n", 28);
-			return (1);
-		}
+			return (write(2, "minishell: cd: HOME not set\n", 28), 1);
 	}
 	else if (argv[2])
-	{
-		write(2, "minishell: cd: too many arguments\n", 34);
-		return (1);
-	}
+		return (write(2, "minishell: cd: too many arguments\n", 34), 1);
 	else
 		path = argv[1];
 	if (chdir(path) == -1)
@@ -65,7 +59,6 @@ int	builtin_cd(t_mini *var, char **argv)
 		perror(path);
 		return (1);
 	}
-	// Update PWD and OLDPWD
 	if (getcwd(cwd, sizeof(cwd)))
 		update_env_var(var, "PWD", cwd);
 	return (0);
@@ -120,7 +113,6 @@ int	builtin_exit(t_mini *var, char **argv)
 		return (1);
 	}
 	exit_code = ft_atoi(argv[1]);
-	// Check if argv[1] is a valid number
 	if (!is_valid_number(argv[1]))
 	{
 		write(2, "minishell: exit: ", 17);

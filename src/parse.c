@@ -3,73 +3,79 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
+/*   By: jlager <jlager@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 19:53:07 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/10/02 22:55:49 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/10/31 17:16:48 by jlager           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // Simplified version for backward compatibility
-t_quotes analyze_token_quotes(char *content)
+t_quotes	analyze_token_quotes(char *content)
 {
-	t_quote_info info = analyze_token_quotes_detailed(content);
+	t_quote_info	info;
+
+	info = analyze_token_quotes_detailed(content);
 	return (info.dominant_type);
 }
 
 // Analyze and set quote information after token content is created
-void set_token_quote_info(t_token *token)
+void	set_token_quote_info(t_token *token)
 {
 	if (!token->content)
-		return;
+		return ;
 	token->quotes = analyze_token_quotes(token->content);
 }
 
-void create_first_token(t_mini *var, int *start_token, int *end_token)
+int	create_first_token(t_mini *var, int *start_token, int *end_token)
 {
+	int	len;
+
 	var->tokens = malloc(sizeof(t_token));
 	if (!var->tokens)
-		error_exit(var, "Malloc failed: create_first_token\n");
+		return (write(2, "Malloc failed: create_first_token\n", 34), 0);
 	var->tokens->next = NULL;
 	define_token(var, start_token, end_token, var->tokens);
 	if (*end_token <= *start_token)
 	{
 		free(var->tokens);
 		var->tokens = NULL;
-		return;
+		return (1);
 	}
-	int len = *end_token - *start_token;
+	len = *end_token - *start_token;
 	var->tokens->content = malloc(len + 1);
 	if (!var->tokens->content)
-		error_exit(var, "Malloc failed: create_first_token\n");
+		return (write(2, "Malloc failed: create_first_token\n", 34), 0);
 	ft_strlcpy(var->tokens->content, &var->line[*start_token], len + 1);
 	set_token_quote_info(var->tokens);
 	find_token_type(var, var->tokens, NULL);
 	*start_token = *end_token;
 }
 
-void append_token(t_mini *var, int *start_token, int *end_token, t_token **last)
+int	append_token(t_mini *var, int *start_token, int *end_token,
+		t_token **last)
 {
-	t_token *new;
+	t_token	*new;
+	int		len;
 
 	(*last)->next = malloc(sizeof(t_token));
 	new = (*last)->next;
 	if (!new)
-		error_exit(var, "Malloc failed: append_token\n");
+		return (write(2, "Malloc failed: append_token\n", 28), 0);
 	new->next = NULL;
 	define_token(var, start_token, end_token, new);
 	if (*end_token <= *start_token)
 	{
 		(*last)->next = NULL;
 		free(new);
-		return;
+		return (1);
 	}
-	int len = *end_token - *start_token;
+	len = *end_token - *start_token;
 	new->content = malloc(len + 1);
 	if (!new->content)
-		error_exit(var, "Malloc failed: append_token\n");
+		return (write(2, "Malloc failed: append_token\n", 28), 0);
 	ft_strlcpy(new->content, &var->line[*start_token], len + 1);
 	set_token_quote_info(new);
 	find_token_type(var, new, *last);
@@ -77,17 +83,18 @@ void append_token(t_mini *var, int *start_token, int *end_token, t_token **last)
 	*start_token = *end_token;
 }
 
-bool parse(t_mini *var)
+bool	parse(t_mini *var)
 {
-	int start_token;
-	int end_token;
-	t_token *last;
+	int		start_token;
+	int		end_token;
+	t_token	*last;
 
 	start_token = 0;
 	end_token = 0;
 	if (!var->line || !*var->line)
 		return (0);
-	create_first_token(var, &start_token, &end_token);
+	if (!create_first_token(var, &start_token, &end_token))
+		return (0);
 	if (!var->tokens)
 		return (0);
 	last = var->tokens;
@@ -97,7 +104,8 @@ bool parse(t_mini *var)
 			start_token++;
 		if (!var->line[start_token])
 			break ;
-		append_token(var, &start_token, &end_token, &last);
+		if (!append_token(var, &start_token, &end_token, &last))
+			return (0);
 	}
 	if (!expand_tokens(var))
 		return (0);

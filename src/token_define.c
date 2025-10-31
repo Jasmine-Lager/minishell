@@ -3,32 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   token_define.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
+/*   By: jlager <jlager@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 17:35:51 by jasminelage       #+#    #+#             */
-/*   Updated: 2025/10/08 10:04:22 by jasminelage      ###   ########.fr       */
+/*   Updated: 2025/10/31 17:02:20 by jlager           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // Helper function to skip past a quoted section
-int skip_quoted_section(t_mini *var, int i, char quote)
+int	skip_quoted_section(t_mini *var, int i, char quote)
 {
-	i++; // Skip opening quote
+	i++;
 	while (var->line[i] && var->line[i] != quote)
 		i++;
-	if (var->line[i] != quote)  // Changed from == to !=
+	if (var->line[i] != quote)
 	{
 		write(2, "error: unclosed quotes\n", 23);
 		return (i);
 	}
-	i++; // Skip closing quote
+	i++;
 	return (i);
 }
 
 // Check if character at position i is a token boundary
-int is_token_boundary(t_mini *var, int i)
+int	is_token_boundary(t_mini *var, int i)
 {
 	if (!var->line[i])
 		return (1);
@@ -40,10 +40,11 @@ int is_token_boundary(t_mini *var, int i)
 }
 
 // Find the end of a token that may contain multiple quoted/unquoted sections
-int find_complete_token_end(t_mini *var, int start)
+int	find_complete_token_end(t_mini *var, int start)
 {
-	int i = start;
+	int	i;
 
+	i = start;
 	while (var->line[i] && !is_token_boundary(var, i))
 	{
 		if (var->line[i] == '"')
@@ -57,7 +58,7 @@ int find_complete_token_end(t_mini *var, int start)
 }
 
 // Get the end position of a metacharacter token (|, <, <<, >, >>)
-int get_metachar_end(t_mini *var, int start)
+int	get_metachar_end(t_mini *var, int start)
 {
 	if (!var->line[start])
 		return (0);
@@ -75,26 +76,27 @@ int get_metachar_end(t_mini *var, int start)
 			return (start + 2);
 		return (start + 1);
 	}
-	return (0); // Not a metacharacter
+	return (0);
 }
 
 // Main tokenization function
-void define_token(t_mini *var, int *start_token, int *end_token, t_token *new)
+void	define_token(t_mini *var, int *start_token, int *end_token,
+		t_token *new)
 {
-	int metachar_end;
+	int	metachar_end;
 
 	while (var->line[*start_token] == ' ' || var->line[*start_token] == '\t')
 		(*start_token)++;
 	if (!var->line[*start_token])
 	{
 		*end_token = *start_token;
-		return;
+		return ;
 	}
-	if ((metachar_end = get_metachar_end(var, *start_token)))
+	if (metachar_end = get_metachar_end(var, *start_token))
 	{
 		*end_token = metachar_end;
 		new->quotes = NONE;
-		return;
+		return ;
 	}
 	*end_token = find_complete_token_end(var, *start_token);
 	new->quotes = NONE;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
+/*   By: jlager <jlager@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/30 12:34:17 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/10/08 10:35:13 by jasminelage      ###   ########.fr       */
+/*   Updated: 2025/10/31 17:03:11 by jlager           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void	heredoc_to_file(t_mini *var, char *filename, char **delim)
 	int		fd;
 	bool	delim_quoted;
 
-	signals_heredoc();  // Set heredoc signal handler
+	signals_heredoc(); // Set heredoc signal handler
 	fd = open_tmp_file(var, filename);
 	delim_quoted = rm_quotes_delim(var, delim);
 	read_heredoc(var, *delim, fd, delim_quoted);
@@ -110,14 +110,15 @@ bool	heredoc(t_mini *var, t_token *delim)
 	else if (pid == 0)
 		heredoc_to_file(var, file, &delim->content);
 	waitpid(pid, &status, 0);
-	signals_setup();  // Restore interactive signal handlers after heredoc completes
+	signals_setup();
+		// Restore interactive signal handlers after heredoc completes
 	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
 	{
 		unlink(file);
 		free(file);
 		var->exit_code = 130;
 		g_signal = 130;  // Set global signal flag
-		signals_setup();  // Restore interactive signal handlers
+		signals_setup(); // Restore interactive signal handlers
 		return (0);
 	}
 	free(delim->content);

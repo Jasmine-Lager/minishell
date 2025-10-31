@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   environment_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
+/*   By: jlager <jlager@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 15:10:50 by jasminelage       #+#    #+#             */
-/*   Updated: 2025/10/30 15:10:52 by jasminelage      ###   ########.fr       */
+/*   Updated: 2025/10/31 16:58:33 by jlager           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ int	set_env_var(t_mini *var, char *key, char *value)
 	index = find_env_index(var->envp, key);
 	if (index != -1)
 		return (update_env_var(var, key, value));
-	// Add new variable
 	count = count_env_vars(var->envp);
 	new_envp = malloc(sizeof(char *) * (count + 2));
 	if (!new_envp)
