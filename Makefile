@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+         #
+#    By: jlager <jlager@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/13 12:27:43 by jasminelage       #+#    #+#              #
-#    Updated: 2025/10/30 15:29:00 by jasminelage      ###   ########.fr        #
+#    Updated: 2025/10/31 15:24:06 by jlager           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -69,11 +69,9 @@ all: $(LIBFT) $(NAME)
 
 $(NAME): $(OBJECTS)
 	$(CC) $(CFLAGS) $(OBJECTS) $(LIBFT) $(LDFLAGS) -o $(NAME)
-	$(CC) $(CFLAGS) $(OBJECTS) $(LIBFT) $(LDFLAGS) -o $(NAME)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(@D)
-	$(CC) $(CFLAGS) $(CPPFLAGS) -I $(LIBFT_DIR) -c $< -o $@
 	$(CC) $(CFLAGS) $(CPPFLAGS) -I $(LIBFT_DIR) -c $< -o $@
 # 	$(CC) $(CFLAGS) $(DFLAGS) -c $< -o $@
 

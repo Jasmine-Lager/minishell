@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
+/*   By: jlager <jlager@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 15:30:51 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/10/30 15:19:27 by jasminelage      ###   ########.fr       */
+/*   Updated: 2025/10/31 15:23:17 by jlager           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,12 +210,6 @@ void	open_redir_outfile(t_mini *var, char *outfile, bool append);
 void	process_cmd(t_token *ptr, t_token **cmd, int *argv_len);					
 int		redir_files_and_count_argv_len(t_mini *var, t_token *ptr,
 		t_token **cmd, int argv_len);
-
-// remove_quotes.c
-int					calculate_unquoted_length(char *str);
-void				copy_without_quotes(char *dst, char *src);
-void				remove_quotes_from_token(t_token *token);
-void				remove_quotes_from_tokens(t_mini *var);
 
 // signals.c
 void				handle_ctrl_c(int signal_number);
