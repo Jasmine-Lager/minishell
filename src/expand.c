@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 12:50:57 by jlager            #+#    #+#             */
-/*   Updated: 2025/10/31 15:09:01 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/10/31 17:19:13 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 #include "minishell.h"
 
-int	cpy_env_var(t_mini *var, char *str, int *i, char *dst)
+int	cpy_env_var(t_mini *var, char *str, int *i, char *dst, t_split *split)
 {
 	int		len;
 	char	*tmp;
@@ -45,7 +45,7 @@ int	cpy_env_var(t_mini *var, char *str, int *i, char *dst)
 	return (free(tmp), len);
 }
 
-char	*cpy_expanded(t_mini *var, char *str, char *result)
+char	*cpy_expanded(t_mini *var, char *str, char *result, t_split *split)
 {
 	int	dquote;
 	int	squote;
@@ -76,12 +76,12 @@ char	*cpy_expanded(t_mini *var, char *str, char *result)
 
 // t_expand	*init_expanded(char *str)
 
-char	*expand_str(t_mini *var, char *str) //todo: word splitting here, including detecting whethter the token cam be deleted (and only if it can = there are no "", run empty token in expand_tokens)
+char	*expand_str(t_mini *var, char *str, t_split *split) //todo: word splitting here, including detecting whethter the token cam be deleted (and only if it can = there are no "", run empty token in expand_tokens)
 {
 	int		len;
 	char	*result;
 
-	len = len_expanded(var, str, 0, 0);
+	len = len_expanded(var, str, split);
 	result = (char *)malloc((len + 1) * sizeof(char));
 	if (!result || len == -1)
 	{
@@ -119,18 +119,24 @@ bool	expand_tokens(t_mini *var)
 	t_token	*current;
 	t_token	*last;
 	char	*expanded;
+	t_split	*split;
 
 	current = var->tokens;
 	last = NULL;
+	split = malloc(sizeof(t_split));
+	if (!split)
+		return (0);
 	while (current)
 	{
+		split->can_be_rm = 1;
+		split->nbr_word_split = 0;
 		if (current->type == DELIMITER)
 		{
 			heredoc(var, current);
 			current = current->next;
 			continue ;
 		}
-		expanded = expand_str(var, current->content);
+		expanded = expand_str(var, current->content, split);
 		if (!expanded)  // Check for NULL before dereferencing
 		{
 			write(2, "minishell: malloc failed\n" , 
@@ -138,11 +144,11 @@ bool	expand_tokens(t_mini *var)
 			return (0);
 		}
 		free(current->content);
-		if (!*expanded) // Now safe to dereference
+		if (!*expanded && split->can_be_rm) // Now safe to dereference
 			empty_token(var, last, &current, expanded);
 		else
 		{
-			current->content = expanded;
+			current->content = expanded; //here do the word splitting if necesary
 			last = current;
 			current = current->next;
 		}

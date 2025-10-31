@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/30 13:13:18 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/10/31 15:34:53 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/10/31 17:13:50 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,16 @@ int	len_keyword(char *str)
 	return (len);
 }
 
-int	count_env_var_len(t_mini *var, char *str, int *i)
+int	count_split(char *expanded, t_split *split)
+{
+	int	in_word;
+
+	if (split->dquote)
+		return (0);
+	in_word = 
+}
+
+int	count_env_var_len(t_mini *var, char *str, int *i, t_split *split)
 {
 	int		len;
 	char	*temp;
@@ -46,31 +55,40 @@ int	count_env_var_len(t_mini *var, char *str, int *i)
 			return (write(2, "minishell: malloc failed\n", 25), -1);
 		ft_strlcpy(temp, &str[*i], key_len + 1);
 		len = ft_strlen(find_env_var(var->envp, temp));
+		split->nbr_split = count_split(find_env_var(var->envp, temp), split);
 		*i += key_len - 1;
 	}
 	free(temp);
 	return (len);
 }
 
-int	len_expanded(t_mini *var, char *str, int dquote, int squote)
+int	len_expanded(t_mini *var, char *str, t_split *split)
 {
 	int	len;
 	int	i;
 	int	check;
 
+	split->dquote = 0;
+	split->squote = 0;
 	len = 0;
 	i = -1;
 	check = 0;
 	while (str[++i])
 	{
-		if (str[i] == '"' && !squote)
-			dquote = 1 - dquote;
-		else if (str[i] == 39 && !dquote)
-			squote = 1 - squote;
-		else if (str[i] == '$' && !squote
+		if (str[i] == '"' && !split->squote)
+		{
+			split->can_be_rm = 0;
+			split->dquote = 1 - split->dquote;
+		}
+		else if (str[i] == 39 && !split->dquote)
+		{
+			split->squote = 1 - split->squote;
+			split->can_be_rm = 0;
+		}
+		else if (str[i] == '$' && !split->squote
 			&& (ft_isalnum(str[i + 1]) || str[i + 1] == '?'))
 		{
-			check = count_env_var_len(var, str, &i);
+			check = count_env_var_len(var, str, &i, split);
 			len += check;
 		}
 		else

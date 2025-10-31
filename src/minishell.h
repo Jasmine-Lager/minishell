@@ -3,12 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlager <jlager@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/04 15:30:51 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/10/31 15:23:17 by jlager           ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2025/10/31 17:20:17 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+
+
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -82,6 +85,16 @@ typedef struct s_token
 	struct s_token	*next;
 }					t_token;
 
+typedef struct s_split
+{
+	int		nbr_split;
+	int		*i_start_split;
+	int		*i_end_split;
+	bool	can_be_rm;
+	int dquote;
+	int squote;
+}					t_split;
+
 typedef struct s_mini // stores all variables usefull for the whole program
 {
 	char **envp;
@@ -147,13 +160,13 @@ bool				execute_cmds(t_mini *var);
 
 // expand_len.c
 int	len_keyword(char *str);
-int	count_env_var_len(t_mini *var, char *str, int *i);
-int	len_expanded(t_mini *var, char *str, int dquote, int squote);
+int	count_env_var_len(t_mini *var, char *str, int *i, t_split *split);
+int	len_expanded(t_mini *var, char *str, t_split *split);
 
 // expand.c
-int					cpy_env_var(t_mini *var, char *str, int *i, char *dst);
-char				*cpy_expanded(t_mini *var, char *str, char *result);
-char				*expand_str(t_mini *var, char *str);
+int	cpy_env_var(t_mini *var, char *str, int *i, char *dst, t_split *split);
+char	*cpy_expanded(t_mini *var, char *str, char *result, t_split *split);
+char	*expand_str(t_mini *var, char *str, t_split *split);
 void				empty_token(t_mini *var, t_token *last, t_token **current,
 						char *expanded);
 bool				expand_tokens(t_mini *var);
