@@ -3,20 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlager <jlager@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 16:00:52 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/10/31 17:03:02 by jlager           ###   ########.fr       */
+/*   Updated: 2025/10/31 19:20:19 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 volatile sig_atomic_t	g_signal = 0;
-
-/**
- *
- */
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -25,33 +21,20 @@ int	main(int argc, char **argv, char **envp)
 	var = malloc(sizeof(t_mini));
 	initialize_minishell(var, argc, argv, envp);
 	signals_setup();
-	while (1)
+	var->line = readline("$ ");
+	while (var->line)
 	{
-		var->line = readline("$ ");
 		if (g_signal == 130) // Ctrl+C was pressed
 		{
 			var->exit_code = 130;
 			g_signal = 0;
 		}
-		if (var->line == NULL) // Check if Ctrl+D was pressed (EOF)
-		{
-			printf("Exiting..\n");
-			free_var_exit(var, 0);
-		}
 		if (*var->line)
-		{
-			add_history(var->line);
 			handle_command(var);
-			// Check if heredoc was interrupted
-			if (g_signal == 130)
-			{
-				var->exit_code = 130;
-				g_signal = 0; // Reset signal flag
-				// Continue to next iteration without executing
-			}
-		}
 		free_one_line(var);
+		var->line = readline("$ ");
 	}
+	write(2, "Exiting..\n", 10);
 	free_var_exit(var, 0);
 	return (0);
 }

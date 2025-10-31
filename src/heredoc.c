@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/30 12:34:17 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/10/31 17:40:10 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/10/31 18:33:57 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ bool	rm_quotes_delim(t_mini *var, char **delim)
 	return (quoted);
 }
 
-char	*cpy_expanded_heredoc(t_mini *var, char *str, char *result)
+char	*cpy_expanded_no_split(t_mini *var, char *str, char *result)
 {
 	int	dquote;
 	int	squote;
@@ -100,7 +100,7 @@ char	*expand_str_delim(t_mini *var, char *str) //todo: word splitting here, incl
 		write(2, "minishell: malloc failed\n", 25);
 		return (NULL);
 	}
-	result = cpy_expanded_heredoc(var, str, result);
+	result = cpy_expanded_no_split(var, str, result);
 	return (result);
 }
 

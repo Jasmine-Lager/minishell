@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlager <jlager@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 10:29:08 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/10/31 16:57:45 by jlager           ###   ########.fr       */
+/*   Updated: 2025/10/31 19:20:04 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,17 @@
 
 void	handle_command(t_mini *var)
 {
+	add_history(var->line);
 	if (!parse(var) || !var->tokens)
 		return ;
 	// print_tokens(var->tokens);
 	if (!execute_cmds(var))
 		return ;
+	if (g_signal == 130)
+	{
+		var->exit_code = 130;
+		g_signal = 0;
+	}
 }
 
 // echo with option -n

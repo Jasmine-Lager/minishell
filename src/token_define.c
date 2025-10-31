@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 17:35:51 by jasminelage       #+#    #+#             */
-/*   Updated: 2025/10/31 17:42:10 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/10/31 18:30:53 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void	define_token(t_mini *var, int *start_token, int *end_token,
 		*end_token = *start_token;
 		return ;
 	}
-	if (metachar_end = get_metachar_end(var, *start_token))
+	if ((metachar_end = get_metachar_end(var, *start_token)))
 	{
 		*end_token = metachar_end;
 		new->quotes = NONE;
