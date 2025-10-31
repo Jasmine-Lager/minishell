@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 12:50:57 by jlager            #+#    #+#             */
-/*   Updated: 2025/10/30 15:29:51 by jasminelage      ###   ########.fr       */
+/*   Updated: 2025/10/31 15:09:01 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,8 +133,8 @@ bool	expand_tokens(t_mini *var)
 		expanded = expand_str(var, current->content);
 		if (!expanded)  // Check for NULL before dereferencing
 		{
-			write(2, "minishell: expansion failed\n" , 
-				ft_strlen("minishell: expansion failed\n"));
+			write(2, "minishell: malloc failed\n" , 
+				ft_strlen("minishell: malloc failed\n"));
 			return (0);
 		}
 		free(current->content);

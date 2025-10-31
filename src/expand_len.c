@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_len.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/30 13:13:18 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/10/02 23:46:46 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/10/31 15:34:53 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,7 @@ int	len_keyword(char *str)
 	int	len;
 
 	len = 0;
-	while (str[len] && str[len] != '"' && str[len] != 39 && str[len] != '$'
-		&& str[len] != ' ')
+	while (str[len] && ft_isalnum(str[len]))
 	{
 		len++;
 	}
