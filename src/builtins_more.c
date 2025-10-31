@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_more.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlager <jlager@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 15:10:22 by jasminelage       #+#    #+#             */
-/*   Updated: 2025/10/31 16:30:50 by jlager           ###   ########.fr       */
+/*   Updated: 2025/10/31 19:38:19 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ static int	export_single_arg(t_mini *var, char *arg)
 		write(2, "minishell: export: `", 20);
 		write(2, arg, ft_strlen(arg));
 		write(2, "': not a valid identifier\n", 26);
-		return (0);
+		return (1);
 	}
 	equal_sign = ft_strchr(arg, '=');
 	if (equal_sign)
