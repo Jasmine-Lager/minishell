@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlager <jlager@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/30 12:34:17 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/10/31 17:03:11 by jlager           ###   ########.fr       */
+/*   Updated: 2025/10/31 17:40:10 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,52 @@ bool	rm_quotes_delim(t_mini *var, char **delim)
 	return (quoted);
 }
 
+char	*cpy_expanded_heredoc(t_mini *var, char *str, char *result)
+{
+	int	dquote;
+	int	squote;
+	int	i;
+	int	j;
+
+	dquote = 0;
+	squote = 0;
+	i = -1;
+	j = 0;
+	while (str[++i])
+	{
+		if (str[i] == '"' && !squote)
+			dquote = 1 - dquote;
+		else if (str[i] == 39 && !dquote)
+			squote = 1 - squote;
+		else if (str[i] == '$' && !squote
+			&& (ft_isalnum(str[i + 1]) || str[i + 1] == '?'))
+		{
+			j += cpy_env_var_delim(var, str, &i, &result[j]); //check if this returned -1
+		}
+		else
+			result[j++] = str[i];
+	}
+	result[j] = '\0';
+	return (result);
+}
+
+char	*expand_str_delim(t_mini *var, char *str) //todo: word splitting here, including detecting whethter the token cam be deleted (and only if it can = there are no "", run empty token in expand_tokens)
+{
+	int		len;
+	char	*result;
+
+	len = len_expanded_heredoc(var, str);
+	result = (char *)malloc((len + 1) * sizeof(char));
+	if (!result || len == -1)
+	{
+		free(result);
+		write(2, "minishell: malloc failed\n", 25);
+		return (NULL);
+	}
+	result = cpy_expanded_heredoc(var, str, result);
+	return (result);
+}
+
 void	read_heredoc(t_mini *var, char *delim, int fd, bool delim_quoted)
 {
 	char	*line_in;
@@ -68,7 +114,7 @@ void	read_heredoc(t_mini *var, char *delim, int fd, bool delim_quoted)
 		if (!line_in)
 			error_exit(var, "heredoc delimited by end-of-file\n");
 		if (!delim_quoted)
-			line_in = expand_str(var, line_in);
+			line_in = expand_str_delim(var, line_in);
 		write(fd, line_in, ft_strlen(line_in));
 		write(fd, "\n", 1);
 		free(line_in);

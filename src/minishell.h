@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/10/31 17:20:17 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/10/31 17:40:58 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,6 +172,7 @@ void				empty_token(t_mini *var, t_token *last, t_token **current,
 bool				expand_tokens(t_mini *var);
 
 // heredoc_expand.c
+int	cpy_env_var_delim(t_mini *var, char *str, int *i, char *dst);
 char	*cpy_expanded_delim(char *str, char *result);
 int		len_expanded_heredoc(t_mini *var, char *str);
 char	*cpy_expanded_heredoc(t_mini *var, char *str, char *result);
@@ -194,9 +195,9 @@ int					main(int argv, char **argc, char **envp);
 // parse.c
 t_quotes			analyze_token_quotes(char *content);
 void				set_token_quote_info(t_token *token);
-void				create_first_token(t_mini *var, int *start_token,
+int				create_first_token(t_mini *var, int *start_token,
 						int *end_token);
-void				append_token(t_mini *var, int *start_token, int *end_token,
+int				append_token(t_mini *var, int *start_token, int *end_token,
 						t_token **last);
 bool				parse(t_mini *var);
 

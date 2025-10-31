@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlager <jlager@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 19:53:07 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/10/31 17:16:48 by jlager           ###   ########.fr       */
+/*   Updated: 2025/10/31 17:41:29 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ int	create_first_token(t_mini *var, int *start_token, int *end_token)
 	set_token_quote_info(var->tokens);
 	find_token_type(var, var->tokens, NULL);
 	*start_token = *end_token;
+	return (1);
 }
 
 int	append_token(t_mini *var, int *start_token, int *end_token,
@@ -81,6 +82,7 @@ int	append_token(t_mini *var, int *start_token, int *end_token,
 	find_token_type(var, new, *last);
 	*last = new;
 	*start_token = *end_token;
+	return (1);
 }
 
 bool	parse(t_mini *var)
