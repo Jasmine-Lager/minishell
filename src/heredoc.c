@@ -6,57 +6,11 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/30 12:34:17 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/11/01 18:38:47 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/11/01 20:42:22 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-char	*cpy_expanded_no_split(t_mini *var, char *str, char *result)
-{
-	int	dquote;
-	int	squote;
-	int	i;
-	int	j;
-
-	dquote = 0;
-	squote = 0;
-	i = -1;
-	j = 0;
-	while (str[++i])
-	{
-		if (str[i] == '"' && !squote)
-			dquote = 1 - dquote;
-		else if (str[i] == 39 && !dquote)
-			squote = 1 - squote;
-		else if (str[i] == '$' && !squote
-			&& (ft_isalnum(str[i + 1]) || str[i + 1] == '?'))
-		{
-			j += cpy_env_var_delim(var, str, &i, &result[j]); //check if this returned -1
-		}
-		else
-			result[j++] = str[i];
-	}
-	result[j] = '\0';
-	return (result);
-}
-
-char	*expand_str_delim(t_mini *var, char *str) //todo: word splitting here, including detecting whethter the token cam be deleted (and only if it can = there are no "", run empty token in expand_tokens)
-{
-	int		len;
-	char	*result;
-
-	len = len_expanded_heredoc(var, str);
-	result = (char *)malloc((len + 1) * sizeof(char));
-	if (!result || len == -1)
-	{
-		free(result);
-		write(2, "minishell: malloc failed\n", 25);
-		return (NULL);
-	}
-	result = cpy_expanded_no_split(var, str, result);
-	return (result);
-}
 
 void	read_heredoc(t_mini *var, char *delim, int fd, bool delim_quoted)
 {
@@ -68,7 +22,7 @@ void	read_heredoc(t_mini *var, char *delim, int fd, bool delim_quoted)
 		if (!line_in)
 			error_exit(var, "heredoc delimited by end-of-file\n");
 		if (!delim_quoted)
-			line_in = expand_str_delim(var, line_in);
+			line_in = expand_heredoc(var, line_in);
 		write(fd, line_in, ft_strlen(line_in));
 		write(fd, "\n", 1);
 		free(line_in);
@@ -82,7 +36,7 @@ void	heredoc_to_file(t_mini *var, char *filename, char **delim)
 	int		fd;
 	bool	delim_quoted;
 
-	signals_heredoc(); // Set heredoc signal handler
+	signals_heredoc();
 	fd = open_tmp_file(var, filename);
 	delim_quoted = rm_quotes_delim(var, delim);
 	read_heredoc(var, *delim, fd, delim_quoted);
@@ -102,22 +56,15 @@ bool	heredoc(t_mini *var, t_token *delim)
 		return (0);
 	pid = fork();
 	if (pid == -1)
-	{
-		perror("fork");
-		free(file);
-		return (0);
-	}
+		return (perror("fork"), free(file), 0);
 	else if (pid == 0)
 		heredoc_to_file(var, file, &delim->content);
 	waitpid(pid, &status, 0);
-	signals_setup();
 	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
 	{
 		unlink(file);
 		free(file);
 		var->exit_code = 130;
-		g_signal = 130;  // Set global signal flag
-		signals_setup(); // Restore interactive signal handlers
 		return (0);
 	}
 	free(delim->content);

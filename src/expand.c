@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 12:50:57 by jlager            #+#    #+#             */
-/*   Updated: 2025/11/01 17:39:21 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/11/01 20:50:34 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,11 +51,13 @@ char	*cpy_expanded(t_mini *var, char *str, char *result, t_split *split)
 	int	squote;
 	int	i;
 	int	j;
+	int	check;
 
 	dquote = 0;
 	squote = 0;
 	i = -1;
 	j = 0;
+	check = 0;
 	while (str[++i])
 	{
 		if (str[i] == '"' && !squote)
@@ -65,10 +67,13 @@ char	*cpy_expanded(t_mini *var, char *str, char *result, t_split *split)
 		else if (str[i] == '$' && !squote
 			&& (ft_isalnum(str[i + 1]) || str[i + 1] == '?'))
 		{
-			j += cpy_env_var(var, str, &i, &result[j], split); //check if this returned -1
+			check = cpy_env_var(var, str, &i, &result[j], split); //check if this returned -1
+			j += check;
 		}
 		else
 			result[j++] = str[i];
+		if (check == -1)
+			return (NULL);
 	}
 	result[j] = '\0';
 	return (result);
@@ -133,7 +138,7 @@ bool	expand_tokens(t_mini *var)
 		if (current->type == DELIMITER)
 		{
 			if (!heredoc(var, current))
-				return (0);
+				return (0); //free properly first!!!!!!
 			current = current->next;
 			continue ;
 		}

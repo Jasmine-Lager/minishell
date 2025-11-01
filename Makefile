@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jlager <jlager@student.42.fr>              +#+  +:+       +#+         #
+#    By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/13 12:27:43 by jasminelage       #+#    #+#              #
-#    Updated: 2025/10/31 15:24:06 by jlager           ###   ########.fr        #
+#    Updated: 2025/11/01 20:52:58 by ksevciko         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,6 +41,7 @@ SOURCES =	builtins_more.c \
 			quotes_handling.c \
 			quotes_handling_utils.c \
 			redirect.c \
+			rm_quotes_delim.c \
 			signals.c \
 			tmp_file.c \
 			token_define.c \

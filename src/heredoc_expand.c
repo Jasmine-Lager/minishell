@@ -6,13 +6,13 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/03 00:00:29 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/11/01 18:33:57 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/11/01 20:30:21 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	count_env_var_len_delim(t_mini *var, char *str, int *i)
+int	len_env_var_heredoc(t_mini *var, char *str, int *i)
 {
 	int		len;
 	char	*temp;
@@ -40,14 +40,14 @@ int	count_env_var_len_delim(t_mini *var, char *str, int *i)
 	return (len);
 }
 
-int	cpy_env_var_delim(t_mini *var, char *str, int *i, char *dst)
+int	cpy_env_var_heredoc(t_mini *var, char *str, int *i, char *dst)
 {
 	int		len;
 	char	*tmp;
 	int		key_len;
 
 	key_len = 0;
-	len = count_env_var_len_delim(var, &str[*i], &key_len);
+	len = len_env_var_heredoc(var, &str[*i], &key_len);
 	(*i)++;
 	if (str[*i] == '?')
 	{
@@ -73,16 +73,23 @@ int	len_expanded_heredoc(t_mini *var, char *str)
 {
 	int	len;
 	int	i;
+	int	check;
 
 	len = 0;
 	i = 0;
+	check = 0;
 	while (str[i])
 	{
 		if (str[i] == '$' && (ft_isalnum(str[i + 1]) || str[i + 1] == '?'))
-			len += count_env_var_len_delim(var, str, &i);
+		{
+			check = len_env_var_heredoc(var, str, &i);
+			len += check;
+		}
 		else
 			len++;
 		i++;
+		if (check == -1)
+			return (-1);
 	}
 	return (len);
 }
@@ -91,15 +98,22 @@ char	*cpy_expanded_heredoc(t_mini *var, char *str, char *result)
 {
 	int	i;
 	int	j;
+	int	check;
 
 	i = 0;
 	j = 0;
+	check = 0;
 	while (str[i])
 	{
 		if (str[i] == '$' && (ft_isalnum(str[i + 1]) || str[i + 1] == '?'))
-			j += cpy_env_var_delim(var, str, &i, &result[j]);
+		{
+			check = cpy_env_var_heredoc(var, str, &i, &result[j]);
+			j += check;
+		}
 		else
 			result[j++] = str[i];
+		if (check == -1)
+			return (NULL);
 		i++;
 	}
 	result[j] = '\0';
@@ -112,9 +126,11 @@ char	*expand_heredoc(t_mini *var, char *str)
 	char	*result;
 
 	len = len_expanded_heredoc(var, str);
+	if (len == -1)
+		error_exit(var, "minishell: malloc failed\n");
 	result = (char *)malloc((len + 1) * sizeof(char));
 	if (!result)
 		error_exit(var, "minishell: malloc failed\n");
-	cpy_expanded_heredoc(var, str, result);
+	result = cpy_expanded_heredoc(var, str, result);
 	return (result);
 }
