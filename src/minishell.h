@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/11/01 18:39:44 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/11/01 23:09:03 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,15 +85,21 @@ typedef struct s_token
 	struct s_token	*next;
 }					t_token;
 
-typedef struct s_split
+typedef struct s_expand
 {
+	char	*result;
+	t_token	*current;
+	t_token	*last;
 	int		nbr_split;
 	int		*i_start_split;
 	int		*i_end_split;
+	bool spaces_at_end; //do not use it at all
 	bool	can_be_rm;
 	int dquote;
 	int squote;
-}					t_split;
+	int	len;
+	int	check; //i do not use it right now
+}					t_expand;
 
 typedef struct s_mini // stores all variables usefull for the whole program
 {

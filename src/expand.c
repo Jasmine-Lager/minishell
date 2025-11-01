@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 12:50:57 by jlager            #+#    #+#             */
-/*   Updated: 2025/11/01 20:50:34 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/11/01 23:15:09 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,29 +45,27 @@ int	cpy_env_var(t_mini *var, char *str, int *i, char *dst, t_split *split)
 	return (free(tmp), len);
 }
 
-char	*cpy_expanded(t_mini *var, char *str, char *result, t_split *split)
+char	*cpy_expanded(t_mini *var, char *str, char *result, t_expand *exp)
 {
-	int	dquote;
-	int	squote;
 	int	i;
 	int	j;
 	int	check;
 
-	dquote = 0;
-	squote = 0;
+	exp->dquote = 0;
+	exp->squote = 0;
 	i = -1;
 	j = 0;
 	check = 0;
 	while (str[++i])
 	{
-		if (str[i] == '"' && !squote)
-			dquote = 1 - dquote;
-		else if (str[i] == 39 && !dquote)
-			squote = 1 - squote;
-		else if (str[i] == '$' && !squote
+		if (str[i] == '"' && !exp->squote)
+			exp->dquote = 1 - exp->dquote;
+		else if (str[i] == 39 && !exp->dquote)
+			exp->squote = 1 - exp->squote;
+		else if (str[i] == '$' && !exp->squote
 			&& (ft_isalnum(str[i + 1]) || str[i + 1] == '?'))
 		{
-			check = cpy_env_var(var, str, &i, &result[j], split); //check if this returned -1
+			check = cpy_env_var(var, str, &i, &result[j], exp); //check if this returned -1
 			j += check;
 		}
 		else
@@ -79,23 +77,27 @@ char	*cpy_expanded(t_mini *var, char *str, char *result, t_split *split)
 	return (result);
 }
 
-// t_expand	*init_expanded(char *str)
-
-char	*expand_str(t_mini *var, char *str, t_split *split) //todo: word splitting here, including detecting whethter the token cam be deleted (and only if it can = there are no "", run empty token in expand_tokens)
+int	expand_str(t_mini *var, char *str, t_expand *exp)
 {
-	int		len;
-	char	*result;
-
-	len = len_expanded(var, str, split);
-	result = (char *)malloc((len + 1) * sizeof(char));
-	if (!result || len == -1)
+	exp->dquote = 0;
+	exp->squote = 0;
+	exp->len = 0;
+	exp->check = 0;
+	if (!len_expanded(var, str, exp))
 	{
-		free(result);
 		write(2, "minishell: malloc failed\n", 25);
-		return (NULL);
+		return (0);
 	}
-	result = cpy_expanded(var, str, result, split);
-	return (result);
+	exp->result = (char *)malloc((exp->len + 1) * sizeof(char));
+	exp->i_start_split = (int *)malloc(exp->nbr_split * sizeof(int));
+	exp->i_end_split = (int *)malloc(exp->nbr_split * sizeof(int));
+	if (!exp->result)
+	{
+		write(2, "minishell: malloc failed\n", 25);
+		return (0);
+	}
+	exp->result = cpy_expanded(var, str, exp->result, exp);
+	return (1);
 }
 
 void	empty_token(t_mini *var, t_token *last, t_token **current,
@@ -119,44 +121,62 @@ void	empty_token(t_mini *var, t_token *last, t_token **current,
 	free(expanded);
 }
 
+t_expand	*init_expanded(t_token *first_token)
+{
+	t_expand	*exp;
+
+	exp = malloc(sizeof(t_expand));
+	if (!exp)
+		return (NULL):
+	exp->result = NULL;
+	exp->current = first_token;
+	exp->last = NULL;
+	exp->i_start_split = NULL;
+	exp->i_end_split = NULL;
+}
+
+int	save_result_in_token(t_mini *var, t_expand *exp)
+{
+	if (!(exp->result))
+	{
+		write(2, "minishell: malloc failed\n", 25);
+		return (0); //free exp first
+	}
+	free(exp->current->content);
+	if (!*(exp->result) && exp->can_be_rm)
+		empty_token(var, exp->last, &(exp->current), exp->result);
+	else
+	{
+		// if (!split_words())
+		// 	return (0);
+		exp->current->content = exp->result;
+		exp->current = exp->current->next;
+	}
+	exp->result = NULL;
+	return (1);
+}
+
 bool	expand_tokens(t_mini *var)
 {
-	t_token	*current;
-	t_token	*last;
-	char	*expanded;
-	t_split	*split;
+	t_expand	*exp;
 
-	current = var->tokens;
-	last = NULL;
-	split = malloc(sizeof(t_split));
-	if (!split)
+	exp = init_expanded(var->tokens);
+	if (!exp)
 		return (0);
-	while (current)
+	while (exp->current)
 	{
-		split->can_be_rm = 1;
-		split->nbr_split = 0;
-		if (current->type == DELIMITER)
+		exp->can_be_rm = 1;
+		exp->nbr_split = 0;
+		if (exp->current->type == DELIMITER)
 		{
-			if (!heredoc(var, current))
+			if (!heredoc(var, exp->current))
 				return (0); //free properly first!!!!!!
-			current = current->next;
+			exp->current = exp->current->next;
 			continue ;
 		}
-		expanded = expand_str(var, current->content, split);
-		if (!expanded)  // Check for NULL before dereferencing
-		{
-			write(2, "minishell: malloc failed\n", 25);
+		expand_str(var, exp->current->content, exp);
+		if (!save_result_in_token(var, exp))
 			return (0);
-		}
-		free(current->content);
-		if (!*expanded && split->can_be_rm) // Now safe to dereference
-			empty_token(var, last, &current, expanded);
-		else
-		{
-			current->content = expanded; //here do the word splitting if necesary
-			last = current;
-			current = current->next;
-		}
 	}
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/30 13:13:18 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/11/01 17:54:28 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/11/01 22:50:22 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,19 +24,40 @@ int	len_keyword(char *str)
 	return (len);
 }
 
-int	count_split(char *expanded, t_split *split)
+int	my_isspace(char c)
 {
-	int	in_word;
-
-	if (split->dquote && expanded)
-		return (0);
-	in_word = 1;
-	return (in_word);
+	if (c == ' ' || c == '\t' || c == '\n')
+		return (1);
+	return (0);
 }
 
-int	count_env_var_len(t_mini *var, char *str, int *i, t_split *split)
+void	count_split(char *str, t_expand *exp)
 {
-	int		len;
+	int	in_word;
+	int	i;
+
+	exp->len += ft_strlen(str);
+	if (split->dquote || !str)
+		return ;
+	in_word = 1;
+	i = 0;
+	while (str[i])
+	{
+		if (my_isspace(str[i]) && in_word)
+		{
+			in_word = 0;
+			exp->nbr_split++;
+		}
+		else if (!my_isspace(str[i]) && !in_word)
+		{
+			in_word = 1;
+		}
+		i++;
+	}
+}
+
+int	count_env_var_len(t_mini *var, char *str, int *i, t_expand *exp)
+{
 	char	*temp;
 	int		key_len;
 
@@ -45,57 +66,48 @@ int	count_env_var_len(t_mini *var, char *str, int *i, t_split *split)
 	{
 		temp = ft_itoa(var->exit_code);
 		if (!temp)
-			return (write(2, "minishell: malloc failed\n", 25), -1);
-		len = ft_strlen(temp);
+			return (write(2, "minishell: malloc failed\n", 25), 0);
+		exp->len += ft_strlen(temp);
 	}
 	else
 	{
 		key_len = len_keyword(&str[*i]);
 		temp = malloc((key_len + 1) * sizeof(char));
 		if (!temp)
-			return (write(2, "minishell: malloc failed\n", 25), -1);
+			return (write(2, "minishell: malloc failed\n", 25), 0);
 		ft_strlcpy(temp, &str[*i], key_len + 1);
-		len = ft_strlen(find_env_var(var->envp, temp));
-		split->nbr_split = count_split(find_env_var(var->envp, temp), split);
+		count_split(find_env_var(var->envp, temp), exp);
 		*i += key_len - 1;
 	}
 	free(temp);
-	return (len);
+	return (1);
 }
 
-int	len_expanded(t_mini *var, char *str, t_split *split)
+int	len_expanded(t_mini *var, char *str, t_expand *exp)
 {
-	int	len;
 	int	i;
-	int	check;
 
-	split->dquote = 0;
-	split->squote = 0;
-	len = 0;
 	i = -1;
-	check = 0;
 	while (str[++i])
 	{
-		if (str[i] == '"' && !split->squote)
+		if (str[i] == '"' && !exp->squote)
 		{
-			split->can_be_rm = 0;
-			split->dquote = 1 - split->dquote;
+			exp->can_be_rm = 0;
+			exp->dquote = 1 - exp->dquote;
 		}
-		else if (str[i] == 39 && !split->dquote)
+		else if (str[i] == 39 && !exp->dquote)
 		{
-			split->squote = 1 - split->squote;
-			split->can_be_rm = 0;
+			exp->squote = 1 - exp->squote;
+			exp->can_be_rm = 0;
 		}
-		else if (str[i] == '$' && !split->squote
+		else if (str[i] == '$' && !exp->squote
 			&& (ft_isalnum(str[i + 1]) || str[i + 1] == '?'))
 		{
-			check = count_env_var_len(var, str, &i, split);
-			len += check;
+			if (!count_env_var_len(var, str, &i, exp))
+				return (0);
 		}
 		else
-			len++;
-		if (check == -1)
-			return (-1);
+			exp->len++;
 	}
-	return (len);
+	return (1);
 }
