@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 10:29:08 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/10/31 19:20:04 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/11/01 18:55:25 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	handle_command(t_mini *var)
 	// print_tokens(var->tokens);
 	if (!execute_cmds(var))
 		return ;
-	if (g_signal == 130)
+	if (g_signal == 130) // Ctrl+C was pressed - check here after running commands so minishell ends with correnct exit code when ctrl d is pressed?? 
 	{
 		var->exit_code = 130;
 		g_signal = 0;

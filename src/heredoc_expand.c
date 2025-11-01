@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_expand.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/03 00:00:29 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/10/31 17:35:03 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/11/01 18:33:57 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,30 +67,6 @@ int	cpy_env_var_delim(t_mini *var, char *str, int *i, char *dst)
 		*i += key_len - 1;
 	}
 	return (free(tmp), len);
-}
-
-char	*cpy_expanded_delim(char *str, char *result)
-{
-	int	dquote;
-	int	squote;
-	int	i;
-	int	j;
-
-	dquote = 0;
-	squote = 0;
-	i = -1;
-	j = 0;
-	while (str[++i])
-	{
-		if (str[i] == '"' && !squote)
-			dquote = 1 - dquote;
-		else if (str[i] == 39 && !dquote)
-			squote = 1 - squote;
-		else
-			result[j++] = str[i];
-	}
-	result[j] = '\0';
-	return (result);
 }
 
 int	len_expanded_heredoc(t_mini *var, char *str)

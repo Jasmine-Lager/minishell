@@ -3,60 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/30 12:34:17 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/10/31 18:33:57 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/11/01 18:38:47 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	len_no_quotes(char *delim, bool *quoted)
-{
-	int	len;
-	int	dquote;
-	int	squote;
-	int	i;
-
-	len = 0;
-	dquote = 0;
-	squote = 0;
-	i = -1;
-	while (delim[++i])
-	{
-		if (delim[i] == '"' && !squote)
-		{
-			dquote = 1 - dquote;
-			*quoted = 1;
-		}
-		else if (delim[i] == 39 && !dquote)
-		{
-			squote = 1 - squote;
-			*quoted = 1;
-		}
-		else
-			len++;
-	}
-	return (len);
-}
-
-bool	rm_quotes_delim(t_mini *var, char **delim)
-{
-	int		len;
-	char	*result;
-	bool	quoted;
-
-	quoted = 0;
-	len = len_no_quotes(*delim, &quoted);
-	result = (char *)malloc((len + 1) * sizeof(char));
-	if (!result)
-		error_exit(var, "minishell: malloc failed\n");
-	cpy_expanded_delim(*delim, result);
-	free(*delim);
-	*delim = result;
-	return (quoted);
-}
 
 char	*cpy_expanded_no_split(t_mini *var, char *str, char *result)
 {
@@ -157,7 +111,6 @@ bool	heredoc(t_mini *var, t_token *delim)
 		heredoc_to_file(var, file, &delim->content);
 	waitpid(pid, &status, 0);
 	signals_setup();
-		// Restore interactive signal handlers after heredoc completes
 	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
 	{
 		unlink(file);

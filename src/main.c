@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 16:00:52 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/10/31 19:20:19 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/11/01 18:52:43 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	main(int argc, char **argv, char **envp)
 	var->line = readline("$ ");
 	while (var->line)
 	{
-		if (g_signal == 130) // Ctrl+C was pressed
+		if (g_signal == 130) // Ctrl+C was pressed - check here before running commands so $? expands correctly and exit has correct exit code 
 		{
 			var->exit_code = 130;
 			g_signal = 0;

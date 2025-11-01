@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/10/31 17:40:58 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/11/01 18:39:44 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -224,6 +224,11 @@ void	open_redir_outfile(t_mini *var, char *outfile, bool append);
 void	process_cmd(t_token *ptr, t_token **cmd, int *argv_len);					
 int		redir_files_and_count_argv_len(t_mini *var, t_token *ptr,
 		t_token **cmd, int argv_len);
+
+// rm_quotes_delim.c
+int	len_no_quotes(char *delim, bool *quoted);
+char	*cpy_no_quotes(char *str, char *result);
+bool	rm_quotes_delim(t_mini *var, char **delim);
 
 // signals.c
 void				handle_ctrl_c(int signal_number);

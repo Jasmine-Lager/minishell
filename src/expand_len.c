@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_len.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/30 13:13:18 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/10/31 17:23:43 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/11/01 17:54:28 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	count_split(char *expanded, t_split *split)
 	if (split->dquote && expanded)
 		return (0);
 	in_word = 1;
-	return (0);
+	return (in_word);
 }
 
 int	count_env_var_len(t_mini *var, char *str, int *i, t_split *split)

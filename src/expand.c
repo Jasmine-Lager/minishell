@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 12:50:57 by jlager            #+#    #+#             */
-/*   Updated: 2025/10/31 17:22:56 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/11/01 17:39:21 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,15 +132,15 @@ bool	expand_tokens(t_mini *var)
 		split->nbr_split = 0;
 		if (current->type == DELIMITER)
 		{
-			heredoc(var, current);
+			if (!heredoc(var, current))
+				return (0);
 			current = current->next;
 			continue ;
 		}
 		expanded = expand_str(var, current->content, split);
 		if (!expanded)  // Check for NULL before dereferencing
 		{
-			write(2, "minishell: malloc failed\n" , 
-				ft_strlen("minishell: malloc failed\n"));
+			write(2, "minishell: malloc failed\n", 25);
 			return (0);
 		}
 		free(current->content);
