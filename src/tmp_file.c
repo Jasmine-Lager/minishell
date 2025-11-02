@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tmp_file.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlager <jlager@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 19:11:16 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/10/31 17:02:29 by jlager           ###   ########.fr       */
+/*   Updated: 2025/11/02 18:22:17 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	open_tmp_file(t_mini *var, char *filename)
 			perror(filename);
 		else
 			perror("open failed");
-		free_var_exit(var, errno); // is in child process, can exit
+		free_var_exit(var, errno);
 	}
 	return (fd);
 }

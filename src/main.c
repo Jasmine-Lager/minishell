@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 16:00:52 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/11/01 18:52:43 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/11/02 18:25:18 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	main(int argc, char **argv, char **envp)
 	var->line = readline("$ ");
 	while (var->line)
 	{
-		if (g_signal == 130) // Ctrl+C was pressed - check here before running commands so $? expands correctly and exit has correct exit code 
+		if (g_signal == 130)
 		{
 			var->exit_code = 130;
 			g_signal = 0;
@@ -39,9 +39,6 @@ int	main(int argc, char **argv, char **envp)
 	return (0);
 }
 
-// envv (also called envp) = environment variables
-// array of strings (character pointers), each representing one
-// environment variable in the form "KEY=value", ending with a null pointer.
-
 // readline leaks: to suppress readline leaks run:
-// valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all ./minishell
+// valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all
+// ./minishell

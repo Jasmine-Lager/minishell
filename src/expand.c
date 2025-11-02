@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 12:50:57 by jlager            #+#    #+#             */
-/*   Updated: 2025/11/02 17:38:18 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/11/02 18:20:04 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	expand_str(t_mini *var, char *str, t_expand *exp)
 	exp->i_end_split = (int *)malloc(exp->nbr_split * sizeof(int));
 	if (!exp->result || !exp->i_start_split || !exp->i_end_split)
 	{
-		free(exp->result); //the others must be freed in save_result_in_token
+		free(exp->result);
 		exp->result = NULL;
 		write(2, "minishell: malloc failed\n", 25);
 		return ;
@@ -41,7 +41,7 @@ void	expand_str(t_mini *var, char *str, t_expand *exp)
 
 int	add_new_token(t_mini *var, t_expand *exp, int from, int to)
 {
-	t_token *new;
+	t_token	*new;
 
 	new = malloc(sizeof(t_token));
 	if (!new)
@@ -79,7 +79,8 @@ int	split_words(t_mini *var, t_expand *exp)
 	exp->i = 0;
 	while (exp->i < exp->nbr_split - 1)
 	{
-		if (!add_new_token(var, exp, exp->i_end_split[exp->i], exp->i_start_split[exp->i + 1]))
+		if (!add_new_token(var, exp, exp->i_end_split[exp->i],
+				exp->i_start_split[exp->i + 1]))
 			return (free(exp->result), 1);
 		exp->i++;
 	}
@@ -135,7 +136,7 @@ bool	expand_tokens(t_mini *var)
 		if (exp->current->type == DELIMITER)
 		{
 			if (!heredoc(var, exp->current))
-				return (free(exp), 0); //free exp properly first!!!!!!
+				return (free(exp), 0);
 			exp->current = exp->current->next;
 			continue ;
 		}

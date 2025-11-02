@@ -6,15 +6,15 @@
 /*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 15:11:00 by jasminelage       #+#    #+#             */
-/*   Updated: 2025/11/02 18:15:12 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/11/02 18:20:43 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int already_has_path(t_mini *var, char **path, char *cmd)
+int	already_has_path(t_mini *var, char **path, char *cmd)
 {
-	struct stat path_stat;
+	struct stat	path_stat;
 
 	*path = ft_strdup(cmd);
 	if (!*path)

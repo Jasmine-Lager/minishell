@@ -6,13 +6,13 @@
 /*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/02 03:16:58 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/11/02 17:38:28 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/11/02 18:20:15 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int mark_where_to_split(t_expand *exp, char *result, int j)
+int	mark_where_to_split(t_expand *exp, char *result, int j)
 {
 	int	in_word;
 	int	i;

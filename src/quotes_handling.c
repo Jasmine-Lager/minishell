@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quotes_handling.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlager <jlager@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 13:39:20 by jasminelage       #+#    #+#             */
-/*   Updated: 2025/10/31 17:02:42 by jlager           ###   ########.fr       */
+/*   Updated: 2025/11/02 18:21:56 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,8 @@ t_quote_counts	count_quote_sections(char *content)
 
 t_quote_info	analyze_token_quotes_detailed(char *content)
 {
-	t_quote_counts counts;
-	t_quote_info info;
+	t_quote_counts	counts;
+	t_quote_info	info;
 
 	counts = count_quote_sections(content);
 	info = set_quote_behavior(counts);
