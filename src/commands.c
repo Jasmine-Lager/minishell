@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 10:29:08 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/11/01 18:55:25 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/11/02 17:53:17 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,24 @@ void	handle_command(t_mini *var)
 {
 	add_history(var->line);
 	if (!parse(var) || !var->tokens)
+	{
+		if (g_signal == 130) // Ctrl+C was pressed - check here after running commands so minishell ends with correnct exit code when ctrl d is pressed?? 
+		{
+			var->exit_code = 130;
+			g_signal = 0;
+		}
 		return ;
+	}
 	// print_tokens(var->tokens);
 	if (!execute_cmds(var))
+	{
+		if (g_signal == 130) // Ctrl+C was pressed - check here after running commands so minishell ends with correnct exit code when ctrl d is pressed?? 
+		{
+			var->exit_code = 130;
+			g_signal = 0;
+		}
 		return ;
+	}
 	if (g_signal == 130) // Ctrl+C was pressed - check here after running commands so minishell ends with correnct exit code when ctrl d is pressed?? 
 	{
 		var->exit_code = 130;

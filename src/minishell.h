@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/11/02 17:39:37 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/11/02 18:15:37 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,7 @@ int					unset_env_var(t_mini *var, char *key);
 // errors.c
 void				error_exit(t_mini *var, char *str);
 void	error_exit_code(t_mini *var, char *str, int code);
-void				command_not_found(t_mini *var, char **path);
+void	access_error(t_mini *var, char **path, char *str, int code);
 void				dup2_error(t_mini *var);
 
 // execute.c

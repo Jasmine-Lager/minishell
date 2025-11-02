@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 15:11:00 by jasminelage       #+#    #+#             */
-/*   Updated: 2025/11/02 03:09:29 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/11/02 18:15:12 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 int already_has_path(t_mini *var, char **path, char *cmd)
 {
+	struct stat path_stat;
+
 	*path = ft_strdup(cmd);
 	if (!*path)
 		error_exit(var, "minishell: malloc failed\n");
@@ -21,8 +23,14 @@ int already_has_path(t_mini *var, char **path, char *cmd)
 		return (1);
 	if (ft_strchr(cmd, '/'))
 	{
+		if (access(*path, F_OK) == -1)
+			access_error(var, path, ": No such file or directory\n", 127);
+		if (stat(*path, &path_stat) == 0 && S_ISDIR(path_stat.st_mode))
+			access_error(var, path, ": Is a directory\n", 126);
 		if (access(*path, X_OK) == -1)
-			command_not_found(var, path);
+		{
+			access_error(var, path, ": Permission denied\n", 126);
+		}
 		return (1);
 	}
 	return (0);
@@ -49,7 +57,7 @@ void	find_path_to_cmd(t_mini *var, char **path, char *cmd, int j)
 		if (access(*path, X_OK) == 0)
 			return ;
 	}
-	command_not_found(var, path);
+	access_error(var, path, ": command not found\n", 127);
 }
 
 void	cpy_content_to_argv(t_mini *var, char **dst_argv, t_token *ptr,
