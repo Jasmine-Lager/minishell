@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/11/02 00:58:30 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/11/02 03:19:45 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,8 +113,7 @@ typedef struct s_mini // stores all variables usefull for the whole program
 	char *cmd;
 	char **argv_for_cmd;
 	int	nbr_heredoc;
-	int exit_code; // should only be used for pipes,
-					// not for signals (is here for expanding $?)
+	int exit_code;
 }					t_mini;
 
 // builtins.c
@@ -154,11 +153,12 @@ int					unset_env_var(t_mini *var, char *key);
 
 // errors.c
 void				error_exit(t_mini *var, char *str);
+void	error_exit_code(t_mini *var, char *str, int code);
 void				command_not_found(t_mini *var, char **path);
 void				dup2_error(t_mini *var);
 
 // execute.c
-void				find_path_to_cmd(t_mini *var, char **path, char *cmd);
+void	find_path_to_cmd(t_mini *var, char **path, char *cmd, int j);
 void				cpy_content_to_argv(t_mini *var, char **dst_argv, t_token *ptr,
 						size_t argv_len);
 t_token				*find_start_of_nth_cmd(t_mini *var, int cmd_n);
@@ -172,13 +172,15 @@ void	count_split(char *str, t_expand *exp);
 int	count_env_var_len(t_mini *var, char *str, int *i, t_expand *exp);
 int	len_expanded(t_mini *var, char *str, t_expand *exp);
 
-// expand.c
+// expand_utils.c
 int	cpy_env_var(t_mini *var, char *str, int *i, char *dst);
-char	*cpy_expanded(t_mini *var, char *str, char *result, t_expand *exp);
-void	expand_str(t_mini *var, char *str, t_expand *exp);
-void				empty_token(t_mini *var, t_token *last, t_token **current,
+void	empty_token(t_mini *var, t_token *last, t_token **current,
 						char *expanded);
 t_expand	*init_expanded(t_token *first_token);
+
+// expand.c
+char	*cpy_expanded(t_mini *var, char *str, char *result, t_expand *exp);
+void	expand_str(t_mini *var, char *str, t_expand *exp);
 int	save_result_in_token(t_mini *var, t_expand *exp);
 bool				expand_tokens(t_mini *var);
 

@@ -3,49 +3,53 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlager <jlager@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 15:11:00 by jasminelage       #+#    #+#             */
-/*   Updated: 2025/10/31 17:11:35 by jlager           ###   ########.fr       */
+/*   Updated: 2025/11/02 03:09:29 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	find_path_to_cmd(t_mini *var, char **path, char *cmd)
+int already_has_path(t_mini *var, char **path, char *cmd)
 {
-	char	*tmp;
-	int		j;
-
-	if (!cmd || !*cmd)
-		error_exit(var, "minishell: invalid command\n");
-	if (is_builtin(cmd))
-	{
-		*path = ft_strdup(cmd);
-		if (!*path)
-			error_exit(var, "minishell: malloc failed\n");
-		return ;
-	}
 	*path = ft_strdup(cmd);
 	if (!*path)
 		error_exit(var, "minishell: malloc failed\n");
-	j = 0;
-	while (access(*path, X_OK) == -1 && var->paths && var->paths[j])
+	if (is_builtin(cmd))
+		return (1);
+	if (ft_strchr(cmd, '/'))
+	{
+		if (access(*path, X_OK) == -1)
+			command_not_found(var, path);
+		return (1);
+	}
+	return (0);
+}
+
+void	find_path_to_cmd(t_mini *var, char **path, char *cmd, int j)
+{
+	char	*tmp;
+
+	if (!cmd || !*cmd)
+		error_exit_code(var, "minishell: invalid command\n", 127);
+	if (already_has_path(var, path, cmd))
+		return ;
+	while (var->paths && var->paths[j])
 	{
 		free(*path);
 		tmp = ft_strjoin(var->paths[j++], "/");
-		*path = ft_strjoin(tmp, cmd);
-		if (!tmp || !*path)
-		{
-			free(tmp);
-			free(*path);
-			*path = NULL;
+		if (!tmp)
 			error_exit(var, "minishell: malloc failed\n");
-		}
+		*path = ft_strjoin(tmp, cmd);
 		free(tmp);
+		if (!*path)
+			error_exit(var, "minishell: malloc failed\n");
+		if (access(*path, X_OK) == 0)
+			return ;
 	}
-	if (access(*path, X_OK) == -1 && !is_builtin(cmd))
-		command_not_found(var, path);
+	command_not_found(var, path);
 }
 
 void	cpy_content_to_argv(t_mini *var, char **dst_argv, t_token *ptr,
@@ -101,7 +105,7 @@ void	prepare_argv_and_redir(t_mini *var, int cmd_n)
 	if (!var->argv_for_cmd)
 		error_exit(var, "malloc failed: prepare_argv_and_redir\n");
 	cpy_content_to_argv(var, var->argv_for_cmd, cmd, argv_len);
-	find_path_to_cmd(var, &var->cmd, cmd->content);
+	find_path_to_cmd(var, &var->cmd, cmd->content, 0);
 	close_pipes(var);
 }
 
@@ -144,7 +148,7 @@ static bool	execute_single_builtin(t_mini *var, t_token *cmd)
 	return (1);
 }
 
-static bool	fork_and_execute_processes(t_mini *var)
+static pid_t	fork_and_execute_processes(t_mini *var)
 {
 	int		n;
 	pid_t	pid;
@@ -157,7 +161,7 @@ static bool	fork_and_execute_processes(t_mini *var)
 		{
 			perror("fork");
 			signals_setup();
-			return (0);
+			return (-1);
 		}
 		else if (pid == 0)
 		{
@@ -184,7 +188,7 @@ bool	execute_cmds(t_mini *var)
 		return (0);
 	signals_execution();
 	last_pid = fork_and_execute_processes(var);
-	if (last_pid == 0)
+	if (last_pid == -1)
 		return (0);
 	close_pipes(var);
 	wait_for_children(var, last_pid);

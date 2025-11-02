@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 12:50:24 by jlager            #+#    #+#             */
-/*   Updated: 2025/10/31 19:43:26 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/11/02 01:52:21 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,12 @@ void	error_exit(t_mini *var, char *str)
 {
 	write(2, str, ft_strlen(str));
 	free_var_exit(var, 1);
+}
+
+void	error_exit_code(t_mini *var, char *str, int code)
+{
+	write(2, str, ft_strlen(str));
+	free_var_exit(var, code);
 }
 
 void	command_not_found(t_mini *var, char **path)

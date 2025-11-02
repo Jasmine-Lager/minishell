@@ -6,7 +6,7 @@
 #    By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/13 12:27:43 by jasminelage       #+#    #+#              #
-#    Updated: 2025/11/01 20:52:58 by ksevciko         ###   ########.fr        #
+#    Updated: 2025/11/02 03:20:21 by ksevciko         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,6 +31,7 @@ SOURCES =	builtins_more.c \
 			errors.c \
 			execute.c \
 			expand_len.c \
+			expand_utils.c \
 			expand.c \
 			heredoc_expand.c \
 			heredoc.c \
