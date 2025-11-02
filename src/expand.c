@@ -6,68 +6,11 @@
 /*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 12:50:57 by jlager            #+#    #+#             */
-/*   Updated: 2025/11/02 17:32:37 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/11/02 17:38:18 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int mark_where_to_split(t_expand *exp, char *result, int j)
-{
-	int	in_word;
-	int	i;
-
-	if (exp->dquote)
-		return (1);
-	if (exp->check == -1)
-		return (0);
-	in_word = 1;
-	i = 0;
-	while (i <= exp->check && exp->i < exp->nbr_split)
-	{
-		if (in_word && my_isspace(result[j + i]))
-		{
-			in_word = 0;
-			exp->i_start_split[exp->i] = j + i;
-		}
-		else if (!in_word && !my_isspace(result[j + i]))
-		{
-			in_word = 1;
-			exp->i_end_split[exp->i] = j + i;
-			exp->i++;
-		}
-		i++;
-	}
-	return (1);
-}
-
-char	*cpy_expanded(t_mini *var, char *str, char *result, t_expand *exp)
-{
-	int	i;
-	int	j;
-
-	i = -1;
-	j = 0;
-	while (str[++i])
-	{
-		if (str[i] == '"' && !exp->squote)
-			exp->dquote = 1 - exp->dquote;
-		else if (str[i] == 39 && !exp->dquote)
-			exp->squote = 1 - exp->squote;
-		else if (str[i] == '$' && !exp->squote
-			&& (ft_isalnum(str[i + 1]) || str[i + 1] == '?') && (++i))
-		{
-			exp->check = cpy_env_var(var, str, &i, &result[j]);
-			if (!mark_where_to_split(exp, result, j))
-				return (NULL);
-			j += exp->check;
-		}
-		else
-			result[j++] = str[i];
-	}
-	result[j] = '\0';
-	return (result);
-}
 
 void	expand_str(t_mini *var, char *str, t_expand *exp)
 {
@@ -100,8 +43,6 @@ int	add_new_token(t_mini *var, t_expand *exp, int from, int to)
 {
 	t_token *new;
 
-	if (from >= to)
-		return (1);
 	new = malloc(sizeof(t_token));
 	if (!new)
 	{

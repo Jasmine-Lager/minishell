@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlager <jlager@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 15:08:44 by jasminelage       #+#    #+#             */
-/*   Updated: 2025/10/31 16:00:20 by jlager           ###   ########.fr       */
+/*   Updated: 2025/11/02 17:41:52 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ int	builtin_exit(t_mini *var, char **argv)
 {
 	int	exit_code;
 
-	write(1, "exit\n", 5);
+	write(2, "exit\n", 5);
 	if (!argv[1])
 		free_var_exit(var, var->exit_code);
 	if (argv[2])

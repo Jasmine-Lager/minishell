@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/11/02 15:47:23 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/11/02 17:39:37 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,14 +172,17 @@ int	count_env_var_len(t_mini *var, char *str, int *i, t_expand *exp);
 int	len_expanded(t_mini *var, char *str, t_expand *exp);
 
 // expand_utils.c
+int mark_where_to_split(t_expand *exp, char *result, int j);
+char	*cpy_expanded(t_mini *var, char *str, char *result, t_expand *exp);
 int	cpy_env_var(t_mini *var, char *str, int *i, char *dst);
 void	empty_token(t_mini *var, t_token *last, t_token **current,
 						char *expanded);
 t_expand	*init_expanded(t_token *first_token);
 
 // expand.c
-char	*cpy_expanded(t_mini *var, char *str, char *result, t_expand *exp);
 void	expand_str(t_mini *var, char *str, t_expand *exp);
+int	add_new_token(t_mini *var, t_expand *exp, int from, int to);
+int	split_words(t_mini *var, t_expand *exp);
 int	save_result_in_token(t_mini *var, t_expand *exp);
 bool				expand_tokens(t_mini *var);
 
