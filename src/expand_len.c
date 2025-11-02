@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/30 13:13:18 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/11/01 22:50:22 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/11/02 00:51:14 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	count_split(char *str, t_expand *exp)
 	int	i;
 
 	exp->len += ft_strlen(str);
-	if (split->dquote || !str)
+	if (exp->dquote || !str)
 		return ;
 	in_word = 1;
 	i = 0;

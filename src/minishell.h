@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/11/01 23:09:03 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/11/02 00:58:30 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ typedef struct s_expand
 	t_token	*current;
 	t_token	*last;
 	int		nbr_split;
+	int		i;
 	int		*i_start_split;
 	int		*i_end_split;
 	bool spaces_at_end; //do not use it at all
@@ -98,7 +99,7 @@ typedef struct s_expand
 	int dquote;
 	int squote;
 	int	len;
-	int	check; //i do not use it right now
+	int	check;
 }					t_expand;
 
 typedef struct s_mini // stores all variables usefull for the whole program
@@ -166,15 +167,19 @@ bool				execute_cmds(t_mini *var);
 
 // expand_len.c
 int	len_keyword(char *str);
-int	count_env_var_len(t_mini *var, char *str, int *i, t_split *split);
-int	len_expanded(t_mini *var, char *str, t_split *split);
+int	my_isspace(char c);
+void	count_split(char *str, t_expand *exp);
+int	count_env_var_len(t_mini *var, char *str, int *i, t_expand *exp);
+int	len_expanded(t_mini *var, char *str, t_expand *exp);
 
 // expand.c
-int	cpy_env_var(t_mini *var, char *str, int *i, char *dst, t_split *split);
-char	*cpy_expanded(t_mini *var, char *str, char *result, t_split *split);
-char	*expand_str(t_mini *var, char *str, t_split *split);
+int	cpy_env_var(t_mini *var, char *str, int *i, char *dst);
+char	*cpy_expanded(t_mini *var, char *str, char *result, t_expand *exp);
+void	expand_str(t_mini *var, char *str, t_expand *exp);
 void				empty_token(t_mini *var, t_token *last, t_token **current,
 						char *expanded);
+t_expand	*init_expanded(t_token *first_token);
+int	save_result_in_token(t_mini *var, t_expand *exp);
 bool				expand_tokens(t_mini *var);
 
 // heredoc_expand.c
