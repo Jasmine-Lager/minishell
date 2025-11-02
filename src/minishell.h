@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/11/02 03:19:45 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/11/02 15:01:36 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,6 @@ typedef struct s_expand
 	int		i;
 	int		*i_start_split;
 	int		*i_end_split;
-	bool spaces_at_end; //do not use it at all
 	bool	can_be_rm;
 	int dquote;
 	int squote;

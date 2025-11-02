@@ -4,3 +4,4 @@ libft/libft.a
 infile
 outfile
 obj/
+minishell_tester/
