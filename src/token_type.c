@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 12:50:30 by jlager            #+#    #+#             */
-/*   Updated: 2025/10/31 18:31:14 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/11/02 15:46:54 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,13 +70,9 @@ char	first_non_quote_char(char *str)
 	return (*str);
 }
 
-void	find_token_type(t_mini *var, t_token *new, t_token *last)
+void	check_cmd_flag_word(t_token *new, t_token *last)
 {
-	if (check_metacharacters(var, new))
-		;
-	else if (check_in_out_delim(new, last))
-		;
-	else if (last && (last->type == CMD || last->type == FLAG
+	if (last && (last->type == CMD || last->type == FLAG
 			|| last->type == WORD || last->type == INFILE
 			|| last->type == OUTFILE || last->type == DELIMITER)
 		&& first_non_quote_char(new->content) == '-')
@@ -86,4 +82,16 @@ void	find_token_type(t_mini *var, t_token *new, t_token *last)
 		new->type = CMD;
 	else
 		new->type = WORD;
+}
+
+void	find_token_type(t_mini *var, t_token *new, t_token *last)
+{
+	if (check_metacharacters(var, new))
+		;
+	else if (check_in_out_delim(new, last))
+		;
+	else
+	{
+		check_cmd_flag_word(new, last);
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/11/02 15:01:36 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/11/02 15:47:23 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -266,6 +266,7 @@ void				define_token(t_mini *var, int *start_token, int *end_token,
 // token_type.c
 bool				check_metacharacters(t_mini *var, t_token *new);
 bool				check_in_out_delim(t_token *new, t_token *last);
+void				check_cmd_flag_word(t_token *new, t_token *last);
 void				find_token_type(t_mini *var, t_token *new, t_token *last);
 
 #endif
