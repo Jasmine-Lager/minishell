@@ -6,13 +6,13 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/30 12:34:17 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/11/01 20:42:22 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/11/03 21:59:26 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	read_heredoc(t_mini *var, char *delim, int fd, bool delim_quoted)
+void	read_heredoc(t_mini *var, char *delim, t_expand *exp, bool delim_quoted)
 {
 	char	*line_in;
 
@@ -20,32 +20,36 @@ void	read_heredoc(t_mini *var, char *delim, int fd, bool delim_quoted)
 	while (ft_strncmp(line_in, delim, ft_strlen(delim) + 1))
 	{
 		if (!line_in)
+		{
+			free(exp);
 			error_exit(var, "heredoc delimited by end-of-file\n");
+		}
 		if (!delim_quoted)
-			line_in = expand_heredoc(var, line_in);
-		write(fd, line_in, ft_strlen(line_in));
-		write(fd, "\n", 1);
+			line_in = expand_heredoc(var, line_in, exp);
+		write(exp->fd, line_in, ft_strlen(line_in));
+		write(exp->fd, "\n", 1);
 		free(line_in);
 		line_in = readline("> ");
 	}
 	free(line_in);
 }
 
-void	heredoc_to_file(t_mini *var, char *filename, char **delim)
+void	heredoc_to_file(t_mini *var, char *filename, char **delim,
+		t_expand *exp)
 {
-	int		fd;
 	bool	delim_quoted;
 
 	signals_heredoc();
-	fd = open_tmp_file(var, filename);
-	delim_quoted = rm_quotes_delim(var, delim);
-	read_heredoc(var, *delim, fd, delim_quoted);
-	close(fd);
+	exp->fd = open_tmp_file(var, filename, exp);
+	delim_quoted = rm_quotes_delim(var, delim, exp);
+	read_heredoc(var, *delim, exp, delim_quoted);
+	close(exp->fd);
 	free(filename);
+	free(exp);
 	free_var_exit(var, 0);
 }
 
-bool	heredoc(t_mini *var, t_token *delim)
+bool	heredoc(t_mini *var, t_token *delim, t_expand *exp)
 {
 	char	*file;
 	pid_t	pid;
@@ -58,7 +62,7 @@ bool	heredoc(t_mini *var, t_token *delim)
 	if (pid == -1)
 		return (perror("fork"), free(file), 0);
 	else if (pid == 0)
-		heredoc_to_file(var, file, &delim->content);
+		heredoc_to_file(var, file, &delim->content, exp);
 	waitpid(pid, &status, 0);
 	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
 	{

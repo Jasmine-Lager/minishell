@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/02 03:16:58 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/11/02 18:20:15 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/11/03 21:37:09 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,5 +131,6 @@ t_expand	*init_expanded(t_token *first_token)
 	exp->last = NULL;
 	exp->i_start_split = NULL;
 	exp->i_end_split = NULL;
+	exp->fd = 1;
 	return (exp);
 }

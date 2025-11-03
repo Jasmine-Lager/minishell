@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 15:11:00 by jasminelage       #+#    #+#             */
-/*   Updated: 2025/11/02 18:20:43 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/11/03 20:51:18 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,6 +200,8 @@ bool	execute_cmds(t_mini *var)
 		return (0);
 	close_pipes(var);
 	wait_for_children(var, last_pid);
+	if (var->term_saved)
+		tcsetattr(STDIN_FILENO, TCSANOW, &(var->orig_term));
 	signals_setup();
 	return (1);
 }

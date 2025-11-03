@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 15:10:05 by jasminelage       #+#    #+#             */
-/*   Updated: 2025/11/03 13:04:53 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/11/03 21:59:45 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,9 @@ static void	initialize_var(t_mini *var, char **envp)
 	var->argv_for_cmd = NULL;
 	var->nbr_heredoc = 0;
 	var->exit_code = 0;
+	var->term_saved = 1;
+	if (tcgetattr(STDIN_FILENO, &(var->orig_term)) == -1)
+		var->term_saved = 0;
 }
 
 void	initialize_minishell(t_mini *var, int argc, char **argv, char **envp)
@@ -74,7 +77,7 @@ void	initialize_minishell(t_mini *var, int argc, char **argv, char **envp)
 		free(var);
 		exit(2);
 	}
-	if (!isatty(STDIN_FILENO))
+	if (!isatty(STDIN_FILENO) || !isatty(STDOUT_FILENO))
 	{
 		write(2, "minishell: non-interactive mode not supported\n", 46);
 		free(var);

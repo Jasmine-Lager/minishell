@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/03 00:00:29 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/11/01 20:30:21 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/11/03 21:41:03 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,17 +120,23 @@ char	*cpy_expanded_heredoc(t_mini *var, char *str, char *result)
 	return (result);
 }
 
-char	*expand_heredoc(t_mini *var, char *str)
+char	*expand_heredoc(t_mini *var, char *str, t_expand *exp)
 {
 	int		len;
 	char	*result;
 
 	len = len_expanded_heredoc(var, str);
 	if (len == -1)
+	{
+		free(exp);
 		error_exit(var, "minishell: malloc failed\n");
+	}
 	result = (char *)malloc((len + 1) * sizeof(char));
 	if (!result)
+	{
+		free(exp);
 		error_exit(var, "minishell: malloc failed\n");
+	}
 	result = cpy_expanded_heredoc(var, str, result);
 	return (result);
 }

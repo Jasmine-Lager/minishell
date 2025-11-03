@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tmp_file.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 19:11:16 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/11/02 18:22:17 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/11/03 21:30:29 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char	*get_tmp_file_name(t_mini *var)
 	return (file);
 }
 
-int	open_tmp_file(t_mini *var, char *filename)
+int	open_tmp_file(t_mini *var, char *filename, t_expand *exp)
 {
 	int	fd;
 
@@ -52,6 +52,7 @@ int	open_tmp_file(t_mini *var, char *filename)
 			perror(filename);
 		else
 			perror("open failed");
+		free(exp);
 		free_var_exit(var, errno);
 	}
 	return (fd);

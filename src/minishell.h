@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/02 18:27:58 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/11/02 18:28:06 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/11/03 21:47:45 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ typedef struct s_expand
 	int squote;
 	int	len;
 	int	check;
+	int	fd;
 }					t_expand;
 
 typedef struct s_mini // stores all variables usefull for the whole program
@@ -112,6 +113,8 @@ typedef struct s_mini // stores all variables usefull for the whole program
 	char **argv_for_cmd;
 	int	nbr_heredoc;
 	int exit_code;
+	struct termios	orig_term;
+	int	term_saved;
 }					t_mini;
 
 // builtins.c
@@ -190,14 +193,12 @@ int	cpy_env_var_delim(t_mini *var, char *str, int *i, char *dst);
 char	*cpy_expanded_delim(char *str, char *result);
 int		len_expanded_heredoc(t_mini *var, char *str);
 char	*cpy_expanded_heredoc(t_mini *var, char *str, char *result);
-char	*expand_heredoc(t_mini *var, char *str);
+char	*expand_heredoc(t_mini *var, char *str, t_expand *exp);
 
 // heredoc.c
-int		len_no_quotes(char *delim, bool *quoted);
-bool	rm_quotes_delim(t_mini *var, char **delim);
-void	read_heredoc(t_mini *var, char *delim, int fd, bool delim_quoted);
-void	heredoc_to_file(t_mini *var, char *filename, char **delim);
-bool	heredoc(t_mini *var, t_token *delim);
+void	read_heredoc(t_mini *var, char *delim, t_expand *exp, bool delim_quoted);
+void	heredoc_to_file(t_mini *var, char *filename, char **delim, t_expand *exp);
+bool	heredoc(t_mini *var, t_token *delim, t_expand *exp);
 
 // initialize_minishell.c
 void				initialize_minishell(t_mini *var, int argc, char **argv,
@@ -242,7 +243,7 @@ int		redir_files_and_count_argv_len(t_mini *var, t_token *ptr,
 // rm_quotes_delim.c
 int	len_no_quotes(char *delim, bool *quoted);
 char	*cpy_no_quotes(char *str, char *result);
-bool	rm_quotes_delim(t_mini *var, char **delim);
+bool	rm_quotes_delim(t_mini *var, char **delim, t_expand *exp);
 
 // signals.c
 void				handle_ctrl_c(int signal_number);
@@ -255,7 +256,7 @@ void				signals_child(void);
 
 // tmp_file.c
 char	*get_tmp_file_name(t_mini *var);
-int		open_tmp_file(t_mini *var, char *filename);
+int		open_tmp_file(t_mini *var, char *filename, t_expand *exp);
 
 // token_define.c
 int					skip_quoted_section(t_mini *var, int i, char quote);

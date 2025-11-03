@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 18:38:24 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/11/01 18:38:24 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/11/03 21:31:15 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ char	*cpy_no_quotes(char *str, char *result)
 	return (result);
 }
 
-bool	rm_quotes_delim(t_mini *var, char **delim)
+bool	rm_quotes_delim(t_mini *var, char **delim, t_expand *exp)
 {
 	int		len;
 	char	*result;
@@ -75,7 +75,10 @@ bool	rm_quotes_delim(t_mini *var, char **delim)
 	len = len_no_quotes(*delim, &quoted);
 	result = (char *)malloc((len + 1) * sizeof(char));
 	if (!result)
+	{
+		free(exp);
 		error_exit(var, "minishell: malloc failed\n");
+	}
 	cpy_no_quotes(*delim, result);
 	free(*delim);
 	*delim = result;
