@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 12:50:57 by jlager            #+#    #+#             */
-/*   Updated: 2025/11/02 18:20:04 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/11/03 13:26:04 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,9 @@ void	expand_str(t_mini *var, char *str, t_expand *exp)
 	exp->dquote = 0;
 	exp->squote = 0;
 	exp->len = 0;
+	exp->result = NULL;
 	if (!len_expanded(var, str, exp))
-	{
-		write(2, "minishell: malloc failed\n", 25);
 		return ;
-	}
 	exp->result = (char *)malloc((exp->len + 1) * sizeof(char));
 	exp->i_start_split = (int *)malloc(exp->nbr_split * sizeof(int));
 	exp->i_end_split = (int *)malloc(exp->nbr_split * sizeof(int));
@@ -29,7 +27,6 @@ void	expand_str(t_mini *var, char *str, t_expand *exp)
 	{
 		free(exp->result);
 		exp->result = NULL;
-		write(2, "minishell: malloc failed\n", 25);
 		return ;
 	}
 	exp->dquote = 0;
@@ -100,7 +97,7 @@ int	save_result_in_token(t_mini *var, t_expand *exp)
 	exp->check = 1;
 	if (!(exp->result))
 	{
-		write(2, "minishell: malloc failed\n", 25); //check all error messages, i think that insome cases this gets printed twice
+		write(2, "minishell: malloc in expand_str failed\n", 25); //check all error messages, i think that insome cases this gets printed twice
 		free(exp->i_start_split);
 		free(exp->i_end_split);
 		free(exp);
@@ -119,6 +116,8 @@ int	save_result_in_token(t_mini *var, t_expand *exp)
 	exp->i_start_split = NULL;
 	free(exp->i_end_split);
 	exp->i_end_split = NULL;
+	if (!exp->check)
+			write(2, "minishell: malloc in add_new_token failed\n", 42);
 	return (exp->check);
 }
 

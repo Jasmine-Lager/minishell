@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/30 13:13:18 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/11/02 00:51:14 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/11/03 13:24:49 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int	count_env_var_len(t_mini *var, char *str, int *i, t_expand *exp)
 	{
 		temp = ft_itoa(var->exit_code);
 		if (!temp)
-			return (write(2, "minishell: malloc failed\n", 25), 0);
+			return (0);
 		exp->len += ft_strlen(temp);
 	}
 	else
@@ -74,7 +74,7 @@ int	count_env_var_len(t_mini *var, char *str, int *i, t_expand *exp)
 		key_len = len_keyword(&str[*i]);
 		temp = malloc((key_len + 1) * sizeof(char));
 		if (!temp)
-			return (write(2, "minishell: malloc failed\n", 25), 0);
+			return (0);
 		ft_strlcpy(temp, &str[*i], key_len + 1);
 		count_split(find_env_var(var->envp, temp), exp);
 		*i += key_len - 1;
