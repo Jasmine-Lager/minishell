@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 15:08:44 by jasminelage       #+#    #+#             */
-/*   Updated: 2025/11/02 17:41:52 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/11/04 15:37:58 by jasminelage      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	builtin_echo(char **argv)
 
 	i = 1;
 	n_flag = 0;
-	if (argv[i] && ft_strncmp(argv[i], "-n", 3) == 0)
+	while (argv[i] && ft_strncmp(argv[i], "-n", 3) == 0)
 	{
 		n_flag = 1;
 		i++;

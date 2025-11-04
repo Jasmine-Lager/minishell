@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+         #
+#    By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/13 12:27:43 by jasminelage       #+#    #+#              #
-#    Updated: 2025/11/02 03:20:21 by ksevciko         ###   ########.fr        #
+#    Updated: 2025/11/04 15:53:56 by jasminelage      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,10 +43,12 @@ SOURCES =	builtins_more.c \
 			quotes_handling_utils.c \
 			redirect.c \
 			rm_quotes_delim.c \
+			signals_handling.c \
 			signals.c \
 			tmp_file.c \
 			token_define.c \
 			token_type.c \
+			validate_syntax_metachars.c \
 			
 OBJECTS = $(SOURCES:%.c=$(OBJ_DIR)/%.o)
 
