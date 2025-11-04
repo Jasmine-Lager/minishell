@@ -6,7 +6,7 @@
 #    By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/13 12:27:43 by jasminelage       #+#    #+#              #
-#    Updated: 2025/11/04 15:53:56 by jasminelage      ###   ########.fr        #
+#    Updated: 2025/11/04 17:47:30 by jasminelage      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,6 +25,7 @@ SOURCES =	builtins_more.c \
 			builtins_utils.c \
 			builtins.c \
 			clean_up.c \
+			commands_utils.c \
 			commands.c \
 			environment_utils.c \
 			environment.c \

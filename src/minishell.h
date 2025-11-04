@@ -6,7 +6,7 @@
 /*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/02 18:27:58 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/11/04 17:45:30 by jasminelage      ###   ########.fr       */
+/*   Updated: 2025/11/04 17:47:54 by jasminelage      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,7 @@ char			*read_continuation(t_mini *var, char *current_line);
 
 
 // commands.c
-int				handle_line_continuation(t_mini *var)
+int				handle_line_continuation(t_mini *var);
 void			handle_command(t_mini *var);
 
 // environment.c
