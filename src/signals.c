@@ -3,22 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 12:50:33 by jlager            #+#    #+#             */
-/*   Updated: 2025/11/04 15:49:35 by jasminelage      ###   ########.fr       */
+/*   Updated: 2025/11/05 14:23:22 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // Setup for interactive prompt
+// Important: restart interrupted system calls
 void	signals_setup(void)
 {
 	struct sigaction	sa;
 
 	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = SA_RESTART; // Important: restart interrupted system calls
+	sa.sa_flags = SA_RESTART;
 	sa.sa_handler = handle_ctrl_c;
 	sigaction(SIGINT, &sa, NULL);
 	signal(SIGQUIT, SIG_IGN);
@@ -37,12 +38,13 @@ void	signals_execution(void)
 }
 
 // Setup for heredoc
+// No SA_RESTART for heredoc - we want it to interrupt
 void	signals_heredoc(void)
 {
 	struct sigaction	sa;
 
 	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = 0; // No SA_RESTART for heredoc - we want it to interrupt
+	sa.sa_flags = 0;
 	sa.sa_handler = handle_ctrl_c_heredoc;
 	sigaction(SIGINT, &sa, NULL);
 	signal(SIGQUIT, SIG_IGN);
@@ -51,6 +53,6 @@ void	signals_heredoc(void)
 // Setup for child processes
 void	signals_child(void)
 {
-	signal(SIGINT, SIG_DFL); // Default handling
+	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
 }

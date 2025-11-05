@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   environment_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlager <jlager@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 15:10:50 by jasminelage       #+#    #+#             */
-/*   Updated: 2025/10/31 16:58:33 by jlager           ###   ########.fr       */
+/*   Updated: 2025/11/05 14:39:48 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,15 +109,14 @@ int	unset_env_var(t_mini *var, char *key)
 	new_envp = malloc(sizeof(char *) * count);
 	if (!new_envp)
 		return (1);
-	i = 0;
+	i = -1;
 	j = 0;
-	while (i < count)
+	while (++i < count)
 	{
 		if (i != index)
 			new_envp[j++] = var->envp[i];
 		else
 			free(var->envp[i]);
-		i++;
 	}
 	new_envp[j] = NULL;
 	free(var->envp);

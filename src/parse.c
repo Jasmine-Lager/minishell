@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 19:53:07 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/11/04 13:28:57 by jasminelage      ###   ########.fr       */
+/*   Updated: 2025/11/05 14:41:47 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,9 +109,7 @@ bool	parse(t_mini *var)
 		if (!append_token(var, &start_token, &end_token, &last))
 			return (0);
 	}
-	if (!expand_tokens(var))
-		return (0);
-	if (!validate_syntax(var))
+	if (!expand_tokens(var) || !validate_syntax(var))
 		return (0);
 	return (1);
 }

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+         #
+#    By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/13 12:27:43 by jasminelage       #+#    #+#              #
-#    Updated: 2025/11/04 17:47:30 by jasminelage      ###   ########.fr        #
+#    Updated: 2025/11/05 14:48:10 by ksevciko         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,6 +30,7 @@ SOURCES =	builtins_more.c \
 			environment_utils.c \
 			environment.c \
 			errors.c \
+			execute_prepare.c \
 			execute.c \
 			expand_len.c \
 			expand_utils.c \

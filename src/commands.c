@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 10:29:08 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/11/04 17:44:27 by jasminelage      ###   ########.fr       */
+/*   Updated: 2025/11/05 14:23:57 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,13 @@
  *
  * @param var The main struct.
  */
-static void check_and_reset_signal(t_mini *var)
+static void	check_and_reset_signal(t_mini *var)
 {
-    if (g_signal == 130)
-    {
-        var->exit_code = 130;
-        g_signal = 0;
-    }
+	if (g_signal == 130)
+	{
+		var->exit_code = 130;
+		g_signal = 0;
+	}
 }
 
 /**
@@ -34,50 +34,50 @@ static void check_and_reset_signal(t_mini *var)
  * @param var The main struct.
  * @return 1 on success, 0 on failure (e.g., EOF or parse error).
  */
-int  handle_line_continuation(t_mini *var)
+int	handle_line_continuation(t_mini *var)
 {
-    char    *complete_line;
-    int     parse_status;
+	char	*complete_line;
+	int		parse_status;
 
-    complete_line = read_continuation(var, ft_strdup(var->line));
-    if (!complete_line)
-        return (0); // read_continuation failed
-    free_tokens(var);
-    var->tokens = NULL;
-    var->needs_continuation = 0;
-    var->nbr_pipes = 0;
-    free(var->line);
-    var->line = complete_line;
-    parse_status = parse(var);
-    if (!parse_status || !var->tokens)
-        return (0); // Final parse of continued line failed
-    return (1);
+	complete_line = read_continuation(var, ft_strdup(var->line));
+	if (!complete_line)
+		return (0);
+	free_tokens(var);
+	var->tokens = NULL;
+	var->needs_continuation = 0;
+	var->nbr_pipes = 0;
+	free(var->line);
+	var->line = complete_line;
+	parse_status = parse(var);
+	if (!parse_status || !var->tokens)
+		return (0);
+	return (1);
 }
 
 // Main function to parse, handle continuations, and execute a command.
-void    handle_command(t_mini *var)
+void	handle_command(t_mini *var)
 {
-    int     parse_status;
-    int     exec_status;
+	int	parse_status;
+	int	exec_status;
 
-    var->needs_continuation = 0;
-    parse_status = parse(var);
-    if (!parse_status || !var->tokens) 
+	var->needs_continuation = 0;
+	parse_status = parse(var);
+	if (!parse_status || !var->tokens)
 	{
-        check_and_reset_signal(var);
-        return ;
-    }
-    if (var->needs_continuation)
-        if (!handle_line_continuation(var)) 
-            return ;
-    add_history(var->line);
-    exec_status = execute_cmds(var);
-    if (!exec_status) 
+		check_and_reset_signal(var);
+		return ;
+	}
+	if (var->needs_continuation)
+		if (!handle_line_continuation(var))
+			return ;
+	add_history(var->line);
+	exec_status = execute_cmds(var);
+	if (!exec_status)
 	{
-        check_and_reset_signal(var);
-        return ;
-    }
-    check_and_reset_signal(var);
+		check_and_reset_signal(var);
+		return ;
+	}
+	check_and_reset_signal(var);
 }
 
 // static void	print_tokens(t_token *tokens)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 17:46:13 by jasminelage       #+#    #+#             */
-/*   Updated: 2025/11/04 17:46:14 by jasminelage      ###   ########.fr       */
+/*   Updated: 2025/11/05 14:24:12 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@
  * * @param current_line The line buffer to be freed.
  * @return Always returns NULL.
  */
-static char *handle_continuation_eof(char *current_line)
+static char	*handle_continuation_eof(char *current_line)
 {
-    write(2, "minishell: unexpected EOF while looking for matching pipe\n", 59);
-    free(current_line);
-    return (NULL);
+	write(2, "minishell: unexpected EOF while looking for matching pipe\n", 59);
+	free(current_line);
+	return (NULL);
 }
 
 /**
@@ -33,25 +33,25 @@ static char *handle_continuation_eof(char *current_line)
  * @param new_line The new line to append.
  * @return A new, combined string, or NULL on allocation failure.
  */
-static char *append_line(char *current_line, char *new_line)
+static char	*append_line(char *current_line, char *new_line)
 {
-    char    *temp;
-    char    *combined;
+	char	*temp;
+	char	*combined;
 
-    temp = ft_strjoin(current_line, " ");
-    if (!temp)
-    {
-        free(current_line);
-        free(new_line);
-        return (NULL);
-    }
-    combined = ft_strjoin(temp, new_line);
-    free(temp);
-    free(current_line);
-    free(new_line);
-    if (!combined)
-        return (NULL);
-    return (combined);
+	temp = ft_strjoin(current_line, " ");
+	if (!temp)
+	{
+		free(current_line);
+		free(new_line);
+		return (NULL);
+	}
+	combined = ft_strjoin(temp, new_line);
+	free(temp);
+	free(current_line);
+	free(new_line);
+	if (!combined)
+		return (NULL);
+	return (combined);
 }
 
 /**
@@ -63,48 +63,47 @@ static char *append_line(char *current_line, char *new_line)
  * @param current_line The new, complete line to be parsed.
  * @return 1 on successful parse, 0 on failure.
  */
-static int  reparse_line(t_mini *var, char *current_line)
+static int	reparse_line(t_mini *var, char *current_line)
 {
-    char    *original_line_ptr;
-    int     parse_status;
+	char	*original_line_ptr;
+	int		parse_status;
 
-    free_tokens(var);
-    var->tokens = NULL;
-    var->needs_continuation = 0;
-    var->nbr_pipes = 0;
-    original_line_ptr = var->line;
-    var->line = current_line;
-    parse_status = parse(var);
-    var->line = original_line_ptr;
-    if (!parse_status)
-        return (0);
-
-    return (1);
+	free_tokens(var);
+	var->tokens = NULL;
+	var->needs_continuation = 0;
+	var->nbr_pipes = 0;
+	original_line_ptr = var->line;
+	var->line = current_line;
+	parse_status = parse(var);
+	var->line = original_line_ptr;
+	if (!parse_status)
+		return (0);
+	return (1);
 }
 
 // Reads continued input lines until the parser is satisfied.
-char    *read_continuation(t_mini *var, char *current_line)
+char	*read_continuation(t_mini *var, char *current_line)
 {
-    char    *new_line;
+	char	*new_line;
 
-    while (var->needs_continuation)
-    {
-        new_line = readline("> ");
-        if (!new_line)
-            return (handle_continuation_eof(current_line));
-        if (!*new_line)
-        {
-            free(new_line);
-            continue;
-        }
-        current_line = append_line(current_line, new_line);
-        if (!current_line)
-            return (NULL); // Memory allocation failed in append_line
-        if (!reparse_line(var, current_line))
-        {
-            free(current_line);
-            return (NULL); // Parse failed
-        }
-    }
-    return (current_line);
+	while (var->needs_continuation)
+	{
+		new_line = readline("> ");
+		if (!new_line)
+			return (handle_continuation_eof(current_line));
+		if (!*new_line)
+		{
+			free(new_line);
+			continue ;
+		}
+		current_line = append_line(current_line, new_line);
+		if (!current_line)
+			return (NULL);
+		if (!reparse_line(var, current_line))
+		{
+			free(current_line);
+			return (NULL);
+		}
+	}
+	return (current_line);
 }
