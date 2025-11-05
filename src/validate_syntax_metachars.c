@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validate_syntax_metachars.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 13:31:28 by jasminelage       #+#    #+#             */
-/*   Updated: 2025/11/04 15:45:47 by jasminelage      ###   ########.fr       */
+/*   Updated: 2025/11/05 15:50:12 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,8 @@ static bool	check_pipe_token(t_token *token, t_mini *var)
 {
 	if (!token->next)
 	{
-		// Trailing pipe - set continuation flag
 		var->needs_continuation = 1;
-		return (true);  // Don't error, allow continuation
+		return (true);
 	}
 	if (token->next->type == PIPE)
 	{
@@ -60,10 +59,9 @@ static bool	check_pipe_token(t_token *token, t_mini *var)
 	return (true);
 }
 
-
 bool	validate_syntax(t_mini *var)
 {
-t_token	*token;
+	t_token	*token;
 
 	token = var->tokens;
 	if (!token)

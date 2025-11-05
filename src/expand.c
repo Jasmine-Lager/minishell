@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 12:50:57 by jlager            #+#    #+#             */
-/*   Updated: 2025/11/03 21:59:09 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/11/05 15:44:51 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ int	save_result_in_token(t_mini *var, t_expand *exp)
 	else if (!split_words(var, exp))
 	{
 		exp->current->content = exp->result;
+		exp->last = exp->current;
 		exp->current = exp->current->next;
 	}
 	exp->result = NULL;
@@ -116,8 +117,6 @@ int	save_result_in_token(t_mini *var, t_expand *exp)
 	exp->i_start_split = NULL;
 	free(exp->i_end_split);
 	exp->i_end_split = NULL;
-	if (!exp->check)
-		write(2, "minishell: malloc in add_new_token failed\n", 42);
 	return (exp->check);
 }
 
@@ -141,7 +140,10 @@ bool	expand_tokens(t_mini *var)
 		}
 		expand_str(var, exp->current->content, exp);
 		if (!save_result_in_token(var, exp))
+		{
+			write(2, "minishell: malloc in add_new_token failed\n", 42);
 			return (0);
+		}
 	}
 	free(exp);
 	return (1);
