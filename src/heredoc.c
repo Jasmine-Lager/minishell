@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/30 12:34:17 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/11/03 21:59:26 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/11/06 20:27:38 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	read_heredoc(t_mini *var, char *delim, t_expand *exp, bool delim_quoted)
 		if (!line_in)
 		{
 			free(exp);
+			free(line_in);
 			error_exit(var, "heredoc delimited by end-of-file\n");
 		}
 		if (!delim_quoted)
