@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   environment_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 15:10:50 by jasminelage       #+#    #+#             */
-/*   Updated: 2025/11/06 16:11:34 by jasminelage      ###   ########.fr       */
+/*   Updated: 2025/11/06 19:38:24 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,11 @@ int	count_env_vars(char **envp)
 	return (count);
 }
 
-static char *create_env_string(char *key, char *value)
+static char	*create_env_string(char *key, char *value)
 {
-	char *temp;
-	char *result;
-	
+	char	*temp;
+	char	*result;
+
 	temp = ft_strjoin(key, "=");
 	if (!temp)
 		return (NULL);
@@ -36,9 +36,9 @@ static char *create_env_string(char *key, char *value)
 	return (result);
 }
 
-static void simple_copy_envp(char **old, char **new, int count)
+static void	simple_copy_envp(char **old, char **new, int count)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	while (++i < count)
@@ -46,7 +46,7 @@ static void simple_copy_envp(char **old, char **new, int count)
 }
 
 // Set environment variable (add if doesn't exist, update if exists)
-int set_env_var(t_mini *var, char *key, char *value)
+int	set_env_var(t_mini *var, char *key, char *value)
 {
 	int		index;
 	int		count;
@@ -70,7 +70,7 @@ int set_env_var(t_mini *var, char *key, char *value)
 }
 
 // Update existing environment variable
-int update_env_var(t_mini *var, char *key, char *value)
+int	update_env_var(t_mini *var, char *key, char *value)
 {
 	int		index;
 	char	*new_var;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_define.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 17:35:51 by jasminelage       #+#    #+#             */
-/*   Updated: 2025/10/31 18:30:53 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/11/06 19:42:53 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,8 @@ void	define_token(t_mini *var, int *start_token, int *end_token,
 		*end_token = *start_token;
 		return ;
 	}
-	if ((metachar_end = get_metachar_end(var, *start_token)))
+	metachar_end = get_metachar_end(var, *start_token);
+	if (metachar_end)
 	{
 		*end_token = metachar_end;
 		new->quotes = NONE;

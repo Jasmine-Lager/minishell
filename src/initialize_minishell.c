@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initialize_minishell.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 15:10:05 by jasminelage       #+#    #+#             */
-/*   Updated: 2025/11/06 16:10:03 by jasminelage      ###   ########.fr       */
+/*   Updated: 2025/11/06 19:56:17 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ static void	modify_shlvl(t_mini *var)
 		free(new_shlvl);
 	}
 }
-
 
 // Copy environment variables so we can modify them
 static char	**copy_envp(char **envp)

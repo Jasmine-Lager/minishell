@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   environment.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 13:00:41 by jasminelage       #+#    #+#             */
-/*   Updated: 2025/11/06 16:11:42 by jasminelage      ###   ########.fr       */
+/*   Updated: 2025/11/06 19:37:05 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void copy_envp_without_index(char **old, char **new, int count, int skip)
+static void	copy_envp_without_index(char **old, char **new, int count, int skip)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = -1;
 	j = 0;
@@ -30,7 +30,7 @@ static void copy_envp_without_index(char **old, char **new, int count, int skip)
 }
 
 // Remove environment variable
-int unset_env_var(t_mini *var, char *key)
+int	unset_env_var(t_mini *var, char *key)
 {
 	int		index;
 	int		count;
