@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 10:29:08 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/11/05 16:08:58 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/11/06 22:49:21 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,15 +62,19 @@ void	handle_command(t_mini *var)
 
 	var->needs_continuation = 0;
 	parse_status = parse(var);
+	if (!var->needs_continuation)
+		add_history(var->line);
 	if (!parse_status || !var->tokens)
 	{
 		check_and_reset_signal(var);
 		return ;
 	}
 	if (var->needs_continuation)
+	{
 		if (!handle_line_continuation(var))
 			return ;
-	add_history(var->line);
+		add_history(var->line);
+	}
 	exec_status = execute_cmds(var);
 	if (!exec_status)
 	{

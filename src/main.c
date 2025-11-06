@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 16:00:52 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/11/06 16:12:47 by jasminelage      ###   ########.fr       */
+/*   Updated: 2025/11/06 22:59:14 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,9 @@ int	main(int argc, char **argv, char **envp)
 		free_one_line(var);
 		var->line = readline("$ ");
 	}
-	write(2, "Exiting..\n", 10);
-	free_var_exit(var, 0);
+	if (isatty(STDIN_FILENO))
+		write(2, "exit\n", 5);
+	free_var_exit(var, var->exit_code);
 	return (0);
 }
 
