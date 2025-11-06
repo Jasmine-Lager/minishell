@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   environment_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
+/*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 15:10:50 by jasminelage       #+#    #+#             */
-/*   Updated: 2025/11/05 14:39:48 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/11/06 16:11:34 by jasminelage      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,52 +23,34 @@ int	count_env_vars(char **envp)
 	return (count);
 }
 
-// Find index of environment variable by key
-int	find_env_index(char **envp, char *key)
+static char *create_env_string(char *key, char *value)
 {
-	int	i;
-	int	len;
-
-	len = ft_strlen(key);
-	i = 0;
-	while (envp[i])
-	{
-		if (!ft_strncmp(envp[i], key, len) && envp[i][len] == '=')
-			return (i);
-		i++;
-	}
-	return (-1);
-}
-
-// Update existing environment variable
-int	update_env_var(t_mini *var, char *key, char *value)
-{
-	int		index;
-	char	*new_var;
-	char	*temp;
-
-	index = find_env_index(var->envp, key);
-	if (index == -1)
-		return (set_env_var(var, key, value));
+	char *temp;
+	char *result;
+	
 	temp = ft_strjoin(key, "=");
 	if (!temp)
-		return (1);
-	new_var = ft_strjoin(temp, value);
+		return (NULL);
+	result = ft_strjoin(temp, value);
 	free(temp);
-	if (!new_var)
-		return (1);
-	free(var->envp[index]);
-	var->envp[index] = new_var;
-	return (0);
+	return (result);
+}
+
+static void simple_copy_envp(char **old, char **new, int count)
+{
+	int i;
+
+	i = -1;
+	while (++i < count)
+		new[i] = old[i];
 }
 
 // Set environment variable (add if doesn't exist, update if exists)
-int	set_env_var(t_mini *var, char *key, char *value)
+int set_env_var(t_mini *var, char *key, char *value)
 {
 	int		index;
 	int		count;
 	char	**new_envp;
-	char	*temp;
 
 	index = find_env_index(var->envp, key);
 	if (index != -1)
@@ -77,49 +59,29 @@ int	set_env_var(t_mini *var, char *key, char *value)
 	new_envp = malloc(sizeof(char *) * (count + 2));
 	if (!new_envp)
 		return (1);
-	index = -1;
-	while (++index < count)
-		new_envp[index] = var->envp[index];
-	temp = ft_strjoin(key, "=");
-	if (!temp)
+	simple_copy_envp(var->envp, new_envp, count);
+	new_envp[count] = create_env_string(key, value);
+	if (!new_envp[count])
 		return (free(new_envp), 1);
-	new_envp[index] = ft_strjoin(temp, value);
-	free(temp);
-	if (!new_envp[index])
-		return (free(new_envp), 1);
-	new_envp[index + 1] = NULL;
+	new_envp[count + 1] = NULL;
 	free(var->envp);
 	var->envp = new_envp;
 	return (0);
 }
 
-// Remove environment variable
-int	unset_env_var(t_mini *var, char *key)
+// Update existing environment variable
+int update_env_var(t_mini *var, char *key, char *value)
 {
 	int		index;
-	int		count;
-	int		i;
-	int		j;
-	char	**new_envp;
+	char	*new_var;
 
 	index = find_env_index(var->envp, key);
 	if (index == -1)
-		return (0);
-	count = count_env_vars(var->envp);
-	new_envp = malloc(sizeof(char *) * count);
-	if (!new_envp)
+		return (set_env_var(var, key, value));
+	new_var = create_env_string(key, value);
+	if (!new_var)
 		return (1);
-	i = -1;
-	j = 0;
-	while (++i < count)
-	{
-		if (i != index)
-			new_envp[j++] = var->envp[i];
-		else
-			free(var->envp[i]);
-	}
-	new_envp[j] = NULL;
-	free(var->envp);
-	var->envp = new_envp;
+	free(var->envp[index]);
+	var->envp[index] = new_var;
 	return (0);
 }

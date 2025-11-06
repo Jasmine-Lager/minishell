@@ -6,7 +6,7 @@
 /*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 16:00:52 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/11/04 16:09:34 by jasminelage      ###   ########.fr       */
+/*   Updated: 2025/11/06 16:12:47 by jasminelage      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ int	main(int argc, char **argv, char **envp)
 		if (*var->line)
 			handle_command(var);
 		free_one_line(var);
-		// rl_on_new_line(); maybe need for -n in echo?
 		var->line = readline("$ ");
 	}
 	write(2, "Exiting..\n", 10);

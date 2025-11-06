@@ -3,14 +3,44 @@
 /*                                                        :::      ::::::::   */
 /*   initialize_minishell.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
+/*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 15:10:05 by jasminelage       #+#    #+#             */
-/*   Updated: 2025/11/03 21:59:45 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/11/06 16:10:03 by jasminelage      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+// Handle SHLVL increment similar to bash:
+// -nums = 0, non-nums = 0, >= 1000 reset to 1 (to not overflow)
+static void	modify_shlvl(t_mini *var)
+{
+	char	*shlvl_str;
+	int		shlvl_val;
+	char	*new_shlvl;
+
+	shlvl_str = find_env_var(var->envp, "SHLVL");
+	if (!shlvl_str)
+	{
+		set_env_var(var, "SHLVL", "1");
+		return ;
+	}
+	shlvl_val = ft_atoi(shlvl_str);
+	if (shlvl_val < 0)
+		shlvl_val = 0;
+	else if (shlvl_val >= 999)
+		shlvl_val = 1;
+	else
+		shlvl_val++;
+	new_shlvl = ft_itoa(shlvl_val);
+	if (new_shlvl)
+	{
+		set_env_var(var, "SHLVL", new_shlvl);
+		free(new_shlvl);
+	}
+}
+
 
 // Copy environment variables so we can modify them
 static char	**copy_envp(char **envp)
@@ -83,8 +113,8 @@ void	initialize_minishell(t_mini *var, int argc, char **argv, char **envp)
 		free(var);
 		exit(1);
 	}
-	//handle SHLVL here
 	initialize_var(var, envp);
+	modify_shlvl(var);
 	var->paths = ft_split(find_env_var(var->envp, "PATH"), ':');
 	if (!var->paths)
 		error_exit(var, "malloc in initialize_minishell failed\n");
