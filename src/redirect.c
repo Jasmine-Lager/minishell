@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlager <jlager@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 09:09:21 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/10/31 17:02:37 by jlager           ###   ########.fr       */
+/*   Updated: 2025/11/08 00:19:14 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	redirect_in_out_to_pipes(t_mini *var, int cmd_n)
 	}
 }
 
-void	open_redir_infile(t_mini *var, char *infile, bool heredoc)
+bool	open_redir_infile(char *infile, bool heredoc)
 {
 	int	fd;
 
@@ -39,16 +39,20 @@ void	open_redir_infile(t_mini *var, char *infile, bool heredoc)
 	if (fd == -1)
 	{
 		perror(infile);
-		free_var_exit(var, 1);
+		return (0);
 	}
 	if (dup2(fd, 0) == -1)
-		dup2_error(var);
+	{
+		perror("dup2");
+		return (0);
+	}
 	close(fd);
 	if (heredoc)
 		unlink(infile);
+	return (1);
 }
 
-void	open_redir_outfile(t_mini *var, char *outfile, bool append)
+bool	open_redir_outfile(char *outfile, bool append)
 {
 	int	fd;
 
@@ -58,12 +62,16 @@ void	open_redir_outfile(t_mini *var, char *outfile, bool append)
 		fd = open(outfile, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (fd == -1)
 	{
-		perror("failed to open output");
-		free_var_exit(var, 1);
+		perror(outfile);
+		return (0);
 	}
 	if (dup2(fd, 1) == -1)
-		dup2_error(var);
+	{
+		perror("dup2");
+		return (0);
+	}
 	close(fd);
+	return (1);
 }
 
 void	process_cmd(t_token *ptr, t_token **cmd, int *argv_len)
@@ -79,31 +87,30 @@ void	process_cmd(t_token *ptr, t_token **cmd, int *argv_len)
 	}
 }
 
-int	redir_files_and_count_argv_len(t_mini *var, t_token *ptr, t_token **cmd,
-		int argv_len)
+int	redir_files_and_count_argv_len(t_token *ptr, t_token **cmd, int argv_len)
 {
 	bool	append;
 
 	append = 0;
-	while (ptr)
+	while (ptr && ptr->type != PIPE)
 	{
 		if (ptr->type == WORD || ptr->type == FLAG)
 			argv_len++;
 		else if (ptr->type == CMD)
 			process_cmd(ptr, cmd, &argv_len);
-		else if (ptr->type == PIPE)
-			break ;
-		else if (ptr->type == INFILE || ptr->type == DELIMITER)
-			open_redir_infile(var, ptr->content, ptr->type == DELIMITER);
+		else if ((ptr->type == INFILE || ptr->type == DELIMITER)
+			&& !open_redir_infile(ptr->content, ptr->type == DELIMITER))
+			return (-1);
 		else if (ptr->type == REDIR_OUT)
 			append = 0;
 		else if (ptr->type == REDIR_APPEND)
 			append = 1;
-		else if (ptr->type == OUTFILE)
-			open_redir_outfile(var, ptr->content, append);
+		else if ((ptr->type == OUTFILE)
+			&& !open_redir_outfile(ptr->content, append))
+			return (-1);
 		ptr = ptr->next;
 	}
 	if (!*cmd)
-		error_exit(var, "missing a command\n");
+		return (write(2, "missing a command\n", 18), -1);
 	return (argv_len);
 }

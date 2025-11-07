@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 16:00:52 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/11/06 22:59:14 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/11/08 00:27:03 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	main(int argc, char **argv, char **envp)
 		free_one_line(var);
 		var->line = readline("$ ");
 	}
-	if (isatty(STDIN_FILENO))
+	if (isatty(STDOUT_FILENO))
 		write(2, "exit\n", 5);
 	free_var_exit(var, var->exit_code);
 	return (0);

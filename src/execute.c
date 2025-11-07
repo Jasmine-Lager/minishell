@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 15:11:00 by jasminelage       #+#    #+#             */
-/*   Updated: 2025/11/05 14:47:13 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/11/08 00:39:26 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ static void	execute_builtin_child(t_mini *var)
 // Execute single built-in command without pipes (in parent)
 static bool	execute_single_builtin(t_mini *var, t_token *cmd)
 {
-	t_token	*ptr;
 	int		argv_len;
 	int		saved_stdin;
 	int		saved_stdout;
@@ -33,8 +32,9 @@ static bool	execute_single_builtin(t_mini *var, t_token *cmd)
 	saved_stdout = dup(1);
 	if (saved_stdin == -1 || saved_stdout == -1)
 		return (perror("dup"), 0);
-	ptr = var->tokens;
-	argv_len = redir_files_and_count_argv_len(var, ptr, &cmd, 1);
+	argv_len = redir_files_and_count_argv_len(var->tokens, &cmd, 1);
+	if (argv_len == -1)
+		return (close(saved_stdin), close(saved_stdout), 0);
 	var->argv_for_cmd = malloc((argv_len + 1) * sizeof(char *));
 	if (!var->argv_for_cmd)
 	{
@@ -42,13 +42,13 @@ static bool	execute_single_builtin(t_mini *var, t_token *cmd)
 		close(saved_stdout);
 		return (write(2, "malloc failed: execute_single_builtin\n", 38), 0);
 	}
-	cpy_content_to_argv(var, var->argv_for_cmd, cmd, argv_len);
+	if (!cpy_content_to_argv(var->argv_for_cmd, cmd, argv_len))
+		return (0);
 	var->exit_code = execute_builtin(var, var->argv_for_cmd);
-	dup2(saved_stdin, 0);
-	dup2(saved_stdout, 1);
+	if (dup2(saved_stdin, 0) == -1 || dup2(saved_stdout, 1) == -1)
+		return (perror("dup2"), 0);
 	close(saved_stdin);
-	close(saved_stdout);
-	return (1);
+	return (close(saved_stdout), 1);
 }
 
 static pid_t	fork_and_execute_processes(t_mini *var)

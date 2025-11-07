@@ -60,13 +60,16 @@ void	find_path_to_cmd(t_mini *var, char **path, char *cmd, int j)
 	access_error(var, path, ": command not found\n", 127);
 }
 
-void	cpy_content_to_argv(t_mini *var, char **dst_argv, t_token *ptr,
+bool	cpy_content_to_argv(char **dst_argv, t_token *ptr,
 		size_t argv_len)
 {
 	size_t	i;
 
 	if (ptr->type != CMD)
-		error_exit(var, "missing a command\n");
+	{
+		write(2, "missing a command\n", 18);
+		return (0);
+	}
 	dst_argv[0] = ptr->content;
 	ptr = ptr->next;
 	i = 1;
@@ -80,6 +83,7 @@ void	cpy_content_to_argv(t_mini *var, char **dst_argv, t_token *ptr,
 		ptr = ptr->next;
 	}
 	dst_argv[i] = NULL;
+	return (1);
 }
 
 t_token	*find_start_of_nth_cmd(t_mini *var, int cmd_n)
@@ -108,11 +112,14 @@ void	prepare_argv_and_redir(t_mini *var, int cmd_n)
 	redirect_in_out_to_pipes(var, cmd_n);
 	ptr = find_start_of_nth_cmd(var, cmd_n);
 	cmd = NULL;
-	argv_len = redir_files_and_count_argv_len(var, ptr, &cmd, 1);
+	argv_len = redir_files_and_count_argv_len(ptr, &cmd, 1);
+	if (argv_len == -1)
+		free_var_exit(var, 1);
 	var->argv_for_cmd = malloc((argv_len + 1) * sizeof(char *));
 	if (!var->argv_for_cmd)
 		error_exit(var, "malloc failed: prepare_argv_and_redir\n");
-	cpy_content_to_argv(var, var->argv_for_cmd, cmd, argv_len);
+	if (!cpy_content_to_argv(var->argv_for_cmd, cmd, argv_len))
+		free_var_exit(var, 1);
 	find_path_to_cmd(var, &var->cmd, cmd->content, 0);
 	close_pipes(var);
 }

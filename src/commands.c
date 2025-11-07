@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 10:29:08 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/11/06 22:49:21 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/11/08 00:42:54 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,10 +77,7 @@ void	handle_command(t_mini *var)
 	}
 	exec_status = execute_cmds(var);
 	if (!exec_status)
-	{
-		check_and_reset_signal(var);
-		return ;
-	}
+		var->exit_code = 1;
 	check_and_reset_signal(var);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/02 18:27:58 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/11/06 16:09:49 by jasminelage      ###   ########.fr       */
+/*   Updated: 2025/11/08 00:08:20 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,7 +164,7 @@ void			dup2_error(t_mini *var);
 // execute_prepare.c
 int				already_has_path(t_mini *var, char **path, char *cmd);
 void			find_path_to_cmd(t_mini *var, char **path, char *cmd, int j);
-void			cpy_content_to_argv(t_mini *var, char **dst_argv, t_token *ptr,
+bool			cpy_content_to_argv(char **dst_argv, t_token *ptr,
 					size_t argv_len);
 t_token			*find_start_of_nth_cmd(t_mini *var, int cmd_n);
 void			prepare_argv_and_redir(t_mini *var, int cmd_n);
@@ -244,11 +244,11 @@ t_quote_info	analyze_token_quotes_detailed(char *content);
 
 // redirect.c
 void			redirect_in_out_to_pipes(t_mini *var, int cmd_n);
-void			open_redir_infile(t_mini *var, char *infile, bool heredoc);
-void			open_redir_outfile(t_mini *var, char *outfile, bool append);
+bool			open_redir_infile(char *infile, bool heredoc);
+bool			open_redir_outfile(char *outfile, bool append);
 void			process_cmd(t_token *ptr, t_token **cmd, int *argv_len);
-int				redir_files_and_count_argv_len(t_mini *var, t_token *ptr,
-					t_token **cmd, int argv_len);
+int				redir_files_and_count_argv_len(t_token *ptr, t_token **cmd,
+					int argv_len);
 
 // rm_quotes_delim.c
 int				len_no_quotes(char *delim, bool *quoted);
