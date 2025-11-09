@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_more.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 15:10:22 by jasminelage       #+#    #+#             */
-/*   Updated: 2025/10/31 19:38:19 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/11/09 16:26:21 by jasminelage      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,22 +110,25 @@ int	builtin_export(t_mini *var, char **argv)
 int	builtin_unset(t_mini *var, char **argv)
 {
 	int	i;
+	int	ret;
 
 	if (!argv[1])
 		return (0);
 	i = 1;
+	ret = 0;
 	while (argv[i])
 	{
-		if (!is_valid_identifier(argv[i]))
+		if (!is_valid_identifier(argv[i]) || ft_strchr(argv[i], '='))
 		{
 			write(2, "minishell: unset: `", 19);
 			write(2, argv[i], ft_strlen(argv[i]));
 			write(2, "': not a valid identifier\n", 26);
+			ret = 1;
 			i++;
 			continue ;
 		}
 		unset_env_var(var, argv[i]);
 		i++;
 	}
-	return (0);
+	return (ret);
 }
