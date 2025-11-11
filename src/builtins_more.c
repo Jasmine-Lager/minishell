@@ -6,7 +6,7 @@
 /*   By: jlager <jlager@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 15:10:22 by jasminelage       #+#    #+#             */
-/*   Updated: 2025/11/11 10:22:07 by jlager           ###   ########.fr       */
+/*   Updated: 2025/11/11 11:10:31 by jlager           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int	is_valid_identifier(char *str)
 	if (!str || (!ft_isalpha(str[0]) && str[0] != '_'))
 		return (0);
 	i = 1;
-	while (str[i] && str[i] != '=')
+	while (str[i] && str[i] != '=' && str[i] != '+')
 	{
 		if (!ft_isalnum(str[i]) && str[i] != '_')
 			return (0);
