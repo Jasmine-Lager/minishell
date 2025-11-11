@@ -6,7 +6,7 @@
 /*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/02 18:27:58 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/11/11 13:59:15 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/11/11 14:05:12 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@
 # include <errno.h>
 # include <fcntl.h> //open
 
-extern volatile sig_atomic_t g_signal; // only global allowed
+extern volatile sig_atomic_t	g_signal; // only global allowed
 
 typedef enum e_quotes
 {
@@ -103,19 +103,19 @@ typedef struct s_expand
 
 typedef struct s_mini // stores all variables usefull for the whole program
 {
-	char **envp;
-	char **paths;
-	char *line;
-	t_token *tokens;
-	int nbr_pipes;
-	int (*pipes)[2];
-	char *cmd;
-	char **argv_for_cmd;
-	int nbr_heredoc;
-	int exit_code;
-	int needs_continuation;
-	struct termios orig_term;
-	int term_saved;
+	char			**envp;
+	char			**paths;
+	char			*line;
+	t_token			*tokens;
+	int				nbr_pipes;
+	int				(*pipes)[2];
+	char			*cmd;
+	char			**argv_for_cmd;
+	int				nbr_heredoc;
+	int				exit_code;
+	int				needs_continuation;
+	struct termios	orig_term;
+	int				term_saved;
 }					t_mini;
 
 // builtins_more.c
