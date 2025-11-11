@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlager <jlager@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/30 12:34:17 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/11/11 13:51:13 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/11/11 16:22:13 by jlager           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ bool	heredoc(t_mini *var, t_token *delim, t_expand *exp)
 	file = get_tmp_file_name(var);
 	if (!file)
 		return (0);
+	signals_execution();
 	pid = fork();
 	if (pid == -1)
 		return (perror("fork"), free(file), 0);
@@ -70,9 +71,10 @@ bool	heredoc(t_mini *var, t_token *delim, t_expand *exp)
 		unlink(file);
 		free(file);
 		var->exit_code = 130;
-		return (0);
+		return (signals_setup(), 0);
 	}
 	free(delim->content);
 	delim->content = file;
+	signals_setup();
 	return (1);
 }

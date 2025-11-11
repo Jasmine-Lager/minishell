@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rm_quotes_delim.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlager <jlager@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 18:38:24 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/11/11 14:01:24 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/11/11 16:25:15 by jlager           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	len_no_quotes(char *delim, bool *quoted, int dquote, int squote)
 			*quoted = 1;
 		}
 		else if (!ft_isalnum(delim[i]) && delim[i] != '_')
-			return (write(2, "invalid character in delimiter", 30), -1);
+			return (write(2, "invalid character in delimiter\n", 31), -1);
 		else
 			len++;
 	}

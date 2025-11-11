@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   environment.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
+/*   By: jlager <jlager@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 13:00:41 by jasminelage       #+#    #+#             */
-/*   Updated: 2025/11/06 19:37:05 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/11/11 16:29:04 by jlager           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,12 @@ int	unset_env_var(t_mini *var, char *key)
 	int		count;
 	char	**new_envp;
 
+	if (!ft_strncmp(key, "PATH", 5))
+	{
+		free_arr(var->paths);
+		var->paths = malloc(sizeof(char *));
+		*(var->paths) = NULL;
+	}
 	index = find_env_index(var->envp, key);
 	if (index == -1)
 		return (0);

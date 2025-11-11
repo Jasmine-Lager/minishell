@@ -6,7 +6,7 @@
 /*   By: jlager <jlager@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 12:50:33 by jlager            #+#    #+#             */
-/*   Updated: 2025/11/11 12:34:10 by jlager           ###   ########.fr       */
+/*   Updated: 2025/11/11 16:15:32 by jlager           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,16 @@ void	signals_execution(void)
 void	signals_heredoc(void)
 {
 	struct sigaction	sa;
+	struct termios		term;
 
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = 0;
 	sa.sa_handler = handle_ctrl_c_heredoc;
 	sigaction(SIGINT, &sa, NULL);
 	signal(SIGQUIT, SIG_IGN);
+	tcgetattr(STDIN_FILENO, &term);
+	term.c_lflag |= ECHOCTL;
+	tcsetattr(STDIN_FILENO, TCSANOW, &term);
 }
 
 // Setup for child processes
