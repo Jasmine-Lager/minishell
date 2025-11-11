@@ -3,25 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   rm_quotes_delim.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 18:38:24 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/11/03 21:31:15 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/11/11 14:01:24 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	len_no_quotes(char *delim, bool *quoted)
+int	len_no_quotes(char *delim, bool *quoted, int dquote, int squote)
 {
 	int	len;
-	int	dquote;
-	int	squote;
 	int	i;
 
 	len = 0;
-	dquote = 0;
-	squote = 0;
 	i = -1;
 	while (delim[++i])
 	{
@@ -35,6 +31,8 @@ int	len_no_quotes(char *delim, bool *quoted)
 			squote = 1 - squote;
 			*quoted = 1;
 		}
+		else if (!ft_isalnum(delim[i]) && delim[i] != '_')
+			return (write(2, "invalid character in delimiter", 30), -1);
 		else
 			len++;
 	}
@@ -72,10 +70,17 @@ bool	rm_quotes_delim(t_mini *var, char **delim, t_expand *exp)
 	bool	quoted;
 
 	quoted = 0;
-	len = len_no_quotes(*delim, &quoted);
+	len = len_no_quotes(*delim, &quoted, 0, 0);
+	if (len == -1)
+	{
+		close(exp->fd);
+		free(exp);
+		free_var_exit(var, 1);
+	}
 	result = (char *)malloc((len + 1) * sizeof(char));
 	if (!result)
 	{
+		close(exp->fd);
 		free(exp);
 		error_exit(var, "minishell: malloc failed\n");
 	}

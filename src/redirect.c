@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlager <jlager@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 09:09:21 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/11/11 10:43:14 by jlager           ###   ########.fr       */
+/*   Updated: 2025/11/11 13:30:26 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,5 @@ int	redir_files_and_count_argv_len(t_token *ptr, t_token **cmd, int argv_len)
 			return (-1);
 		ptr = ptr->next;
 	}
-	if (!*cmd)
-		return (write(2, "missing a command\n", 18), -1);
 	return (argv_len);
 }

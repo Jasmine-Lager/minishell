@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlager <jlager@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/02 18:27:58 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/11/11 13:44:18 by jlager           ###   ########.fr       */
+/*   Updated: 2025/11/11 13:59:15 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -261,7 +261,8 @@ int					redir_files_and_count_argv_len(t_token *ptr, t_token **cmd,
 						int argv_len);
 
 // rm_quotes_delim.c
-int					len_no_quotes(char *delim, bool *quoted);
+int					len_no_quotes(char *delim, bool *quoted, int dqote,
+						int squote);
 char				*cpy_no_quotes(char *str, char *result);
 bool				rm_quotes_delim(t_mini *var, char **delim, t_expand *exp);
 

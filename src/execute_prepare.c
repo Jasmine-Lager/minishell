@@ -113,6 +113,8 @@ void	prepare_argv_and_redir(t_mini *var, int cmd_n)
 	argv_len = redir_files_and_count_argv_len(ptr, &cmd, 1);
 	if (argv_len == -1)
 		free_var_exit(var, 1);
+	if (!cmd)
+		free_var_exit(var, 0);
 	var->argv_for_cmd = malloc((argv_len + 1) * sizeof(char *));
 	if (!var->argv_for_cmd)
 		error_exit(var, "malloc failed: prepare_argv_and_redir\n");

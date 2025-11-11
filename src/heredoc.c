@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
+/*   By: ksevciko <ksevciko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/30 12:34:17 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/11/06 20:27:38 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/11/11 13:51:13 by ksevciko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,10 @@ void	heredoc_to_file(t_mini *var, char *filename, char **delim,
 
 	signals_heredoc();
 	exp->fd = open_tmp_file(var, filename, exp);
+	free(filename);
 	delim_quoted = rm_quotes_delim(var, delim, exp);
 	read_heredoc(var, *delim, exp, delim_quoted);
 	close(exp->fd);
-	free(filename);
 	free(exp);
 	free_var_exit(var, 0);
 }
