@@ -6,7 +6,7 @@
 /*   By: jlager <jlager@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/30 12:34:17 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/11/11 16:22:13 by jlager           ###   ########.fr       */
+/*   Updated: 2025/11/11 17:56:23 by jlager           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,11 @@ void	read_heredoc(t_mini *var, char *delim, t_expand *exp, bool delim_quoted)
 	line_in = readline("> ");
 	while (ft_strncmp(line_in, delim, ft_strlen(delim) + 1))
 	{
+		if (g_signal == 130)
+		{
+			free(line_in);
+			return ;
+		}
 		if (!line_in)
 		{
 			free(exp);
@@ -46,6 +51,11 @@ void	heredoc_to_file(t_mini *var, char *filename, char **delim,
 	delim_quoted = rm_quotes_delim(var, delim, exp);
 	read_heredoc(var, *delim, exp, delim_quoted);
 	close(exp->fd);
+	if (g_signal == 130)
+	{
+		free(exp);
+		free_var_exit(var, 130);
+	}
 	free(exp);
 	free_var_exit(var, 0);
 }
@@ -66,7 +76,7 @@ bool	heredoc(t_mini *var, t_token *delim, t_expand *exp)
 	else if (pid == 0)
 		heredoc_to_file(var, file, &delim->content, exp);
 	waitpid(pid, &status, 0);
-	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+	if (WIFEXITED(status) && WEXITSTATUS(status) == 130)
 	{
 		unlink(file);
 		free(file);

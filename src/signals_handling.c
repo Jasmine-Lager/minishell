@@ -6,7 +6,7 @@
 /*   By: jlager <jlager@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 15:49:55 by jasminelage       #+#    #+#             */
-/*   Updated: 2025/11/11 12:33:01 by jlager           ###   ########.fr       */
+/*   Updated: 2025/11/11 17:45:06 by jlager           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,5 +37,6 @@ void	handle_ctrl_c_heredoc(int signal_number)
 	(void)signal_number;
 	g_signal = 130;
 	write(1, "\n", 1);
-	exit(130);
+	rl_done = 1;
+	close(STDIN_FILENO);
 }
