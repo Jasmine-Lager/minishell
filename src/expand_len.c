@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_len.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
+/*   By: jlager <jlager@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/30 13:13:18 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/11/03 13:24:49 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/11/11 10:44:31 by jlager           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,7 @@ int	len_keyword(char *str)
 
 	len = 0;
 	while (str[len] && ft_isalnum(str[len]))
-	{
 		len++;
-	}
 	return (len);
 }
 
@@ -49,9 +47,7 @@ void	count_split(char *str, t_expand *exp)
 			exp->nbr_split++;
 		}
 		else if (!my_isspace(str[i]) && !in_word)
-		{
 			in_word = 1;
-		}
 		i++;
 	}
 }

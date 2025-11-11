@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
+/*   By: jlager <jlager@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 09:09:21 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/11/08 00:19:14 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/11/11 10:43:14 by jlager           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,7 @@ void	redirect_in_out_to_pipes(t_mini *var, int cmd_n)
 	else
 		out = var->pipes[cmd_n][1];
 	if (dup2(in, 0) == -1 || dup2(out, 1) == -1)
-	{
 		dup2_error(var);
-	}
 }
 
 bool	open_redir_infile(char *infile, bool heredoc)
@@ -77,9 +75,7 @@ bool	open_redir_outfile(char *outfile, bool append)
 void	process_cmd(t_token *ptr, t_token **cmd, int *argv_len)
 {
 	if (!*cmd)
-	{
 		*cmd = ptr;
-	}
 	else
 	{
 		ptr->type = WORD;

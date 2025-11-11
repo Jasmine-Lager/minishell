@@ -28,9 +28,7 @@ int	already_has_path(t_mini *var, char **path, char *cmd)
 		if (stat(*path, &path_stat) == 0 && S_ISDIR(path_stat.st_mode))
 			access_error(var, path, ": Is a directory\n", 126);
 		if (access(*path, X_OK) == -1)
-		{
 			access_error(var, path, ": Permission denied\n", 126);
-		}
 		return (1);
 	}
 	return (0);

@@ -6,11 +6,35 @@
 /*   By: jlager <jlager@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 15:08:50 by jasminelage       #+#    #+#             */
-/*   Updated: 2025/10/31 16:01:42 by jlager           ###   ########.fr       */
+/*   Updated: 2025/11/11 10:20:08 by jlager           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	export_message(char *arg)
+{
+	write(2, "minishell: export: `", 20);
+	write(2, arg, ft_strlen(arg));
+	write(2, "': not a valid identifier\n", 26);
+	return (1);
+}
+
+bool	is_n_flag(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (str[i++] != '-')
+		return (false);
+	while (str[i])
+	{
+		if (str[i] != 'n')
+			return (false);
+		i++;
+	}
+	return (true);
+}
 
 // Check if string is a valid number for exit
 int	is_valid_number(char *str)

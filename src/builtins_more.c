@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_more.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jasminelager <jasminelager@student.42.f    +#+  +:+       +#+        */
+/*   By: jlager <jlager@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 15:10:22 by jasminelage       #+#    #+#             */
-/*   Updated: 2025/11/09 16:26:21 by jasminelage      ###   ########.fr       */
+/*   Updated: 2025/11/11 10:22:07 by jlager           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,23 +63,23 @@ static int	export_single_arg(t_mini *var, char *arg)
 	int		key_len;
 
 	if (!is_valid_identifier(arg))
-	{
-		write(2, "minishell: export: `", 20);
-		write(2, arg, ft_strlen(arg));
-		write(2, "': not a valid identifier\n", 26);
-		return (1);
-	}
+		return (export_message(arg));
 	equal_sign = ft_strchr(arg, '=');
 	if (equal_sign)
 	{
-		key_len = equal_sign - arg;
+		key_len = equal_sign - (*(equal_sign - 1) == '+') - arg;
 		key = malloc(key_len + 1);
-		if (!key)
+		if (!key || !ft_strlcpy(key, arg, key_len + 1))
 			return (1);
-		ft_strlcpy(key, arg, key_len + 1);
-		value = equal_sign + 1;
+		if (*(equal_sign - 1) == '+')
+			value = ft_strjoin(find_env_var(var->envp, key), equal_sign + 1);
+		else
+			value = ft_strdup(equal_sign + 1);
+		if (!value)
+			return (free(key), 1);
 		set_env_var(var, key, value);
 		free(key);
+		free(value);
 	}
 	return (0);
 }
