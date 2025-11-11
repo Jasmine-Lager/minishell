@@ -6,7 +6,7 @@
 /*   By: jlager <jlager@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 15:10:22 by jasminelage       #+#    #+#             */
-/*   Updated: 2025/11/11 13:39:01 by jlager           ###   ########.fr       */
+/*   Updated: 2025/11/11 13:56:04 by jlager           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,31 +28,6 @@ static int	is_valid_identifier(char *str)
 	}
 	return (1);
 }
-
-// Print export without arguments (sorted list of all env vars)
-// static void	print_export(t_mini *var)
-// {
-// 	int		i;
-// 	char	*equal_sign;
-
-// 	i = 0;
-// 	while (var->envp[i])
-// 	{
-// 		write(1, "declare -x ", 11);
-// 		equal_sign = ft_strchr(var->envp[i], '=');
-// 		if (equal_sign)
-// 		{
-// 			write(1, var->envp[i], equal_sign - var->envp[i] + 1);
-// 			write(1, "\"", 1);
-// 			write(1, equal_sign + 1, ft_strlen(equal_sign + 1));
-// 			write(1, "\"", 1);
-// 		}
-// 		else
-// 			write(1, var->envp[i], ft_strlen(var->envp[i]));
-// 		write(1, "\n", 1);
-// 		i++;
-// 	}
-// }
 
 // Helper function for export
 static int	export_single_arg(t_mini *var, char *arg)
