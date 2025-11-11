@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clean_up.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
+/*   By: jlager <jlager@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 15:10:37 by jasminelage       #+#    #+#             */
-/*   Updated: 2025/11/02 01:53:35 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/11/11 12:55:59 by jlager           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,9 @@ static void	free_envp(char **envp)
 	free(envp);
 }
 
-//cannot free var->delimiter here, because it is a pointer to the same 
-//thing as tokens->content, and we free that instead, the same thing with 
-//infile, outfile and strings in argv_for_cmd
+// cannot free var->delimiter here, because it is a pointer to the same
+// thing as tokens->content, and we free that instead, the same thing with
+// infile, outfile and strings in argv_for_cmd
 void	free_var_exit(t_mini *var, int exit_code)
 {
 	if (var && var->paths)
@@ -82,12 +82,8 @@ void	free_one_line(t_mini *var)
 	var->nbr_heredoc = 0;
 }
 
-void	wait_for_children(t_mini *var, pid_t last_child_pid)
+void	wait_for_children(t_mini *var, pid_t last_child_pid, int i, int status)
 {
-	int	i;
-	int	status;
-
-	i = 0;
 	while (i <= var->nbr_pipes)
 	{
 		if (wait(&status) == last_child_pid)
@@ -99,9 +95,13 @@ void	wait_for_children(t_mini *var, pid_t last_child_pid)
 				if (WTERMSIG(status) == SIGINT)
 					var->exit_code = 130;
 				else if (WTERMSIG(status) == SIGQUIT)
+				{
 					var->exit_code = 131;
+					write(1, "Quit (core dumped)", 18);
+				}
 				else
 					var->exit_code = 128 + WTERMSIG(status);
+				write(1, "\n", 1);
 			}
 			else
 				var->exit_code = 1;

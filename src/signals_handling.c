@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals_handling.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+        */
+/*   By: jlager <jlager@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 15:49:55 by jasminelage       #+#    #+#             */
-/*   Updated: 2025/11/05 14:22:36 by ksevciko         ###   ########.fr       */
+/*   Updated: 2025/11/11 12:33:01 by jlager           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ void	handle_ctrl_c_execution(int signal_number)
 {
 	(void)signal_number;
 	g_signal = 130;
-	write(1, "\n", 1);
 }
 
 // Handler for heredoc input

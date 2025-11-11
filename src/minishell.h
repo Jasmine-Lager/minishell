@@ -6,38 +6,38 @@
 /*   By: jlager <jlager@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/02 18:27:58 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/11/11 10:41:39 by jlager           ###   ########.fr       */
+/*   Updated: 2025/11/11 12:53:24 by jlager           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include <limits.h>			// INT_MAX, INT_MAX
-# include <readline/history.h>	// add_history, rl_clear_history
+# include <limits.h>            // INT_MAX, INT_MAX
+# include <readline/history.h>  // add_history, rl_clear_history
 # include <readline/readline.h> // readline, rl_on_new_line, rl_replace_line,
-# include <stdio.h>				// printf, perror
+# include <stdio.h>             // printf, perror
 								// rl_redisplay
-# include <dirent.h>			// opendir, readdir, closedir
-# include <signal.h>			// signal, sigaction, sigemptyset, sigaddset
-# include <stdbool.h>			// bool flags
-# include <stdlib.h>			// malloc, free, exit, getenv, EXIT_SUCCESS
-# include <string.h>			// strerror
-# include <sys/ioctl.h>			// ioctl
-# include <sys/stat.h>			// stat, lstat, fstat
-# include <sys/types.h>			// general types, used with wait/fork/etc.
-# include <sys/wait.h>			// wait, waitpid, wait3, wait4
-# include <term.h>				// tgetent, tgetflag, tgetnum, tgetstr, tgoto,
+# include <dirent.h>            // opendir, readdir, closedir
+# include <signal.h>            // signal, sigaction, sigemptyset, sigaddset
+# include <stdbool.h>           // bool flags
+# include <stdlib.h>            // malloc, free, exit, getenv, EXIT_SUCCESS
+# include <string.h>            // strerror
+# include <sys/ioctl.h>         // ioctl
+# include <sys/stat.h>          // stat, lstat, fstat
+# include <sys/types.h>         // general types, used with wait/fork/etc.
+# include <sys/wait.h>          // wait, waitpid, wait3, wait4
+# include <term.h>              // tgetent, tgetflag, tgetnum, tgetstr, tgoto,
 								// tputs
-# include <termios.h>			// tcsetattr, tcgetattr
-# include <unistd.h>			// write, access, read, close, fork, execve,
+# include <termios.h>           // tcsetattr, tcgetattr
+# include <unistd.h>            // write, access, read, close, fork, execve,
 								// dup,dup2,chdir, unlink, getcwd, kill, isatty,
 								// ttyname, ttyslot
 # include "libft.h"
 # include <errno.h>
 # include <fcntl.h> //open
 
-extern volatile sig_atomic_t	g_signal; // only global allowed
+extern volatile sig_atomic_t g_signal; // only global allowed
 
 typedef enum e_quotes
 {
@@ -103,19 +103,19 @@ typedef struct s_expand
 
 typedef struct s_mini // stores all variables usefull for the whole program
 {
-	char			**envp;
-	char			**paths;
-	char			*line;
-	t_token			*tokens;
-	int				nbr_pipes;
-	int				(*pipes)[2];
-	char			*cmd;
-	char			**argv_for_cmd;
-	int				nbr_heredoc;
-	int				exit_code;
-	int				needs_continuation;
-	struct termios	orig_term;
-	int				term_saved;
+	char **envp;
+	char **paths;
+	char *line;
+	t_token *tokens;
+	int nbr_pipes;
+	int (*pipes)[2];
+	char *cmd;
+	char **argv_for_cmd;
+	int nbr_heredoc;
+	int exit_code;
+	int needs_continuation;
+	struct termios orig_term;
+	int term_saved;
 }					t_mini;
 
 // builtins_more.c
@@ -140,7 +140,8 @@ int					builtin_exit(t_mini *var, char **argv);
 void				free_tokens(t_mini *var);
 void				free_var_exit(t_mini *var, int exit_code);
 void				free_one_line(t_mini *var);
-void				wait_for_children(t_mini *var, pid_t last_child_pid);
+void				wait_for_children(t_mini *var, pid_t last_child_pid, int i,
+						int status);
 
 // commands_utils.c
 char				*read_continuation(t_mini *var, char *current_line);
