@@ -6,7 +6,7 @@
 /*   By: jlager <jlager@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/02 18:27:58 by ksevciko          #+#    #+#             */
-/*   Updated: 2025/11/11 12:53:24 by jlager           ###   ########.fr       */
+/*   Updated: 2025/11/11 13:44:18 by jlager           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,9 @@ typedef struct s_mini // stores all variables usefull for the whole program
 // builtins_more.c
 int					builtin_export(t_mini *var, char **argv);
 int					builtin_unset(t_mini *var, char **argv);
+
+// builtins_print_export.c
+void				print_export(t_mini *var);
 
 // builtins_utils.c
 int					export_message(char *arg);

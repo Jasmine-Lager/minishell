@@ -6,7 +6,7 @@
 /*   By: jlager <jlager@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 15:08:50 by jasminelage       #+#    #+#             */
-/*   Updated: 2025/11/11 10:20:08 by jlager           ###   ########.fr       */
+/*   Updated: 2025/11/11 13:36:29 by jlager           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	export_message(char *arg)
 {
-	write(2, "minishell: export: `", 20);
+	write(2, "export: `", 20);
 	write(2, arg, ft_strlen(arg));
 	write(2, "': not a valid identifier\n", 26);
 	return (1);

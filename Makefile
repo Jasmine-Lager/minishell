@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ksevciko <ksevciko@student.42prague.com    +#+  +:+       +#+         #
+#    By: jlager <jlager@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/13 12:27:43 by jasminelage       #+#    #+#              #
-#    Updated: 2025/11/05 14:48:10 by ksevciko         ###   ########.fr        #
+#    Updated: 2025/11/11 13:44:04 by jlager           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,7 @@ SRC_DIR = src
 OBJ_DIR = obj
 
 SOURCES =	builtins_more.c \
+			builtins_print_export.c \
 			builtins_utils.c \
 			builtins.c \
 			clean_up.c \
