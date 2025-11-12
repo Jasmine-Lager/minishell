@@ -332,6 +332,7 @@ valgrind --suppressions=readline.supp --leak-check=full ./minishell
 ## 📝 Notes
 
 - The shell implements mandatory features as per 42 requirements
+- We have not found absolutely no leeks, even throe thorough testing with our local tutors :)
 - Follows strict 42 Norm: functions ≤ 25 lines, specific formatting
 - readline library handles command history and line editing
 - Project tested on Linux and macOS environments
